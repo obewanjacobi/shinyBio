@@ -1,0 +1,1 @@
+Tim Griffith wrote a couple of `manipulate` apps.  Andrew Giles and Jacob Townson plan to convert them to Shiny apps and to add additional features.

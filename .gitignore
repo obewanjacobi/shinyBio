@@ -4,3 +4,4 @@
 *.Rproj
 */shinyapps
 */rsconnect
+.DS_Store
