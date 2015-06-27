@@ -3,7 +3,7 @@ max.Rmax<-1
 max.k<-1000
 
 fluidPage(
-  title = "Logistic Growth",
+  titlePanel("Logistic Growth"),
   sidebarPanel(
     sliderInput(inputId = "time", label = "Extent of Time", min = 0, 
                 max = max.time, value = max.time*0.2),
