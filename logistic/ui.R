@@ -21,7 +21,7 @@ fluidPage(
       tabPanel(
         title = "Growth Rate",
         plotOutput("growth"),
-        selectInput(inputId = "growthRate", label = "Type of Growth Rate to Show",
+        radioButtons(inputId = "growthRate", label = "Type of Growth Rate to Show",
                     choices = c("Population Growth Rate" =1, "Per Capita Growth Rate" =2),
                     selected = 1)
       ),
