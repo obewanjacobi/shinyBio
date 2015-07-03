@@ -5,3 +5,4 @@
 */shinyapps
 */rsconnect
 .DS_Store
+.gitignore
