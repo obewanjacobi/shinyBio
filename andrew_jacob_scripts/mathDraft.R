@@ -1,11 +1,11 @@
 
-m <- 100   # carrying capacity
-b  <- 0.5  # birth rate
-d  <- 0.02 # death rate
-n0 <- 5
+m <- 1000   # carrying capacity
+b  <- 0.2  # birth rate
+d  <- 0.1 # death rate
+n0 <- 2
 nt <- n0   # initial value, garbage value to start
 nt_1 <- nt # value from last time step
-totalTime <- 100
+totalTime <- 10000
 t <- 0
 simulated_nt <- n0 # initial value, garbage value to start
 
@@ -15,7 +15,7 @@ dt <- 0 # Initial values to make these objects persistant
 st <- 0 # Initial values to make these objects persistant
 lt <- 0 # Initial values to make these objects persistant
 Lt <- 0 # Initial values to make these objects persistant
-littersizes <- NULL # Initial values to make these objects persistant
+littersizes <- list(rep(-1, totalTime + 1)) # Initial values to make these objects persistant
 
 
 daframe <- data.frame(time = 0, numLitters = 0, population = n0, birthrate = 0
@@ -33,7 +33,7 @@ dfrow[8] <- 0
 update <- function() {
   t <<- t + 1
   bt <<- max(0, b*(1-simulated_nt/m))
-  dt <<- min(0, d*(simulated_nt/m - 1))
+  dt <<- d + max(0, b*(simulated_nt/m - 1))
   st <<- sqrt(bt) # size of litters
   lt <<- sqrt(bt) # number of litters
   Lt <<- rpois(n = 1, lambda = lt*simulated_nt)
@@ -41,10 +41,12 @@ update <- function() {
     littersizes <<- list(rpois(Lt, lambda = st))
   }
   else {
-    littersizes <<- c(littersizes, rpois(Lt, lambda = st))
+    littersizes[[t]] <<- rpois(Lt, lambda = st)
   }
-  dead <- rpois(1, lambda = -dt * simulated_nt)
-  simulated_nt <<- simulated_nt + sum(littersizes[[t]]) - dead
+  dead <- rpois(1, lambda = dt*simulated_nt)
+  if (length(littersizes[[t]])) {
+    simulated_nt <<- simulated_nt + sum(littersizes[[t]]) - dead
+  }
 
   dfrow[1] <- t
   dfrow[2] <- Lt
@@ -62,7 +64,8 @@ update <- function() {
 for (i in 1:totalTime) {
   update()
 }
-png("./modelplot.png", width = 480, height = 480)
+
+png(paste(as.character(as.numeric(Sys.time())),"modelplot.png", sep=""), width = 480, height = 480)
 plot(x=daframe$time, daframe$population, ylab = "Population (n)"
      , xlab = "Time (Insert Units)")
 
