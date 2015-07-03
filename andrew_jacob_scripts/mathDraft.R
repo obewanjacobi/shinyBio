@@ -62,7 +62,7 @@ update <- function() {
 for (i in 1:totalTime) {
   update()
 }
-png("modelplot.png", width = 480, height = 480)
+png("./modelplot.png", width = 480, height = 480)
 plot(x=daframe$time, daframe$population, ylab = "Population (n)"
      , xlab = "Time (Insert Units)")
 
