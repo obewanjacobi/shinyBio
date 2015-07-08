@@ -1,11 +1,11 @@
 
 m <- 1000   # carrying capacity
-b  <- 0.2  # birth rate
-d  <- 0.1 # death rate
+b  <- 0.05  # birth rate
+d  <- 0.025 # death rate
 n0 <- 2
 nt <- n0   # initial value, garbage value to start
 nt_1 <- nt # value from last time step
-totalTime <- 10000
+totalTime <- 550
 t <- 0
 simulated_nt <- n0 # initial value, garbage value to start
 
@@ -18,8 +18,11 @@ Lt <- 0 # Initial values to make these objects persistant
 littersizes <- list(rep(-1, totalTime + 1)) # Initial values to make these objects persistant
 
 
-daframe <- data.frame(time = 0, numLitters = 0, population = n0, birthrate = 0
-                      , born = 0, deathrate = 0, dead = 0, theoretical = n0)
+daframe <- data.frame(time = rep(0, totalTime + 1), numLitters = rep(0, totalTime + 1)
+                      , population = rep(n0, totalTime + 1)
+                      , birthrate = rep(n0, totalTime + 1), born = rep(0, totalTime + 1)
+                      , deathrate = rep(0, totalTime + 1), dead = rep(0, totalTime + 1)
+                      , theoretical = rep(n0, totalTime + 1))
 dfrow <- numeric(length = 8)
 dfrow[1] <- t
 dfrow[2] <- Lt
@@ -32,19 +35,22 @@ dfrow[8] <- 0
 
 update <- function() {
   t <<- t + 1
-  bt <<- max(0, b*(1-simulated_nt/m))
-  dt <<- d + max(0, b*(simulated_nt/m - 1))
-  st <<- sqrt(bt) # size of litters
-  lt <<- sqrt(bt) # number of litters
-  Lt <<- rpois(n = 1, lambda = lt*simulated_nt)
+  bstar <-  b + (d - b)/2*(simulated_nt/m) # birth rate at time t
+  dstar <-  d + (b - d)/2*(simulated_nt/m) # death rate at time t
+  bt <<- max(0, bstar)
+  dt <<- dstar + max(0, -bstar)
+  st <<- sqrt(bt) # averate size of litters
+  lt <<- sqrt(bt) # rate of litters
+  Lt <<- rpois(n = 1, lambda = lt*simulated_nt) # number of litters based on litter rate
   if (is.null(littersizes)) {
-    littersizes <<- list(rpois(Lt, lambda = st))
+    littersizes <<- list(rpois(Lt, lambda = st)) # produce sizes of each litter
   }
   else {
-    littersizes[[t]] <<- rpois(Lt, lambda = st)
+    littersizes[[t]] <<- rpois(Lt, lambda = st) # produce sizes of each litter
   }
-  dead <- rpois(1, lambda = dt*simulated_nt)
+  dead <- rpois(1, lambda = dt*simulated_nt) # produce dead rabbits
   if (length(littersizes[[t]])) {
+    # population sizes = previous population + sum of all litters - dead rabbits
     simulated_nt <<- simulated_nt + sum(littersizes[[t]]) - dead
   }
 
@@ -55,8 +61,10 @@ update <- function() {
   dfrow[5] <- sum(littersizes[[t]])
   dfrow[6] <- dt
   dfrow[7] <- dead
-  dfrow[8] <- (m/b)*(-b + b*n0/m + d)*exp(-b*t/m) + m - d*m/b
-  daframe <<- rbind(daframe, dfrow)
+  # below line is jacob's broken equation
+  # dfrow[8] <- ((m*n0)/(m-n0)*exp((b-d)/(m^2)*t))/(1+(n0)/(m-n0)*exp((b-d)/(m^2)*t))
+  dfrow[8] <- m / (1 + ((m-n0)/n0)*exp(-1*(b-d)*t))
+  daframe[t+1,] <<- dfrow
   #####
 }
 
