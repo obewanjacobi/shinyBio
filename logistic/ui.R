@@ -31,7 +31,7 @@ fluidPage(
         title = "Growth Rate"
       ),
       tabPanel(
-        title = "Field"
+        title = "Field", uiOutput("moment")
       ),
       tabPanel(
         title = "Graveyard"
