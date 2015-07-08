@@ -7,9 +7,9 @@ max.n_0 <- 20
 fluidPage(
   titlePanel("Logistic Growth"),
   sidebarPanel(
-    sliderInput(inputId = "totalTime", label = "Extent of Time", 
+    sliderInput(inputId = "totalTime", label = "Extent of Time",
                 min = max.time*.1, max = max.time, value = max.time*0.2),
-    sliderInput(inputId = "n_0", label = "Initial Population", 
+    sliderInput(inputId = "n_0", label = "Initial Population",
                 min = 2, max = max.n_0, value = 5, step = 1),
     sliderInput(inputId = "b", label = "Max Birth Rate",
                 min = 0, max = max.b, value = .05),
@@ -32,6 +32,9 @@ fluidPage(
       ),
       tabPanel(
         title = "Field"
+        , uiOutput("momentF")
+        , textOutput("population")
+        , textOutput("babies")
       ),
       tabPanel(
         title = "Graveyard"
