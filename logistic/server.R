@@ -36,10 +36,12 @@ popGraph <- function(m, b, d, n_0, totalTime) {
 
   update <- function() {
     t <<- t + 1
-    bstar <-  b + (d - b)/2*(n_t/m) # Important factor in birth rate at time t
-    dstar <-  d + (b - d)/2*(n_t/m) # Important factor in death rate at time t
-    bt <<- max(0, bstar)          # birth rate at time t
-    dt <<- dstar + max(0, -bstar) # death rate at time t
+    # Old way, doesn't work for d > b
+    #if(d < b){
+      bstar <-  b + (d - b)/2*(n_t/m) # Important factor in birth rate at time t
+      dstar <-  d + (b - d)/2*(n_t/m) # Important factor in death rate at time t
+      bt <<- max(0, bstar)            # birth rate at time t
+      dt <<- dstar + max(0, -bstar)   # death rate at time t
     st <<- 8*sqrt(bt)/sqrt(b) # averate size of litters
     lt <<- sqrt(bt)*sqrt(b)/8 # rate of litters
     Lt <<- rpois(n = 1, lambda = lt*n_t) # number of litters based on litter rate
@@ -51,7 +53,9 @@ popGraph <- function(m, b, d, n_0, totalTime) {
     else {
       dead[[t]] <<- rpois(1, lambda = dt*n_t) # produce dead rabbits
     }
-
+    if (dead[[t]] > n_t){
+      dead[[t]] <<- n_t
+    }
     # keep track of the living rabbits and when they were born
     birthsThisGeneration <- sum(littersizes[[t]])
     if (birthsThisGeneration >= 1) {
@@ -63,10 +67,9 @@ popGraph <- function(m, b, d, n_0, totalTime) {
     for (i in 1:dead[[t]]) {
     }
 
-    if (length(littersizes[[t]])) {
-      # population sizes = previous population + sum of all litters - dead rabbits
-      n_t <<- n_t + sum(littersizes[[t]]) - sum(dead[[t]])
-    }
+    
+    # population sizes = previous population + sum of all litters - dead rabbits
+    n_t <<- n_t + sum(littersizes[[t]]) - sum(dead[[t]])
 
     dfrow[1] <- t
     dfrow[2] <- Lt
@@ -77,7 +80,12 @@ popGraph <- function(m, b, d, n_0, totalTime) {
     dfrow[7] <- sum(dead[[t]])
     # below line is jacob's broken equation
     # dfrow[8] <- ((m*n_0)/(m-n_0)*exp((b-d)/(m^2)*t))/(1+(n_0)/(m-n_0)*exp((b-d)/(m^2)*t))
-    dfrow[8] <- m / (1 + ((m-n_0)/n_0)*exp(-1*(b-d)*t))
+    if(n_0 < m){
+        dfrow[8] <- m / (1 + ((m-n_0)/n_0)*exp(-1*(b-d)*t))
+    }
+    else{
+        dfrow[8] <- m / (1 - ((n_0 - m)/n_0)*exp((d-b)*t))
+    }
     daframe[t+1,] <<- dfrow
     #####
   }
@@ -86,11 +94,12 @@ popGraph <- function(m, b, d, n_0, totalTime) {
   for (i in 1:totalTime) {
     update()
   }
-
+  
   plot(x=daframe$time, daframe$population, ylab = "Population (n)"
-       , xlab = "Time (Insert Units)")
+       , xlab = "Time (Insert Units)", type = 'l')
 
   lines(x=daframe$time, daframe$theoretical, col = "red")
+  lines(x=daframe$time, rep(m, length(daframe$time)), col = "blue")
 
 }
 
