@@ -1,7 +1,5 @@
 library(shiny)
 
-t <- 0
-n_t <- n_0 # initial value, garbage value to start
 
 generationsTillMaturity <- 1 # how many generations it takes for a generation to mature
 
@@ -24,6 +22,8 @@ daframe <- data.frame(time = rep(0, totalTime + 1), numLitters = rep(0, totalTim
 
 
 popGraph <- function(m, b, d, n_0, totalTime) {
+  t <- 0
+  n_t <- n_0 # initial value, garbage value to start
   dfrow <- numeric(length = 8)
   dfrow[1] <- t
   dfrow[2] <- Lt
