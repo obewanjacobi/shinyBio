@@ -3,27 +3,22 @@ library(shiny)
 
 generationsTillMaturity <- 1 # how many generations it takes for a generation to mature
 
-bt <- 0 # Initial values to make these objects persistant
-dt <- 0 # Initial values to make these objects persistant
-st <- 0 # Initial values to make these objects persistant
-lt <- 0 # Initial values to make these objects persistant
-Lt <- 0 # Initial values to make these objects persistant
-
-littersizes <- list(rep(-1, totalTime + 1)) # Initial values to make these objects persistan_t
-dead <- list(rep(-1, totalTime + 1)) # Initial values to make these objects persistant
-living <- list(rep(-1, totalTime + 1)) # Initial values to make these objects
 
 
-daframe <- data.frame(time = rep(0, totalTime + 1), numLitters = rep(0, totalTime + 1)
-                      , population = rep(n_0, totalTime + 1)
-                      , birthrate = rep(n_0, totalTime + 1), born = rep(0, totalTime + 1)
-                      , deathrate = rep(0, totalTime + 1), dead = rep(0, totalTime + 1)
-                      , theoretical = rep(n_0, totalTime + 1))
 
 
 popGraph <- function(m, b, d, n_0, totalTime) {
+  bt <- 0 # Initial values to make these objects persistant
+  dt <- 0 # Initial values to make these objects persistant
+  st <- 0 # Initial values to make these objects persistant
+  lt <- 0 # Initial values to make these objects persistant
+  Lt <- 0 # Initial values to make these objects persistant
+  littersizes <- list(rep(-1, totalTime + 1)) # Initial values to make these objects persistan_t
+  dead <- list(rep(-1, totalTime + 1)) # Initial values to make these objects persistant
+  living <- list(rep(-1, totalTime + 1)) # Initial values to make these objects
   t <- 0
   n_t <- n_0 # initial value, garbage value to start
+
   dfrow <- numeric(length = 8)
   dfrow[1] <- t
   dfrow[2] <- Lt
@@ -33,6 +28,11 @@ popGraph <- function(m, b, d, n_0, totalTime) {
   dfrow[6] <- 0
   dfrow[7] <- 0
   dfrow[8] <- 0
+  daframe <- data.frame(time = rep(0, totalTime + 1), numLitters = rep(0, totalTime + 1)
+                        , population = rep(n_0, totalTime + 1)
+                        , birthrate = rep(n_0, totalTime + 1), born = rep(0, totalTime + 1)
+                        , deathrate = rep(0, totalTime + 1), dead = rep(0, totalTime + 1)
+                        , theoretical = rep(n_0, totalTime + 1))
 
   update <- function() {
     t <<- t + 1
