@@ -7,10 +7,13 @@ max.n_0 <- 2000
 fluidPage(
   titlePanel("Logistic Growth"),
   sidebarPanel(
+    selectInput(inputId = "display", "Choose plots displayed:", 
+                choices = c('Show All'=1,'Show Simulation'=2,
+                            'Show Theoretical'=3)),
     sliderInput(inputId = "totalTime", label = "Extent of Time",
                 min = max.time*.1, max = max.time, value = max.time*0.5),
     sliderInput(inputId = "n_0", label = "Initial Population",
-                min = 2, max = max.n_0, value = 5, step = 1),
+                min = 2, max = max.n_0, value = 20, step = 1),
     sliderInput(inputId = "b", label = "Max Birth Rate",
                 min = 0, max = max.b, value = .05),
     sliderInput(inputId = "d", label = "Min Death Rate",

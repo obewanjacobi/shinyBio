@@ -7,7 +7,7 @@ generationsTillMaturity <- 1 # how many generations it takes for a generation to
 
 
 
-popGraph <- function(m, b, d, n_0, totalTime) {
+popGraph <- function(m, b, d, n_0, totalTime, display) {
   bt <- 0 # Initial values to make these objects persistant
   dt <- 0 # Initial values to make these objects persistant
   st <- 0 # Initial values to make these objects persistant
@@ -37,11 +37,16 @@ popGraph <- function(m, b, d, n_0, totalTime) {
   update <- function() {
     t <<- t + 1
     # Old way, doesn't work for d > b
-    #if(d < b){
+    if(d <= b){
       bstar <-  b + (d - b)/2*(n_t/m) # Important factor in birth rate at time t
       dstar <-  d + (b - d)/2*(n_t/m) # Important factor in death rate at time t
       bt <<- max(0, bstar)            # birth rate at time t
       dt <<- dstar + max(0, -bstar)   # death rate at time t
+    }
+    else{
+      bt <<- b
+      dt <<- d
+    }
     st <<- 8*sqrt(bt)/sqrt(b) # averate size of litters
     lt <<- sqrt(bt)*sqrt(b)/8 # rate of litters
     Lt <<- rpois(n = 1, lambda = lt*n_t) # number of litters based on litter rate
@@ -95,11 +100,17 @@ popGraph <- function(m, b, d, n_0, totalTime) {
     update()
   }
   
-  plot(x=daframe$time, daframe$population, ylab = "Population (n)"
-       , xlab = "Time (Insert Units)", type = 'l')
-
-  lines(x=daframe$time, daframe$theoretical, col = "red")
-  lines(x=daframe$time, rep(m, length(daframe$time)), col = "blue")
+  plot(0, type='n', ylab = "Population (n)"
+       , xlab = "Time (Insert Units)", xlim = c(0,(totalTime*1.05)), 
+       ylim = c(0,(max(daframe$population)*1.05)))
+  if(display == 1 | display == 2){
+    lines(x=daframe$time, daframe$population, type = 'l')
+  }
+  if((display == 1) | (display == 3)){
+    lines(x=daframe$time, daframe$theoretical, col = "red")
+  }
+  if(b > d)
+    lines(x=daframe$time, rep(m, length(daframe$time)), col = "blue")
 
 }
 
@@ -118,11 +129,13 @@ function(input, output) {
 
   output$pop <- renderPlot({
     input$goButton
+    disp <- as.numeric(input$display)
     popGraph(  isolate(input$m)
              , isolate(input$b)
              , isolate(input$d)
              , isolate(input$n_0)
-             , isolate(input$totalTime))
+             , isolate(input$totalTime)
+             , isolate(disp))
   })
 
 #  output$growth <- renderPlot({
