@@ -83,8 +83,6 @@ popGraph <- function(m, b, d, n_0, totalTime, display) {
     dfrow[5] <- sum(littersizes[[t]])
     dfrow[6] <- dt
     dfrow[7] <- sum(dead[[t]])
-    # below line is jacob's broken equation
-    # dfrow[8] <- ((m*n_0)/(m-n_0)*exp((b-d)/(m^2)*t))/(1+(n_0)/(m-n_0)*exp((b-d)/(m^2)*t))
     if(b >= d){
       if(n_0 < m){
           dfrow[8] <- m / (1 + ((m-n_0)/n_0)*exp(-1*(b-d)*t))

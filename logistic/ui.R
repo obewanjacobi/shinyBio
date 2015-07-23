@@ -5,7 +5,7 @@ max.m <-1000
 max.n_0 <- 2000
 
 fluidPage(
-  titlePanel("Logistic Growth"),
+  titlePanel("Logistic Growth for a Population"),
   sidebarPanel(
     selectInput(inputId = "display", "Choose plots displayed:", 
                 choices = c('Show All'=1,'Show Simulation'=2,
