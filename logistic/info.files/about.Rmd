@@ -1,0 +1,14 @@
+---
+title: "About"
+author: "Jacob Townson & Andrew Giles"
+date: "July 21, 2015"
+output:   
+  html_document:
+    theme: null
+---
+
+# Overview
+This app works with the math behind an evolution and ecology course. It is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for it's actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the **Population Size** tab. Below we will explain the purpose of the rest of the tabs and each of their uses, as well as the meaning behind the variables input by the user in the sidebar. 
+
+# Sidebar
+

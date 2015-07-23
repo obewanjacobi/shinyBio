@@ -35,16 +35,23 @@ fluidPage(
         plotOutput("pop")
       ),
       tabPanel(
-        title = "Growth Rate"
+        title = "Growth Rate",
+        helpText("This section of the app is not finished yet.")
       ),
       tabPanel(
         title = "Field"
         , uiOutput("momentF")
         , textOutput("population")
         , textOutput("babies")
+        , helpText("This section of the app is not finished yet.")
       ),
       tabPanel(
         title = "Graveyard"
+        , helpText("This section of the app is not finished yet.")
+      ),
+      tabPanel(
+        title = "About"
+        , includeHTML("./info.files/about.html")
       ),
       id = "tabset"
     )
