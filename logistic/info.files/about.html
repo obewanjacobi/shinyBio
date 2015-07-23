@@ -48,10 +48,39 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>This app works with the math behind an evolution and ecology course. It is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for it’s actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the <strong>Population Size</strong> tab. Below we will explain the purpose of the rest of the tabs and each of their uses, as well as the meaning behind the variables input by the user in the sidebar.</p>
+<p>This app works with the math behind an evolution and ecology course. It is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for it’s actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the <em>Population Size</em> tab. Below we will explain the purpose and uses of the rest of the tabs, as well as the meaning behind the variables input by the user in the sidebar.</p>
 </div>
 <div id="sidebar" class="section level1">
 <h1>Sidebar</h1>
+<ul>
+<li><p><strong>Choose Plot</strong>: This chooses whether you want to display the theoretical graph, the simulated data, or both under the <em>Population Size</em> tab.</p></li>
+<li><p><strong>Extent of Time</strong>: This let’s you choose the time value displayed on the x axis of the graph under the <em>Population Size</em> tab.</p></li>
+<li><p><strong>Initial Population</strong>: This let’s you choose the initial population, or the y intercept under the <em>Population Size</em> tab.</p></li>
+<li><p><strong>Max Birth Rate</strong>: This let’s you choose the maximum birth rate for the population. It will change according to how close the population gets to the carrying capacity.</p></li>
+<li><p><strong>Min Death Rate</strong>: This let’s you choose the minimum death rate for the population. It will change according to how close the population gets to the carrying capacity.</p></li>
+<li><p><strong>Carrying Capacity</strong>: This let’s you choose the carrying capacity for a population. It could be thought of as the amount of resources a population has to survive/thrive. Note, carrying capacity option is removed if death rate is above birth rate because a carrying capacity doesn’t affect this given situation.</p></li>
+</ul>
+</div>
+<div id="population-size" class="section level1">
+<h1>Population Size</h1>
+<p>This section is the main portion of the application. This tab displays the chosen graphs from the sidebar and the carrying capacity line (if applicable) on a single graph. This graph can be used to explain to students how the population grows theoretically, and the simulated line shows how the situation may actually pan out in reality. If the maximum birth rate is higher than the minimum death rate, both the chosen graphs and the carrying capacity will be displayed. If the minimum death rate is higher than the maximum birth rate, the carrying capacity will not be displayed. In order to run the simulation, and print the new graph with the given inputs from the sidebar, the user must press the simulate button at the bottom of the sidebar.</p>
+</div>
+<div id="growth-rate" class="section level1">
+<h1>Growth Rate</h1>
+<p>This portion of the app is not currently finished. More details will come on it later.</p>
+</div>
+<div id="field" class="section level1">
+<h1>Field</h1>
+<p>This portion of the application displays a model for the field, a hypothetical for the simulated graph given in the <em>Population Growth</em> tab. The idea is that this graph presents a field that rabbits (the population) live in, and if you hit the play button, you can watch the population grow and shrink based on your input of the <em>Extent of Time</em> variable.</p>
+</div>
+<div id="graveyard" class="section level1">
+<h1>Graveyard</h1>
+<p>This portion of the application is similar to the field in that it is a model used to present hypothetical information. It works in parallel to the field model, but instead of growing and shrinking, it just grows with the death from the simulation. So for every “rabbit” that dies in the population, a gravestone is added to the graveyard.</p>
+<center>
+<h1>
+Thanks For Using Our App!
+</h1>
+</center>
 </div>
 
 
