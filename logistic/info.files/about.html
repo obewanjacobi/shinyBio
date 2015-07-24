@@ -48,7 +48,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>This app works with the math behind an evolution and ecology course. It is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for it’s actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the <em>Population Size</em> tab. Below we will explain the purpose and uses of the rest of the tabs, as well as the meaning behind the variables input by the user in the sidebar.</p>
+<p>This app works with the math behind an evolution and ecology course. It is a joint project between Jacob Townson and Andrew Giles of Georgetown College for a research project. The app is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for it’s actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the <em>Population Size</em> tab. Below we will explain the purpose and uses of the rest of the tabs, as well as the meaning behind the variables input by the user in the sidebar. To see our code, and more details on how we did our work, feek free to visit our github repository for this project at <a href="https://github.com/agiles231/shinyBio" target="_blank"> this link. </a></p>
 </div>
 <div id="sidebar" class="section level1">
 <h1>Sidebar</h1>
@@ -64,6 +64,10 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <div id="population-size" class="section level1">
 <h1>Population Size</h1>
 <p>This section is the main portion of the application. This tab displays the chosen graphs from the sidebar and the carrying capacity line (if applicable) on a single graph. This graph can be used to explain to students how the population grows theoretically, and the simulated line shows how the situation may actually pan out in reality. If the maximum birth rate is higher than the minimum death rate, both the chosen graphs and the carrying capacity will be displayed. If the minimum death rate is higher than the maximum birth rate, the carrying capacity will not be displayed. In order to run the simulation, and print the new graph with the given inputs from the sidebar, the user must press the simulate button at the bottom of the sidebar.</p>
+<div id="notes-on-the-simulation" class="section level2">
+<h2>Notes on the Simulation</h2>
+<p>The simulation done in the <em>Population Size</em> tab is represented throughout the application. The simulation is run using a model our team created using the rpois() function to make poisson random variables. More details on the model will be posted soon.</p>
+</div>
 </div>
 <div id="growth-rate" class="section level1">
 <h1>Growth Rate</h1>
@@ -71,7 +75,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </div>
 <div id="field" class="section level1">
 <h1>Field</h1>
-<p>This portion of the application displays a model for the field, a hypothetical for the simulated graph given in the <em>Population Growth</em> tab. The idea is that this graph presents a field that rabbits (the population) live in, and if you hit the play button, you can watch the population grow and shrink based on your input of the <em>Extent of Time</em> variable.</p>
+<p>This portion of the application displays a model for the field, a hypothetical for the simulated data shown in the <em>Population Size</em> tab. The idea is that this graph presents a field that rabbits (the population) live in, and if you hit the play button or choose a time on the slider within the tab, you can watch the population grow and shrink within the range of the input of the <em>Extent of Time</em> variable.</p>
 </div>
 <div id="graveyard" class="section level1">
 <h1>Graveyard</h1>
