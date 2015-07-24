@@ -19,9 +19,9 @@ This app works with the math behind an evolution and ecology course. It is a joi
 
 - **Initial Population**: This let's you choose the initial population, or the y intercept under the *Population Size* tab.
 
-- **Max Birth Rate**: This let's you choose the maximum birth rate for the population. It will change according to how close the population gets to the carrying capacity.
+- **Max Birth Rate**: This let's you choose the maximum birth rate for the population. The effective birth rate will change according to how close the population gets to the carrying capacity.
 
-- **Min Death Rate**: This let's you choose the minimum death rate for the population. It will change according to how close the population gets to the carrying capacity.
+- **Min Death Rate**: This let's you choose the minimum death rate for the population. The effective death rate will change according to how close the population gets to the carrying capacity.
 
 - **Carrying Capacity**: This let's you choose the carrying capacity for a population. It could be thought of as the amount of resources a population has to survive/thrive. Note, carrying capacity option is removed if death rate is above birth rate because a carrying capacity doesn't affect this given situation.
 
