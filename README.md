@@ -13,15 +13,19 @@ This app works with the math behind an evolution and ecology course. It is a joi
 
 - **Initial Population**: This let's you choose the initial population, or the y intercept under the *Population Size* tab.
 
-- **Max Birth Rate**: This let's you choose the maximum birth rate for the population. It will change according to how close the population gets to the carrying capacity.
+- **Max Birth Rate**: This let's you choose the maximum birth rate for the population. The effective birth rate will change according to how close the population gets to the carrying capacity.
 
-- **Min Death Rate**: This let's you choose the minimum death rate for the population. It will change according to how close the population gets to the carrying capacity.
+- **Min Death Rate**: This let's you choose the minimum death rate for the population. The effective death rate will change according to how close the population gets to the carrying capacity.
 
 - **Carrying Capacity**: This let's you choose the carrying capacity for a population. It could be thought of as the amount of resources a population has to survive/thrive. Note, carrying capacity option is removed if death rate is above birth rate because a carrying capacity doesn't affect this given situation.
 
+- **Setting the Seed**: This check box gives the user the option to set the seed of the simulated values. By setting the seed, the user can get the same outcomes for every time the *Simulate* button is pushed while the seed is set to that specific value. When the box is unchecked, the option goes away and the simulation is random again.
+
+- **Simulate**: This button runs the app with a new simulation with the given input parameters.
+
 # Population Size
 
-This section is the main portion of the application. This tab displays the chosen graphs from the sidebar and the carrying capacity line (if applicable) on a single graph. This graph can be used to explain to students how the population grows theoretically, and the simulated line shows how the situation may actually pan out in reality. If the maximum birth rate is higher than the minimum death rate, both the chosen graphs and the carrying capacity will be displayed. If the minimum death rate is higher than the maximum birth rate, the carrying capacity will not be displayed. In order to run the simulation, and print the new graph with the given inputs from the sidebar, the user must press the simulate button at the bottom of the sidebar.
+This section is the main portion of the application. This tab displays the chosen graphs from the sidebar and the carrying capacity line (if applicable) on a single graph. This graph can be used to explain to students how the population grows theoretically, and the simulated line shows how the situation may actually pan out in reality. If the maximum birth rate is higher than the minimum death rate, both the chosen graphs and the carrying capacity will be displayed. If the minimum death rate is higher than the maximum birth rate, the carrying capacity will not be displayed. In order to run the simulation, and print the new graph with the given inputs from the sidebar, the user must press the simulate button at the bottom of the sidebar. Some more information is given below the graph in the tab.
 
 ## Notes on the Simulation
 
