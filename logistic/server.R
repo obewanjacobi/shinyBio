@@ -6,7 +6,6 @@ generationsTillMaturity <- 1 # how many generations it takes for a generation to
 
 
 
-
 popGraph <- function(m, b, d, n_0, totalTime, display) {
   bt <- 0 # Initial values to make these objects persistant
   dt <- 0 # Initial values to make these objects persistant
@@ -87,7 +86,7 @@ popGraph <- function(m, b, d, n_0, totalTime, display) {
       if(n_0 < m){
           dfrow[8] <- m / (1 + ((m-n_0)/n_0)*exp(-1*(b-d)*t))
       }
-      if(m >= n_0){
+      if(m <= n_0){
           dfrow[8] <- m / (1 - ((n_0 - m)/n_0)*exp((d-b)*t))
       }
     }
@@ -117,7 +116,31 @@ popGraph <- function(m, b, d, n_0, totalTime, display) {
 
 }
 
+makeCenters <- function(numblitters){
+  m <- ceiling(sqrt(numblitters))
+  x <- (1:m)/(m+1)
+  y <- (1:m)/(m+1)
+  df <- expand.grid(x,y)
+  distance <- 1/(m+1)
+  bools <- c(rep(TRUE, numblitters),
+             rep(FALSE, m^2-numblitters))
+  selected <- sample(bools, size = m^2, replace = FALSE)
+  results <- list(centers = df[selected,],distance = distance)
+  return(results)
+}
+
+
+
 function(input, output) {
+  
+  observe({
+    input$goButton
+    if(input$seed){
+    set.seed(input$setter)
+    }
+    else{
+      set.seed(Sys.time())
+    }})
 
 #  rv <- reactiveValues(
 #    t = NULL,
@@ -140,6 +163,14 @@ function(input, output) {
              , isolate(input$totalTime)
              , isolate(disp))
   })
+  
+  output$discuss <- renderText(HTML("<h2>Explanation</h2> <div><p>There can be up to
+                          three lines on the graph. </p>
+                          <ol><li>The <font color='red'>red</font> line represents the theoretical population. </li>
+                          <li>The <strong>black</strong> line represents a simulated population under the given parameters. </li>
+                          <li>The <font color='blue'>blue</font> line will only appear if the carrying capacity is
+                         relevant. It is not useful when the minimum death rate is
+                         greater than the maximum birth rate.</li></ol></div>"))
 
 #  output$growth <- renderPlot({
 #    if(input$growthRate==1) {
@@ -152,7 +183,7 @@ function(input, output) {
 #    }
 
   output$momentF <- renderUI({
-    sliderInput (  label = "timeToView"
+    sliderInput (  label = "Time To View"
                  , inputId = "mom"
                  , step = 1
                  , min = 0
@@ -160,6 +191,30 @@ function(input, output) {
                  , value = 0
                  , animate = animationOptions(loop = TRUE))
   })
+  #output$field <- renderPlot({
+  #  input$goButton
+  #  time <- input$mom
+  #  na <- #number of adults
+  #  xa <- runif(na)
+  #  ya <- runif(na)
+  #  nl <- daframe$numLitters
+  #  myCens <- makeCenters(nl)
+  #  cents <- myCens$centers
+  #  d <- myCens$distance
+  #  xb <- numeric()
+  #  yb <- numeric()
+  #  for(i in 1:nl){
+  #    cent <- df[i,]
+  #    xbbit <- runif('_,mean = cent$x, sd = d/b')
+  #    ybbit <- runif()
+  #    xb <- c(xb, xbbit)
+  #    yb <- c(yb, ybbit)
+  #  }
+  #  par(mfrow = c(2,1))
+  #  plot(xa,ya, axes = FALSE, pch = ".")
+  #  plot(xb,yb, axes = FALSE, pch = ".")
+  #  par(mfrow = c(1,1))
+  #})
   output$population <- renderText({
     paste("Total Population: "
     , daframe[input$mom, "population"], sep="")

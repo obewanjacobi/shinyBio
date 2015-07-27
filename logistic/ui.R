@@ -24,6 +24,10 @@ fluidPage(
     conditionalPanel(condition = "input.b < input.d",
       helpText("Carrying Capacity doesn't affect population when death rate",
                "is greater than birth rate.")),
+    checkboxInput(inputId = 'seed', label = "Do you want to set the seed?"),
+    conditionalPanel(condition = "input.seed == true",
+      numericInput(inputId = 'setter', label = "Set your seed", value = 2200,
+                   min = 1, step = 1)),
     actionButton("goButton", "Simulate"),
     helpText("Click the button to display the",
               "graph with the inputs you selected.")
@@ -32,7 +36,8 @@ fluidPage(
     tabsetPanel(
       tabPanel(
         title = "Population Size",
-        plotOutput("pop")
+        plotOutput("pop"),
+        htmlOutput('discuss')
       ),
       tabPanel(
         title = "Growth Rate",
@@ -41,6 +46,7 @@ fluidPage(
       tabPanel(
         title = "Field"
         , uiOutput("momentF")
+        , plotOutput("field")
         , textOutput("population")
         , textOutput("babies")
         , helpText("This section of the app is not finished yet.")
