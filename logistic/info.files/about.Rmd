@@ -15,7 +15,7 @@ This app works with the math behind an evolution and ecology course. It is a joi
 
 ## Variables and their Relations
 
-Our group made this model hoping to make it in such a way that we could relate the simulated graph to the theoretical one in an abstract way. So to start, let these variables be true:
+Our group made this model hoping to make it in such a way that we could relate the simulated graph to the theoretical one in an abstract way. So to start, let us establish the following notation:
 
 - $n(t) =$ population at time $t$
 

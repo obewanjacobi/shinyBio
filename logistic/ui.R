@@ -1,3 +1,6 @@
+library(shiny)
+library(shinythemes)
+
 max.time<-1000
 max.b <- 1
 min.d <- 1
@@ -6,6 +9,7 @@ max.n_0 <- 2000
 
 fluidPage(
   titlePanel("Logistic Growth for a Population"),
+  theme = shinytheme("spacelab"),
   sidebarPanel(
     selectInput(inputId = "display", "Choose plots displayed:", 
                 choices = c('Show All'=1,'Show Simulation'=2,
