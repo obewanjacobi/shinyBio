@@ -3,21 +3,21 @@ Jacob Townson & Andrew Giles
 July 21, 2015  
 
 # Overview
-This app works with the math behind an evolution and ecology course. It is a joint project between Jacob Townson and Andrew Giles of Georgetown College for a research project. The app is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for it's actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the *Population Size* tab. Below we will explain the purpose and uses of the rest of the tabs, as well as the meaning behind the variables input by the user in the sidebar. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at <a href = "https://github.com/agiles231/shinyBio" target = "_blank"> this link. </a>
+This app works with the math behind an evolution and ecology course. It is a joint project between Jacob Townson and Andrew Giles of Georgetown College for a research project. The app is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for its actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the *Population Size* tab. Below we will explain the purpose and uses of the rest of the tabs, as well as the meaning behind the variables input by the user in the sidebar. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at <a href = "https://github.com/agiles231/shinyBio" target = "_blank"> this link. </a>
 
 # Sidebar
 
 - **Choose Plot**: This chooses whether you want to display the theoretical graph, the simulated data, or both under the *Population Size* tab.
 
-- **Extent of Time**: This let's you choose the time value displayed on the x axis of the graph under the *Population Size* tab.
+- **Extent of Time**: This lets you choose the time value displayed on the x axis of the graph under the *Population Size* tab.
 
-- **Initial Population**: This let's you choose the initial population, or the y intercept under the *Population Size* tab.
+- **Initial Population**: This lets you choose the initial population, or the y intercept under the *Population Size* tab.
 
-- **Max Birth Rate**: This let's you choose the maximum birth rate for the population. The effective birth rate will change according to how close the population gets to the carrying capacity.
+- **Max Birth Rate**: This lets you choose the maximum birth rate for the population. The effective birth rate will change according to how close the population gets to the carrying capacity.
 
-- **Min Death Rate**: This let's you choose the minimum death rate for the population. The effective death rate will change according to how close the population gets to the carrying capacity.
+- **Min Death Rate**: This lets you choose the minimum death rate for the population. The effective death rate will change according to how close the population gets to the carrying capacity.
 
-- **Carrying Capacity**: This let's you choose the carrying capacity for a population. It could be thought of as the amount of resources a population has to survive/thrive. Note, carrying capacity option is removed if death rate is above birth rate because a carrying capacity doesn't affect this given situation.
+- **Carrying Capacity**: This lets you choose the carrying capacity for a population. It could be thought of as the amount of resources a population has to survive/thrive. Note, carrying capacity option is removed if death rate is above birth rate because a carrying capacity doesn't affect this given situation.
 
 - **Setting the Seed**: This check box gives the user the option to set the seed of the simulated values. By setting the seed, the user can get the same outcomes for every time the *Simulate* button is pushed while the seed is set to that specific value. When the box is unchecked, the option goes away and the simulation is random again.
 
