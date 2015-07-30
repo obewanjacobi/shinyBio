@@ -1,41 +1,71 @@
 library(shiny)
 
 
-generationsTillMaturity <- 1 # how many generations it takes for a generation to mature
+function(input, output) {
+  daframe <- NULL
+  generationsTillMaturity <- 1 # how many generations it takes for a generation
+  # to mature
 
-
-
-
-popGraph <- function(m, b, d, n_0, totalTime, display) {
-  bt <- 0 # Initial values to make these objects persistant
-  dt <- 0 # Initial values to make these objects persistant
-  st <- 0 # Initial values to make these objects persistant
-  lt <- 0 # Initial values to make these objects persistant
-  Lt <- 0 # Initial values to make these objects persistant
-  littersizes <- list(rep(-1, totalTime + 1)) # Initial values to make these objects persistan_t
-  dead <- list(rep(-1, totalTime + 1)) # Initial values to make these objects persistant
-  living <- list(rep(-1, totalTime + 1)) # Initial values to make these objects
+  # REACTIVE VALUES
+  rv <- reactiveValues(sim = 0)
+  # END REACTIVE VALUES
+  m <- 0
+  b <- 0
+  d <- 0
+  bt <- 0
+  dt <- 0
+  st <- 0
+  lt <- 0
+  Lt <- 0
+  littersizes <- NULL
+  dead <- NULL
+  living <- NULL
   t <- 0
+  n_0 <- 0
   n_t <- n_0 # initial value, garbage value to start
 
-  dfrow <- numeric(length = 8)
-  dfrow[1] <- t
-  dfrow[2] <- Lt
-  dfrow[3] <- n_t
-  dfrow[4] <- bt
-  dfrow[5] <- 0
-  dfrow[6] <- 0
-  dfrow[7] <- 0
-  dfrow[8] <- 0
-  daframe <- data.frame(time = rep(0, totalTime + 1), numLitters = rep(0, totalTime + 1)
-                        , population = rep(n_0, totalTime + 1)
-                        , birthrate = rep(n_0, totalTime + 1), born = rep(0, totalTime + 1)
-                        , deathrate = rep(0, totalTime + 1), dead = rep(0, totalTime + 1)
-                        , theoretical = rep(n_0, totalTime + 1))
+  observeEvent(input$b, {
+    b <<- input$b
+  })
+  observeEvent(input$d, {
+    d <<- input$d
+  })
+  observeEvent(input$m, {
+    m <<- input$m
+  })
+  observeEvent(input$n_0, {
+    n_0 <<- input$n_0
+  })
 
-  update <- function() {
+  # Initializing variables to be super assigned to by multiple functions
+  observe({
+    input$totalTime
+    daframe <<- data.frame(time = rep(0, input$totalTime + 1)
+                          , numLitters = rep(0, input$totalTime + 1)
+                          , population = rep(n_0, input$totalTime + 1)
+                          , birthrate = rep(n_0, input$totalTime + 1)
+                          , born = rep(0, input$totalTime + 1)
+                          , deathrate = rep(0, input$totalTime + 1)
+                          , dead = rep(0, input$totalTime + 1)
+                          , theoretical = rep(n_0, input$totalTime + 1))
+
+    generationsTillMaturity <<- 1 # how many generations it takes for a generation
+    # to mature
+
+    littersizes <<- list(rep(-1, input$totalTime + 1)) # Initial values to make
+    # these objects persistant
+    dead <<- list(rep(-1, input$totalTime + 1)) # Initial values to make these
+    # objects persistant
+    living <<- list(rep(-1, input$totalTime + 1)) # Initial values to make these
+    # objects
+    t <<- 0
+    n_t <<- n_0 # initial value, garbage value to start
+  })
+
+  update <- function(b, d) {
+    dfrow <- numeric(length = 8)
+
     t <<- t + 1
-    # Old way, doesn't work for d > b
     if(d <= b){
       bstar <-  b + (d - b)/2*(n_t/m) # Important factor in birth rate at time t
       dstar <-  d + (b - d)/2*(n_t/m) # Important factor in death rate at time t
@@ -48,11 +78,12 @@ popGraph <- function(m, b, d, n_0, totalTime, display) {
     }
     st <<- 8*sqrt(bt)/sqrt(b) # averate size of litters
     lt <<- sqrt(bt)*sqrt(b)/8 # rate of litters
-    Lt <<- rpois(n = 1, lambda = lt*n_t) # number of litters based on litter rate
-    if (is.null(littersizes)) {} # Do nothing
-    else {
+    Lt <<- rpois(n = 1, lambda = lt*n_t) # number of litters based on litter
+    # rate
+    if (!is.null(littersizes)) {
       littersizes[[t]] <<- rpois(Lt, lambda = st) # produce sizes of each litter
     }
+    else {} # do nothing
     if (is.null(dead)) {} # Do nothing
     else {
       dead[[t]] <<- rpois(1, lambda = dt*n_t) # produce dead rabbits
@@ -71,7 +102,7 @@ popGraph <- function(m, b, d, n_0, totalTime, display) {
     for (i in 1:dead[[t]]) {
     }
 
-    
+
     # population sizes = previous population + sum of all litters - dead rabbits
     n_t <<- n_t + sum(littersizes[[t]]) - sum(dead[[t]])
 
@@ -97,49 +128,43 @@ popGraph <- function(m, b, d, n_0, totalTime, display) {
     #####
   }
 
+  popGraph <- function(m, b, d, n_0, totalTime, display) {
 
-  for (i in 1:totalTime) {
-    update()
+    plot(0, type='n', ylab = "Population (n)"
+         , xlab = "Time (Insert Units)", xlim = c(0,(totalTime*1.05)),
+         ylim = c(0,(max(daframe$population)*1.05)))
+    if(display == 1 | display == 2){
+      lines(x=daframe$time, daframe$population, type = 'l')
+    }
+    if((display == 1) | (display == 3)){
+      lines(x=daframe$time, daframe$theoretical, col = "red")
+    }
+    if(b > d)
+      lines(x=daframe$time, rep(m, length(daframe$time)), col = "blue")
+
   }
-  
-  plot(0, type='n', ylab = "Population (n)"
-       , xlab = "Time (Insert Units)", xlim = c(0,(totalTime*1.05)), 
-       ylim = c(0,(max(daframe$population)*1.05)))
-  if(display == 1 | display == 2){
-    lines(x=daframe$time, daframe$population, type = 'l')
+
+  makeCenters <- function(numblitters){
+    car <- ceiling(sqrt(numblitters))
+    x <- (1:car)/(car+1)
+    y <- (1:car)/(car+1)
+    df <- expand.grid(x,y)
+    names(df) <- c("x", "y")
+    distance <- 1/(car+1)
+    bools <- c(rep(TRUE, numblitters),
+               rep(FALSE, car^2-numblitters))
+    selected <- sample(bools, size = car^2, replace = FALSE)
+    results <- list(centers = df[selected,],distance = distance)
+    return(results)
   }
-  if((display == 1) | (display == 3)){
-    lines(x=daframe$time, daframe$theoretical, col = "red")
-  }
-  if(b > d)
-    lines(x=daframe$time, rep(m, length(daframe$time)), col = "blue")
 
-}
-
-makeCenters <- function(numblitters){
-  m <- ceiling(sqrt(numblitters))
-  x <- (1:m)/(m+1)
-  y <- (1:m)/(m+1)
-  df <- expand.grid(x,y)
-  distance <- 1/(m+1)
-  bools <- c(rep(TRUE, numblitters),
-             rep(FALSE, m^2-numblitters))
-  selected <- sample(bools, size = m^2, replace = FALSE)
-  results <- list(centers = df[selected,],distance = distance)
-  return(results)
-}
-
-
-
-function(input, output) {
-  
   observe({
     input$goButton
     if(input$seed){
-    set.seed(input$setter)
+      set.seed(input$setter)
     }
     else{
-      set.seed(Sys.time())
+      set.seed(as.numeric(Sys.time()))
     }})
 
 #  rv <- reactiveValues(
@@ -152,18 +177,29 @@ function(input, output) {
 #    Rl = vector()
 #  )
 
+  observeEvent(input$goButton, {
+    m <<- input$m
+    b <<- input$b
+    d <<- input$d
+    n_0 <<- input$n_0
+    for(i in 1:input$totalTime + 1) {
+      update(input$b, input$d)
+    }
+    rv$sim <- rv$sim + 1
+    print(rv$sim)
+  })
 
   output$pop <- renderPlot({
-    input$goButton
+    rv$sim
     disp <- as.numeric(input$display)
-    popGraph(  isolate(input$m)
-             , isolate(input$b)
-             , isolate(input$d)
-             , isolate(input$n_0)
-             , isolate(input$totalTime)
-             , isolate(disp))
+    popGraph(  m
+             , b
+             , d
+             , n_0
+             , input$totalTime
+             , disp)
   })
-  
+
   output$discuss <- renderText(HTML("<h2>Explanation</h2> <div><p>There can be up to
                           three lines on the graph. </p>
                           <ol><li>The <font color='red'>red</font> line represents the theoretical population. </li>
@@ -191,30 +227,55 @@ function(input, output) {
                  , value = 0
                  , animate = animationOptions(loop = TRUE))
   })
-  #output$field <- renderPlot({
-  #  input$goButton
-  #  time <- input$mom
-  #  na <- #number of adults
-  #  xa <- runif(na)
-  #  ya <- runif(na)
-  #  nl <- daframe$numLitters
-  #  myCens <- makeCenters(nl)
-  #  cents <- myCens$centers
-  #  d <- myCens$distance
-  #  xb <- numeric()
-  #  yb <- numeric()
-  #  for(i in 1:nl){
-  #    cent <- df[i,]
-  #    xbbit <- runif('_,mean = cent$x, sd = d/b')
-  #    ybbit <- runif()
-  #    xb <- c(xb, xbbit)
-  #    yb <- c(yb, ybbit)
-  #  }
-  #  par(mfrow = c(2,1))
-  #  plot(xa,ya, axes = FALSE, pch = ".")
-  #  plot(xb,yb, axes = FALSE, pch = ".")
-  #  par(mfrow = c(1,1))
-  #})
+  output$field <- renderPlot({
+    input$goButton
+    time <- as.numeric(input$mom) + 1
+    if (sum(littersizes[[time]] > 0)) { # DEBUG
+      na <- daframe$population[time] - sum(littersizes[[time]]) # number of
+                                                                # adults
+      xa <- runif(na)
+      ya <- runif(na)
+      nl <- daframe$numLitters[time + 1]
+      myCens <- makeCenters(nl)
+      cents <- myCens$centers
+      d <- myCens$distance
+      print(littersizes[[time]])
+      xb <- numeric(sum(littersizes[[time]]))
+      yb <- numeric(sum(littersizes[[time]]))
+      for(i in 1:nl){
+        cent <- cents[i,]
+        xbbit <- rnorm(littersizes[[time]][i],mean = cent$x, sd = d/b)
+        ybbit <- rnorm(littersizes[[time]][i],mean = cent$y, sd = d/b)
+        xb <- c(xb, xbbit)
+        yb <- c(yb, ybbit)
+      }
+    }
+    else {
+      na <- daframe$population[time]
+      xa <- runif(na)
+      ya <- runif(na)
+
+    }
+    par(mfrow = c(1,2))
+    plot(xa,ya, axes = FALSE, cex = 0.2
+         , main = "Adults"
+         , xlab = ""
+         , ylab = "")
+    if (sum(littersizes[[time]])) {
+      plot(xb,yb, axes = FALSE, cex = 0.2
+           , main = "Warren"
+           , xlab = ""
+           , ylab = "")
+    }
+    else {
+      plot(0, 0, col = "transparent"
+           , axes = FALSE
+           , main = "Warren"
+           , xlab = ""
+           , ylab = "")
+    }
+    par(mfrow = c(1,1))
+  })
   output$population <- renderText({
     paste("Total Population: "
     , daframe[input$mom, "population"], sep="")
