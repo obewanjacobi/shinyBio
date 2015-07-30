@@ -43,7 +43,7 @@ function(input, output) {
     daframe <<- data.frame(time = rep(0, input$totalTime + 1)
                           , numLitters = rep(0, input$totalTime + 1)
                           , population = rep(n_0, input$totalTime + 1)
-                          , birthrate = rep(n_0, input$totalTime + 1)
+                          , birthrate = rep(0, input$totalTime + 1)
                           , born = rep(0, input$totalTime + 1)
                           , deathrate = rep(0, input$totalTime + 1)
                           , dead = rep(0, input$totalTime + 1)
@@ -178,15 +178,25 @@ function(input, output) {
 #  )
 
   observeEvent(input$goButton, {
+    t <<- 0
+    # reset dataframe
+    daframe <<- data.frame(time = rep(0, input$totalTime + 1)
+                          , numLitters = rep(0, input$totalTime + 1)
+                          , population = rep(n_0, input$totalTime + 1)
+                          , birthrate = rep(0, input$totalTime + 1)
+                          , born = rep(0, input$totalTime + 1)
+                          , deathrate = rep(0, input$totalTime + 1)
+                          , dead = rep(0, input$totalTime + 1)
+                          , theoretical = rep(n_0, input$totalTime + 1))
+    n_0 <<- input$n_0
+    n_t <<- n_0
     m <<- input$m
     b <<- input$b
     d <<- input$d
-    n_0 <<- input$n_0
     for(i in 1:input$totalTime + 1) {
       update(input$b, input$d)
     }
     rv$sim <- rv$sim + 1
-    print(rv$sim)
   })
 
   output$pop <- renderPlot({
@@ -229,13 +239,14 @@ function(input, output) {
   })
   output$field <- renderPlot({
     input$goButton
-    time <- as.numeric(input$mom) + 1
-    if (sum(littersizes[[time]] > 0)) { # DEBUG
+    time <- as.numeric(input$mom)
+    if (time != 0 && !is.null(littersizes[[time]])
+        && sum(littersizes[[time]] > 0)) {
       na <- daframe$population[time] - sum(littersizes[[time]]) # number of
                                                                 # adults
       xa <- runif(na)
       ya <- runif(na)
-      nl <- daframe$numLitters[time + 1]
+      nl <- daframe$numLitters[time]
       myCens <- makeCenters(nl)
       cents <- myCens$centers
       d <- myCens$distance
@@ -250,6 +261,11 @@ function(input, output) {
         yb <- c(yb, ybbit)
       }
     }
+    else if (time == 0) {
+      na <- daframe$population[time]
+      xa <- runif(na)
+      ya <- runif(na)
+    }
     else {
       na <- daframe$population[time]
       xa <- runif(na)
@@ -257,18 +273,23 @@ function(input, output) {
 
     }
     par(mfrow = c(1,2))
-    plot(xa,ya, axes = FALSE, cex = 0.2
+    plot(xa,ya, axes = FALSE, cex = 0.5
+         , pch = 19
          , main = "Adults"
          , xlab = ""
          , ylab = "")
-    if (sum(littersizes[[time]])) {
-      plot(xb,yb, axes = FALSE, cex = 0.2
+    if (time != 0 && !is.null(littersizes[[time]])
+        && sum(littersizes[[time]]) > 0) {
+      plot(xb,yb, axes = FALSE, cex = 0.5
+           , pch = 19
            , main = "Warren"
            , xlab = ""
            , ylab = "")
     }
     else {
       plot(0, 0, col = "transparent"
+           , cex = 0.5
+           , pch = 19
            , axes = FALSE
            , main = "Warren"
            , xlab = ""
@@ -281,8 +302,10 @@ function(input, output) {
     , daframe[input$mom, "population"], sep="")
   })
   output$babies <- renderText({
-    paste("Litter sizes: "
-    , littersizes[[input$mom]], sep="")
+    "Litter sizes: "
+    if (input$mom != 0 && !is.null(littersizes[[input$mom]])) {
+      littersizes[[input$mom]]
+    }
   })
 #    if(input$growthRate==2) {
 #      plot(rv$ne,rv$re, type="l", xlim=c(0,max.k*1.05), ylim=c(0,max.Rmax*1.05) ,
