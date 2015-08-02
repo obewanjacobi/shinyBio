@@ -2,70 +2,79 @@ library(shiny)
 
 
 function(input, output) {
-  daframe <- NULL
   generationsTillMaturity <- 1 # how many generations it takes for a generation
   # to mature
 
   # REACTIVE VALUES
-  rv <- reactiveValues(sim = 0)
+  rv <- reactiveValues(sim = 0
+                       , n_t = input$n_0
+                       , Lt = 0
+                       , lt = 0
+                       , littersizes = list(rep(-1, input$totalTime))
+                       , dead = list(rep(-1, input$totalTime))
+                       , b = input$b
+                       , d = input$d
+                       , daframe = data.frame(time = rep(0, input$totalTime)
+                                    , numLitters = rep(0, input$totalTime)
+                                    , population = rep(n_0, input$totalTime)
+                                    , birthrate = rep(0, input$totalTime)
+                                    , born = rep(0, input$totalTime)
+                                    , deathrate = rep(0, input$totalTime)
+                                    , dead = rep(0, input$totalTime)
+                                    , theoretical = rep(n_0, input$totalTime)))
   # END REACTIVE VALUES
-  m <- 0
-  b <- 0
-  d <- 0
-  bt <- 0
-  dt <- 0
   st <- 0
-  lt <- 0
-  Lt <- 0
-  littersizes <- NULL
-  dead <- NULL
   living <- NULL
+  initial <- numeric(length = 8)
   t <- 0
   n_0 <- 0
   n_t <- n_0 # initial value, garbage value to start
 
-  observeEvent(input$b, {
-    b <<- input$b
-  })
-  observeEvent(input$d, {
-    d <<- input$d
-  })
-  observeEvent(input$m, {
-    m <<- input$m
-  })
-  observeEvent(input$n_0, {
-    n_0 <<- input$n_0
-  })
-
   # Initializing variables to be super assigned to by multiple functions
   observe({
     input$totalTime
-    daframe <<- data.frame(time = rep(0, input$totalTime + 1)
-                          , numLitters = rep(0, input$totalTime + 1)
-                          , population = rep(n_0, input$totalTime + 1)
-                          , birthrate = rep(0, input$totalTime + 1)
-                          , born = rep(0, input$totalTime + 1)
-                          , deathrate = rep(0, input$totalTime + 1)
-                          , dead = rep(0, input$totalTime + 1)
-                          , theoretical = rep(n_0, input$totalTime + 1))
+    rv$daframe <<- data.frame(time = rep(0, input$totalTime)
+                          , numLitters = rep(0, input$totalTime)
+                          , population = rep(n_0, input$totalTime)
+                          , birthrate = rep(0, input$totalTime)
+                          , born = rep(0, input$totalTime)
+                          , deathrate = rep(0, input$totalTime)
+                          , dead = rep(0, input$totalTime)
+                          , theoretical = rep(n_0, input$totalTime))
 
-    generationsTillMaturity <<- 1 # how many generations it takes for a generation
-    # to mature
 
-    littersizes <<- list(rep(-1, input$totalTime + 1)) # Initial values to make
+    rv$littersizes <- list(rep(-1, input$totalTime)) # Initial values to make
     # these objects persistant
-    dead <<- list(rep(-1, input$totalTime + 1)) # Initial values to make these
+    rv$dead <- list(rep(-1, input$totalTime)) # Initial values to make these
     # objects persistant
-    living <<- list(rep(-1, input$totalTime + 1)) # Initial values to make these
+    rv$living <- list(rep(-1, input$totalTime)) # Initial values to make these
     # objects
-    t <<- 0
+    rv$t <- 0
     n_t <<- n_0 # initial value, garbage value to start
+    b <<- input$b
+    d <<- input$d
+    m <<- input$m
+    initial[1] <<- 0
+    initial[2] <<- 0
+    initial[3] <<- n_t
+    initial[4] <<- max(0, (b + (d - b)/2*(n_t/m)))
+    initial[5] <<- 0
+    initial[6] <<- d + (b - d)/2*(n_t/m) + max(0, -(b + (d - b)/2*(n_t/m)))
+    initial[7] <<- 0
   })
 
-  update <- function(b, d) {
+  update <- function() {
     dfrow <- numeric(length = 8)
 
-    t <<- t + 1
+    rv$t <- rv$t + 1
+    n_0 = rv$n_0
+    b = rv$b
+    bt = rv$bt
+    d = rv$d
+    dt = rv$dt
+    m = input$m
+    lt = rv$lt
+    Lt = rv$Lt
     if(d <= b){
       bstar <-  b + (d - b)/2*(n_t/m) # Important factor in birth rate at time t
       dstar <-  d + (b - d)/2*(n_t/m) # Important factor in death rate at time t
@@ -73,17 +82,18 @@ function(input, output) {
       dt <<- dstar + max(0, -bstar)   # death rate at time t
     }
     else{
-      bt <<- b
-      dt <<- d
+      rv$bt <- b
+      rv$dt <- d
     }
     st <<- 8*sqrt(bt)/sqrt(b) # averate size of litters
     lt <<- sqrt(bt)*sqrt(b)/8 # rate of litters
     Lt <<- rpois(n = 1, lambda = lt*n_t) # number of litters based on litter
     # rate
-    if (!is.null(littersizes)) {
-      littersizes[[t]] <<- rpois(Lt, lambda = st) # produce sizes of each litter
+    if (Lt > 0) {
+      rv$littersizes[[t]] <<- rpois(Lt, lambda = st) # produce sizes of each litter
     }
-    else {} # do nothing
+    else {rv$littersizes[[t]] <<- NULL}
+
     if (is.null(dead)) {} # Do nothing
     else {
       dead[[t]] <<- rpois(1, lambda = dt*n_t) # produce dead rabbits
@@ -92,19 +102,19 @@ function(input, output) {
       dead[[t]] <<- n_t
     }
     # keep track of the living rabbits and when they were born
-    birthsThisGeneration <- sum(littersizes[[t]])
+    birthsThisGeneration <- sum(rv$littersizes[[t]])
     if (birthsThisGeneration >= 1) {
-      living[[t]] <<- 1:birthsThisGeneration
+      #living[[t]] <<- 1:birthsThisGeneration
     }
     else {
-      living[[t]] <<- NULL
+      #living[[t]] <<- NULL
     }
-    for (i in 1:dead[[t]]) {
+    for (i in 1:rv$dead[[t]]) {
     }
 
 
     # population sizes = previous population + sum of all litters - dead rabbits
-    n_t <<- n_t + sum(littersizes[[t]]) - sum(dead[[t]])
+    n_t <- n_t + sum(rv$littersizes[[t]]) - sum(rv$dead[[t]])
 
     dfrow[1] <- t
     dfrow[2] <- Lt
@@ -124,7 +134,7 @@ function(input, output) {
     if(d > b){
         dfrow[8] <- n_0*exp((b-d)*t)
     }
-    daframe[t+1,] <<- dfrow
+    daframe[t,] <<- dfrow
     #####
   }
 
@@ -132,15 +142,15 @@ function(input, output) {
 
     plot(0, type='n', ylab = "Population (n)"
          , xlab = "Time (Insert Units)", xlim = c(0,(totalTime*1.05)),
-         ylim = c(0,(max(daframe$population)*1.05)))
+         ylim = c(0,(max(rv$daframe$population)*1.05)))
     if(display == 1 | display == 2){
-      lines(x=daframe$time, daframe$population, type = 'l')
+      lines(x=rv$daframe$time, rv$daframe$population, type = 'l')
     }
     if((display == 1) | (display == 3)){
-      lines(x=daframe$time, daframe$theoretical, col = "red")
+      lines(x=rv$daframe$time, rv$daframe$theoretical, col = "red")
     }
     if(b > d)
-      lines(x=daframe$time, rep(m, length(daframe$time)), col = "blue")
+      lines(x=rv$daframe$time, rep(m, length(rv$daframe$time)), col = "blue")
 
   }
 
@@ -180,7 +190,7 @@ function(input, output) {
   observeEvent(input$goButton, {
     t <<- 0
     # reset dataframe
-    daframe <<- data.frame(time = rep(0, input$totalTime + 1)
+    rv$daframe <<- rv$data.frame(time = rep(0, input$totalTime + 1)
                           , numLitters = rep(0, input$totalTime + 1)
                           , population = rep(n_0, input$totalTime + 1)
                           , birthrate = rep(0, input$totalTime + 1)
@@ -188,13 +198,13 @@ function(input, output) {
                           , deathrate = rep(0, input$totalTime + 1)
                           , dead = rep(0, input$totalTime + 1)
                           , theoretical = rep(n_0, input$totalTime + 1))
-    n_0 <<- input$n_0
-    n_t <<- n_0
-    m <<- input$m
-    b <<- input$b
-    d <<- input$d
+    rv$n_0 <- input$n_0
+    rv$n_t <- n_0
+    rv$m <- input$m
+    rv$b <- input$b
+    rv$d <- input$d
     for(i in 1:input$totalTime + 1) {
-      update(input$b, input$d)
+      update()
     }
     rv$sim <- rv$sim + 1
   })
@@ -202,10 +212,10 @@ function(input, output) {
   output$pop <- renderPlot({
     rv$sim
     disp <- as.numeric(input$display)
-    popGraph(  m
-             , b
-             , d
-             , n_0
+    popGraph(  rv$m
+             , rv$b
+             , rv$d
+             , rv$n_0
              , input$totalTime
              , disp)
   })
@@ -240,7 +250,12 @@ function(input, output) {
   output$field <- renderPlot({
     input$goButton
     time <- as.numeric(input$mom)
-    if (time != 0 && !is.null(littersizes[[time]])
+    if (time == 0) {
+      na <- initial[3]
+      xa <- runif(na)
+      ya <- runif(na)
+    }
+    else if (!is.null(littersizes) && !is.null(littersizes[[time]])
         && sum(littersizes[[time]] > 0)) {
       na <- daframe$population[time] - sum(littersizes[[time]]) # number of
                                                                 # adults
@@ -250,27 +265,20 @@ function(input, output) {
       myCens <- makeCenters(nl)
       cents <- myCens$centers
       d <- myCens$distance
-      print(littersizes[[time]])
-      xb <- numeric(sum(littersizes[[time]]))
-      yb <- numeric(sum(littersizes[[time]]))
+      xb <- NULL
+      yb <- NULL
       for(i in 1:nl){
         cent <- cents[i,]
-        xbbit <- rnorm(littersizes[[time]][i],mean = cent$x, sd = d/b)
-        ybbit <- rnorm(littersizes[[time]][i],mean = cent$y, sd = d/b)
+        xbbit <- rnorm(littersizes[[time]][i],mean = cent$x, sd = d/6)
+        ybbit <- rnorm(littersizes[[time]][i],mean = cent$y, sd = d/6)
         xb <- c(xb, xbbit)
         yb <- c(yb, ybbit)
       }
-    }
-    else if (time == 0) {
-      na <- daframe$population[time]
-      xa <- runif(na)
-      ya <- runif(na)
     }
     else {
       na <- daframe$population[time]
       xa <- runif(na)
       ya <- runif(na)
-
     }
     par(mfrow = c(1,2))
     plot(xa,ya, axes = FALSE, cex = 0.5
@@ -278,15 +286,7 @@ function(input, output) {
          , main = "Adults"
          , xlab = ""
          , ylab = "")
-    if (time != 0 && !is.null(littersizes[[time]])
-        && sum(littersizes[[time]]) > 0) {
-      plot(xb,yb, axes = FALSE, cex = 0.5
-           , pch = 19
-           , main = "Warren"
-           , xlab = ""
-           , ylab = "")
-    }
-    else {
+    if (time == 0) {
       plot(0, 0, col = "transparent"
            , cex = 0.5
            , pch = 19
@@ -295,18 +295,36 @@ function(input, output) {
            , xlab = ""
            , ylab = "")
     }
+    else if (!is.null(littersizes) && !is.null(littersizes[[time]])
+        && sum(littersizes[[time]]) > 0) {
+      plot(xb,yb, axes = FALSE, cex = 0.5
+           , pch = 19
+           , main = "Warren"
+           , xlab = ""
+           , ylab = "")
+    }
+    else {}
     par(mfrow = c(1,1))
   })
   output$population <- renderText({
-    paste("Total Population: "
-    , daframe[input$mom, "population"], sep="")
+    "Total Population: "
+    if (input$mom == 0) {
+      initial[3]
+    }
+    else {
+      daframe[input$mom, "population"]
+    }
   })
   output$babies <- renderText({
     "Litter sizes: "
-    if (input$mom != 0 && !is.null(littersizes[[input$mom]])) {
+    if (input$mom == 0) {
+      0
+    }
+    else {
       littersizes[[input$mom]]
     }
   })
+  outputOptions(output, "momentF", suspendWhenHidden = FALSE)
 #    if(input$growthRate==2) {
 #      plot(rv$ne,rv$re, type="l", xlim=c(0,max.k*1.05), ylim=c(0,max.Rmax*1.05) ,
 #           lwd=2, col="red",
@@ -316,5 +334,4 @@ function(input, output) {
 #      points(rv$nl,rv$rl, type="l", lwd=2, col="black")
 #    }
 #  })
-
 }
