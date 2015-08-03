@@ -1,3 +1,6 @@
+library(shiny)
+library(shinythemes)
+
 max.time<-1000
 max.b <- 1
 min.d <- 1
@@ -5,12 +8,13 @@ max.m <-1000
 max.n_0 <- 2000
 
 navbarPage(
-  titlePanel("Logistic Growth for a Population"),
+  title = "Logistic Growth for a Population",
+  theme = shinytheme("spacelab"),
   tabPanel(
   title = "The App",
   sidebarPanel(
     conditionalPanel(condition = "output.beginning == false",
-      selectInput(inputId = "display", "Choose plots displayed:", 
+      selectInput(inputId = "display", "Choose plots displayed:",
                 choices = c('Show All'=1,'Show Simulation'=2,
                             'Show Theoretical'=3))
       ),
@@ -38,6 +42,7 @@ navbarPage(
     actionButton("goButton", "Simulate"),
     conditionalPanel(
       condition = "output.beginning == false",
+      br(),
       actionButton("reset", "Start Over")
     )
   ),

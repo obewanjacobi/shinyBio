@@ -15,8 +15,7 @@ function(input, output) {
                                     , birthrate = NULL
                                     , born = NULL
                                     , deathrate = NULL
-                                    , dead = NULL
-                                    , theoretical = NULL)
+                                    , dead = NULL)
                       , beginning = TRUE)
   # END REACTIVE VALUES
 
@@ -26,8 +25,7 @@ function(input, output) {
              , birthrate = NULL
              , born = NULL
              , deathrate = NULL
-             , dead = NULL
-             , theoretical = NULL)
+             , dead = NULL)
   t <- 0
   n_0 <- 0
   n_t <- 0
@@ -37,7 +35,7 @@ function(input, output) {
   littersizes <- list(integer(0))
   dead <- list(integer(0))
   st <- 0
-  initial <- numeric(length = 8)
+  initial <- numeric(length = 7)
 
   observeEvent(input$reset,{
     rv$beginning <- TRUE
@@ -57,7 +55,7 @@ function(input, output) {
 
 
   advanceTime <- function() {
-    dfrow = numeric(length = 8)
+    dfrow = numeric(length = 7)
 
     t <<- t + 1
 
@@ -100,17 +98,6 @@ function(input, output) {
     dfrow[5] = sum(littersizes[[t]])
     dfrow[6] = dt
     dfrow[7] = sum(dead[[t]])
-    if(b >= d){
-      if(n_0 < m){
-          dfrow[8] = m / (1 + ((m-n_0)/n_0)*exp(-1*(b-d)*t))
-      }
-      if(m <= n_0){
-          dfrow[8] = m / (1 - ((n_0 - m)/n_0)*exp((d-b)*t))
-      }
-    }
-    if(d > b){
-        dfrow[8] = n_0*exp((b-d)*t)
-    }
     daframe[t,] <<- dfrow
   }
 
@@ -123,7 +110,7 @@ function(input, output) {
       lines(x=rv$daframe$time, rv$daframe$population, type = 'l')
     }
     if((display == 1) | (display == 3)){
-      lines(x=rv$daframe$time, rv$daframe$theoretical, col = "red")
+      lines(x=rv$daframe$time, theoretical(0:input$totalTime), col = "red")
     }
     if(b > d)
       lines(x=rv$daframe$time, rep(m, length(rv$daframe$time)), col = "blue")
@@ -168,13 +155,12 @@ function(input, output) {
                           , birthrate = rep(0, input$totalTime)
                           , born = rep(0, input$totalTime)
                           , deathrate = rep(0, input$totalTime)
-                          , dead = rep(0, input$totalTime)
-                          , theoretical = rep(n_0, input$totalTime))
+                          , dead = rep(0, input$totalTime))
 
     # initialize initial state of population
     init_bt <- max(0, b + (d - b)/2*(n_t/m))
     init_dt <- d + (b - d)/2*(n_t/m) + max(0, -(b + (d - b)/2*(n_t/m)))
-    initial <<- c(0, 0, n_t, init_bt, 0, init_dt, 0, n_t)
+    initial <<- c(0, 0, n_t, init_bt, 0, init_dt, 0)
     daframe <<- rbind(initial, daframe)
     for(i in 1:input$totalTime + 1) {
       advanceTime()
@@ -192,6 +178,32 @@ function(input, output) {
               , input$n_0
               , input$totalTime
               , disp)
+    })
+  })
+
+  theoretical <- function(times) {
+    b = input$b
+    d = input$d
+    n_0 = input$n_0
+    m = input$m
+    if(b >= d){
+      if(n_0 < m){
+        pop = m / (1 + ((m-n_0)/n_0)*exp(-1*(b-d)*times))
+      }
+      if(m <= n_0){
+        pop = m / (1 - ((n_0 - m)/n_0)*exp((d-b)*times))
+      }
+    }
+    if(d > b){
+      pop = n_0*exp((b-d)*times)
+    }
+    return(pop)
+  }
+  observe({
+    output$initialGraph <- renderPlot({
+      times <- 1:input$totalTime
+      plot(times, theoretical(times), type = "l"
+           , col = "red")
     })
   })
 
@@ -303,13 +315,4 @@ function(input, output) {
     paste("Littersizes: ", num)
   })
   outputOptions(output, "momentF", suspendWhenHidden = FALSE)
-#    if(input$growthRate==2) {
-#      plot(rv$ne,rv$re, type="l", xlim=c(0,max.k*1.05), ylim=c(0,max.Rmax*1.05) ,
-#           lwd=2, col="red",
-#           main="Per Capita Growth Rate (r) v. Population Size (n)",
-#           xlab="number of individuals (n)", ylab="new individuals/ time/ n (r)",
-#           cex.main=0.8, cex.axis=0.8, cex.lab=0.8)
-#      points(rv$nl,rv$rl, type="l", lwd=2, col="black")
-#    }
-#  })
 }
