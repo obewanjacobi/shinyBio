@@ -32,7 +32,7 @@ fluidPage(
         numericInput(inputId = 'setter', label = "Set your seed", value = 2200,
                     min = 1, step = 1))
     ),
-    helpText("Click the button below for simulation results:),
+    helpText("Click the button below for simulation results:"),
     actionButton("goButton", "Simulate"),
     conditionalPanel(
       condition = "output.beginning == false",
