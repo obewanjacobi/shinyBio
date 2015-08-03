@@ -4,8 +4,10 @@ min.d <- 1
 max.m <-1000
 max.n_0 <- 2000
 
-fluidPage(
+navbarPage(
   titlePanel("Logistic Growth for a Population"),
+  tabPanel(
+  title = "The App",
   sidebarPanel(
     conditionalPanel(condition = "output.beginning == false",
       selectInput(inputId = "display", "Choose plots displayed:", 
@@ -69,12 +71,13 @@ fluidPage(
         title = "Graveyard"
         , helpText("This section of the app is not finished yet.")
       ),
-      tabPanel(
-        title = "About"
-        , includeHTML("./info.files/about.html")
-      ),
       id = "tabset"
     )
     ) # end 2nd cond panel in main panel
+  )
+  ),
+  tabPanel(
+    title = "About"
+    , includeHTML("./info.files/about.html")
   )
 )
