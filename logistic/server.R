@@ -1,13 +1,12 @@
 library(shiny)
 
-
 function(input, output) {
   generationsTillMaturity <- 1 # how many generations it takes for a generation
   # to mature
 
   # REACTIVE VALUES
   rv <- reactiveValues(sim = 0
-                       , littersizes = list(integer(0))
+                       , litterSizes = list(integer(0))
                        , dead = list(integer(0))
                        , daframe = data.frame(time = NULL
                                     , numLitters = NULL
@@ -19,6 +18,7 @@ function(input, output) {
                       , beginning = TRUE)
   # END REACTIVE VALUES
 
+  # Persistant values used by the simulation
   daframe <- data.frame(time = NULL
              , numLitters = NULL
              , population = NULL
@@ -32,10 +32,26 @@ function(input, output) {
   b <- 0
   d <- 0
   m <- 0
-  littersizes <- list(integer(0))
+  litterSizes <- list(integer(0))
   dead <- list(integer(0))
   st <- 0
   initial <- numeric(length = 7)
+  
+  fieldColor <- function(m = (2*n_0), n){
+    prop <- n/m # proportion
+    if(prop > 1.2){
+      prop <- 1.2
+    }
+    loss <- prop * 130 # loss of green
+    grn <- 255 - loss # green
+    gain <- prop * 165 # gain of red
+    rd <- gain # red
+    color <- rgb(red = rd, blue = 0, green = grn, maxColorValue = 255)
+    plot(0,0, axes = FALSE, xlab = '', ylab = '', main = 'Adults in Field')
+    rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], 
+         col = color)
+    points(runif(n, -1, 1), runif(n, -1, 1), pch = 19, cex = .5)
+  }
 
   observeEvent(input$reset,{
     rv$beginning <- TRUE
@@ -74,7 +90,7 @@ function(input, output) {
     lt <<- sqrt(bt)*sqrt(b)/8 # rate of litters
     Lt <<- rpois(n = 1, lambda = lt*n_t) # number of litters based on litter
     # rate
-    littersizes[[t]] <<- rpois(Lt, lambda = st) # produce sizes of each litter
+    litterSizes[[t]] <<- rpois(Lt, lambda = st) # produce sizes of each litter
 
     if (is.null(dead)) {
     }
@@ -86,16 +102,16 @@ function(input, output) {
     }
 
     # keep track of the living rabbits and when they were born
-    birthsThisGeneration <- sum(littersizes[[t]])
+    birthsThisGeneration <- sum(litterSizes[[t]])
 
     # population sizes = previous population + sum of all litters - dead rabbits
-    n_t <<- n_t + sum(littersizes[[t]]) - sum(dead[[t]])
+    n_t <<- n_t + sum(litterSizes[[t]]) - sum(dead[[t]])
 
     dfrow[1] = t
     dfrow[2] = Lt
     dfrow[3] = n_t
     dfrow[4] = bt
-    dfrow[5] = sum(littersizes[[t]])
+    dfrow[5] = sum(litterSizes[[t]])
     dfrow[6] = dt
     dfrow[7] = sum(dead[[t]])
     daframe[t,] <<- dfrow
@@ -144,7 +160,7 @@ function(input, output) {
     m <<- input$m
     t <<- 1
     n_t <<- input$n_0
-    littersizes <<- list(integer(0))
+    litterSizes <<- list(integer(0))
     dead <<- list(integer(0))
     b <<- input$b
     d <<- input$d
@@ -165,7 +181,7 @@ function(input, output) {
     for(i in 1:input$totalTime + 1) {
       advanceTime()
     }
-    rv$littersizes <- littersizes
+    rv$litterSizes <- litterSizes
     rv$dead <- dead
     rv$daframe <- daframe
     rv$sim <- rv$sim + 1
@@ -243,11 +259,11 @@ function(input, output) {
         xa <- runif(na)
         ya <- runif(na)
       }
-      else if (!is.null(rv$littersizes) && !is.null(rv$littersizes[[time]])
-          && sum(rv$littersizes[[time]] > 0)) {
+      else if (!is.null(rv$litterSizes) && !is.null(rv$litterSizes[[time]])
+          && sum(rv$litterSizes[[time]] > 0)) {
 
         # number of adults
-        na <- rv$daframe$population[time] - sum(rv$littersizes[[time]])
+        na <- rv$daframe$population[time] - sum(rv$litterSizes[[time]])
         xa <- runif(na)
         ya <- runif(na)
         nl <- rv$daframe$numLitters[time]
@@ -258,8 +274,8 @@ function(input, output) {
         yb <- NULL
         for(i in 1:nl){
           cent <- cents[i,]
-          xbbit <- rnorm(rv$littersizes[[time]][i],mean = cent$x, sd = d/6)
-          ybbit <- rnorm(rv$littersizes[[time]][i],mean = cent$y, sd = d/6)
+          xbbit <- rnorm(rv$litterSizes[[time]][i],mean = cent$x, sd = d/6)
+          ybbit <- rnorm(rv$litterSizes[[time]][i],mean = cent$y, sd = d/6)
           xb <- c(xb, xbbit)
           yb <- c(yb, ybbit)
         }
@@ -270,11 +286,10 @@ function(input, output) {
         ya <- runif(na)
       }
       par(mfrow = c(1,2))
-      plot(xa,ya, axes = FALSE, cex = 0.5
-           , pch = 19
-           , main = "Adults"
-           , xlab = ""
-           , ylab = "")
+      
+      # Draw the field of adults
+      fieldColor(m, na)
+      
       if (time == 0) {
         plot(0, 0, col = "transparent"
              , cex = 0.5
@@ -283,16 +298,31 @@ function(input, output) {
              , main = "Warren"
              , xlab = ""
              , ylab = "")
+        rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], 
+             col = "white")
       }
-      else if (!is.null(rv$littersizes) && !is.null(rv$littersizes[[time]])
-          && sum(rv$littersizes[[time]]) > 0) {
+      else if (!is.null(rv$litterSizes) && !is.null(rv$litterSizes[[time]])
+          && sum(rv$litterSizes[[time]]) > 0) {
         plot(xb,yb, axes = FALSE, cex = 0.5
              , pch = 19
              , main = "Warren"
              , xlab = ""
              , ylab = "")
+        rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], 
+             col = "white")
+        points(xb, yb, pch = 19)
       }
-      else {}
+      else {
+        plot(0, 0, col = "transparent"
+             , cex = 0.5
+             , pch = 19
+             , axes = FALSE
+             , main = "Warren"
+             , xlab = ""
+             , ylab = "")
+        rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], 
+             col = "white")
+      }
       par(mfrow = c(1,1))
     })
   })
@@ -310,9 +340,9 @@ function(input, output) {
       num <- integer(0)
     }
     else {
-      num <- rv$littersizes[[input$mom]]
+      num <- rv$litterSizes[[input$mom]]
     }
-    paste("Littersizes: ", num)
+    paste("Litter Sizes: ", paste(num[1:length(num)], sep = ","))
   })
   outputOptions(output, "momentF", suspendWhenHidden = FALSE)
 }
