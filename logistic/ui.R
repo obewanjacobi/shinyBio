@@ -32,9 +32,8 @@ fluidPage(
         numericInput(inputId = 'setter', label = "Set your seed", value = 2200,
                     min = 1, step = 1))
     ),
+    helpText("Click the button below for simulation results:),
     actionButton("goButton", "Simulate"),
-    helpText("Click the button to display the",
-              "graph with the inputs you selected."),
     conditionalPanel(
       condition = "output.beginning == false",
       actionButton("reset", "Start Over")

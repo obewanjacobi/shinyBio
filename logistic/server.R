@@ -70,7 +70,7 @@ function(input, output) {
     initial[8] <<- input$n_0
   })
 
-  update <- function() {
+  advanceTime <- function() {
     dfrow = numeric(length = 8)
 
     m = input$m
@@ -210,7 +210,7 @@ function(input, output) {
     rv$d <- input$d
     rv$daframe <- rbind(initial, rv$daframe)
     for(i in 1:input$totalTime + 1) {
-      update()
+      advanceTime()
     }
     rv$sim <- rv$sim + 1
   })
