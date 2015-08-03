@@ -20,13 +20,30 @@ function(input, output) {
                                     , born = NULL
                                     , deathrate = NULL
                                     , dead = NULL
-                                    , theoretical = NULL))
+                                    , theoretical = NULL)
+                      , beginning = TRUE)
   # END REACTIVE VALUES
   st <- 0
   living <- NULL
   initial <- numeric(length = 8)
   n_0 <- 0
   n_t <- n_0 # initial value, garbage value to start
+  
+  observeEvent(input$reset,{
+    rv$beginning <- TRUE
+  })
+  
+  observeEvent(input$goButton,{
+    if (input$goButton > 0) {
+      rv$beginning <- FALSE
+    }
+  })
+  
+  output$beginning <- reactive({
+    rv$beginning
+  })
+  
+  outputOptions(output, "beginning", suspendWhenHidden = FALSE)
 
   # Initializing variables to be super assigned to by multiple functions
   observe({
@@ -40,7 +57,9 @@ function(input, output) {
                           , dead = rep(0, input$totalTime)
                           , theoretical = rep(n_0, input$totalTime))
 
-
+    d <- input$d
+    b <- input$b
+    m <- input$m
     initial[1] <<- 0
     initial[2] <<- 0
     initial[3] <<- input$n_0
@@ -156,7 +175,8 @@ function(input, output) {
     }
     else{
       set.seed(as.numeric(Sys.time()))
-    }})
+    }
+    })
 
 #  rv <- reactiveValues(
 #    t = NULL,
