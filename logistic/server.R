@@ -5,6 +5,24 @@ function(input, output) {
   generationsTillMaturity <- 1 # how many generations it takes for a generation
   # to mature
 
+  # compute probability for different death causes
+  deathProbs <- function(n, b, d, m) {
+    # n = current population size
+    # b = max birth rate
+    # d = min death rate
+    # m = carrying capacity (may not be relevant)
+    if (b > d) {
+      lm <- 0.01^(n/(1.2*m))
+      fox <- 0.5*(1- lm)
+      mal <- 0.5*(1 - lm)
+    } else {
+      mal <- 0
+      lm <- 0.5 + 0.5 * 0.02^(n/m)
+      fox <- 1 - lawn
+    }
+    c(lm, fox, mal)
+  }
+  
   # REACTIVE VALUES
   rv <- reactiveValues(sim = 0
                        , littersizes = list(integer(0))
@@ -34,6 +52,7 @@ function(input, output) {
   m <- 0
   littersizes <- list(integer(0))
   dead <- list(integer(0))
+  deathTypes <- matrix()
   st <- 0
   initial <- numeric(length = 7)
 
@@ -84,6 +103,11 @@ function(input, output) {
     if (dead[[t]] > n_t){
       dead[[t]] <<- n_t
     }
+    
+    # now simulate causes of death:  lawnmover, fox, malnutrition
+    deadNow <- dead[[t]]
+    probs <- deathProbs(n_t, b, d, m)
+    deathCauses[t-1,] <<- rmultinom(1, size = deadNow, prob = probs)
 
     # keep track of the living rabbits and when they were born
     birthsThisGeneration <- sum(littersizes[[t]])
@@ -146,6 +170,7 @@ function(input, output) {
     n_t <<- input$n_0
     littersizes <<- list(integer(0))
     dead <<- list(integer(0))
+    deathCauses <<- matrix(0, (input$totalTime +1)*3, ncol = 3)
     b <<- input$b
     d <<- input$d
     # reset dataframe
@@ -201,20 +226,36 @@ function(input, output) {
   }
   observe({
     output$initialGraph <- renderPlot({
-      times <- 1:input$totalTime
+      endTime <- input$totalTime
+      b <- input$b
+      d <- input$d
+      m <- input$m
+      times <- 1:endTime
       plot(times, theoretical(times), type = "l"
            , col = "red")
+      if (b > d) {
+        lines(x = c(0,endTime), y = c(m,m), col = "blue")
+      }
     })
   })
 
+  output$initialDiscuss <- renderText(HTML(
+      "<h2>Explanation</h2> <div><p>There can be up to two lines on the graph. </p>
+            <ol><li>The <font color='red'>red</font> line represents the theoretical population 
+                  determined by the selected parameters.</li>
+                <li>The <font color='blue'>blue</font> line will only appear if the carrying
+                  capacity is
+                  relevant. It is not relevant when the minimum death rate is
+                  at least as big as the maximum birth rate.</li>
+            </ol></div>"))
 
   output$discuss <- renderText(HTML("<h2>Explanation</h2> <div><p>There can be up to
                           three lines on the graph. </p>
-                          <ol><li>The <font color='red'>red</font> line represents the theoretical population. </li>
-                          <li>The <strong>black</strong> line represents a simulated population under the given parameters. </li>
+                          <ol><li>The <font color='red'>red</font> line represents the theoretical population determined by the selected parameters. </li>
+                          <li>The <strong>black</strong> line represents a simulated population, using the given parameters. </li>
                           <li>The <font color='blue'>blue</font> line will only appear if the carrying capacity is
-                         relevant. It is not useful when the minimum death rate is
-                         greater than the maximum birth rate.</li></ol></div>"))
+                         relevant. It is not relevant when the minimum death rate is
+                         at least as big as the maximum birth rate.</li></ol></div>"))
 
 #  output$growth <- renderPlot({
 #    if(input$growthRate==1) {
@@ -235,6 +276,59 @@ function(input, output) {
                  , value = 0
                  , animate = animationOptions(loop = TRUE))
   })
+  
+  output$momentG <- renderUI({
+    sliderInput (  label = "Time To View"
+                   , inputId = "momG"
+                   , step = 1
+                   , min = 0
+                   , max = input$totalTime
+                   , value = 0
+                   , animate = animationOptions(loop = TRUE))
+  })
+  
+  observeEvent(rv$sim, {
+    output$gy <- renderPlot({
+      
+      time <- as.numeric(input$momG)
+      if (is.null(time) || time == 0 ) {
+        deaths <- c(0L,0L,0L)
+      } else {
+        deaths <- deathCauses[time, ]
+      }
+      lm <- deaths[1]
+      fox <- deaths[2]
+      mal <- deaths[3]
+      n <- sum(deaths)
+      
+      if ( n == 0) {
+        plot(0, 0, col = "transparent"
+             , axes = FALSE
+             , main = "Graveyard"
+             , sub = "Only recently-deceased unburied rabbits are shown."
+             , xlab = ""
+             , ylab = ""
+             , xlim = c(0,1)
+             , ylim = c(0,1))
+      } else {
+        xd <- runif(n)
+        yd <- runif(n)
+        cause <- c(rep("red", lm), rep("black", fox), rep("blue", mal))
+        plot(xd, yd, col = cause
+             , pch = 19
+             , cex = 1.5
+             , axes = FALSE
+             , main = "Graveyard"
+             , sub = "Only recently-deceased unburied rabbits are shown."
+             , xlab = ""
+             , ylab = ""
+             , xlim = c(0,1)
+             , ylim = c(0,1))
+      }
+    })
+  })
+  
+  
   observeEvent(rv$sim, {
     output$field <- renderPlot({
       time <- as.numeric(input$mom)
@@ -244,8 +338,8 @@ function(input, output) {
         ya <- runif(na)
       }
       else if (!is.null(rv$littersizes) && !is.null(rv$littersizes[[time]])
-          && sum(rv$littersizes[[time]] > 0)) {
-
+               && sum(rv$littersizes[[time]] > 0)) {
+        
         # number of adults
         na <- rv$daframe$population[time] - sum(rv$littersizes[[time]])
         xa <- runif(na)
@@ -258,8 +352,9 @@ function(input, output) {
         yb <- NULL
         for(i in 1:nl){
           cent <- cents[i,]
-          xbbit <- rnorm(rv$littersizes[[time]][i],mean = cent$x, sd = d/6)
-          ybbit <- rnorm(rv$littersizes[[time]][i],mean = cent$y, sd = d/6)
+          sd <- d/6
+          xbbit <- rnorm(rv$littersizes[[time]][i],mean = cent$x, sd = sd)
+          ybbit <- rnorm(rv$littersizes[[time]][i],mean = cent$y, sd = sd)
           xb <- c(xb, xbbit)
           yb <- c(yb, ybbit)
         }
@@ -274,7 +369,9 @@ function(input, output) {
            , pch = 19
            , main = "Adults"
            , xlab = ""
-           , ylab = "")
+           , ylab = ""
+           , xlim = c(0,1)
+           , ylim = c(0,1))
       if (time == 0) {
         plot(0, 0, col = "transparent"
              , cex = 0.5
@@ -282,20 +379,26 @@ function(input, output) {
              , axes = FALSE
              , main = "Warren"
              , xlab = ""
-             , ylab = "")
+             , ylab = ""
+             , xlim = c(0,1)
+             , ylim = c(0,1))
       }
       else if (!is.null(rv$littersizes) && !is.null(rv$littersizes[[time]])
-          && sum(rv$littersizes[[time]]) > 0) {
+               && sum(rv$littersizes[[time]]) > 0) {
         plot(xb,yb, axes = FALSE, cex = 0.5
              , pch = 19
              , main = "Warren"
              , xlab = ""
-             , ylab = "")
+             , ylab = ""
+             , xlim = c(0,1)
+             , ylim = c(0,1))
       }
       else {}
       par(mfrow = c(1,1))
     })
   })
+  
+  
   output$population <- renderText({
     if (input$mom == 0) {
       num <- initial[3]
@@ -305,14 +408,38 @@ function(input, output) {
     }
     paste("Population: ", num)
   })
-  output$babies <- renderText({
+  
+  output$babies <- renderTable({
     if (input$mom == 0) {
-      num <- integer(0)
+      out <- NULL
     }
     else {
       num <- rv$littersizes[[input$mom]]
+      if (length(num) > 0) {
+        mat <- matrix(num, ncol = length(num))
+        colnames(mat) <- paste0("Litter ",1:length(num))
+        rownames(mat) <- "Litter Sizes"
+        out <- mat
+      } else {
+        out <- NULL
+        }
     }
-    paste("Littersizes: ", num)
+    out
   })
+  
+  
+  output$deathTallies <- renderTable({
+    time <- input$momG
+    if (is.null(time) || time == 0) {
+      deaths <- c(0L,0L,0L)
+    } else {
+      deaths <- as.integer(deathCauses[input$momG, ])
+    }
+    mat <- matrix(deaths, ncol = 3)
+    colnames(mat) <- c("Lawnmower (red)", "Fox (black)", "Malnutrition (blue)")
+    rownames(mat) <- "Death Cause"
+    mat
+  })
+  
   outputOptions(output, "momentF", suspendWhenHidden = FALSE)
 }

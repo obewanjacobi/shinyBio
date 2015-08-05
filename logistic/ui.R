@@ -69,12 +69,13 @@ navbarPage(
         , uiOutput("momentF")
         , plotOutput("field")
         , textOutput("population")
-        , textOutput("babies")
-        , helpText("This section of the app is not finished yet.")
+        , tableOutput("babies")
       ),
       tabPanel(
         title = "Graveyard"
-        , helpText("This section of the app is not finished yet.")
+        , uiOutput("momentG")
+        , plotOutput("gy")
+        , tableOutput("deathTallies")
       ),
       id = "tabset"
     )
