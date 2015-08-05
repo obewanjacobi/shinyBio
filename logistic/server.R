@@ -289,8 +289,7 @@ function(input, output) {
   
   observeEvent(rv$sim, {
     output$gy <- renderPlot({
-      
-      time <- as.numeric(input$momG)
+      time <- input$momG
       if (is.null(time) || time == 0 ) {
         deaths <- c(0L,0L,0L)
       } else {
@@ -331,8 +330,8 @@ function(input, output) {
   
   observeEvent(rv$sim, {
     output$field <- renderPlot({
-      time <- as.numeric(input$mom)
-      if (time == 0) {
+      time <- input$mom
+      if (is.null(time) || time == 0) {
         na <- initial[3]
         xa <- runif(na)
         ya <- runif(na)
