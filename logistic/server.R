@@ -1,9 +1,46 @@
 library(shiny)
 
+#---------------------------------------------------------------------------
+# Jacob Townson
+# Field Color Function
+# This function makes a graph that plots the population (n) in a field with
+# a color to represent how close the population is to the carrying capacity
+# (m). The closer it is, the more brown the graph becomes. Once it passes 
+# the carrying capacity, the graph becomes a dark brown.
 
-function(input, output) {
+# modifed by H. White for implementation in server.R -- HSW, 8/5/2015
+
+#---------------------------------------------------------------------------
+
+
+# Full green for pop = 0
+
+# 1.2 times carrying capacity brown
+# red =165, green = 125
+
+field.color <- function(m, n) {
+  prop <- n/m
+  if(prop > 1.2){
+    prop <- 1.2
+  }
+  loss <- prop * 130
+  grn <- 255 - loss
+  gain <- prop * 165
+  rd <- gain
+  color <- rgb(red = rd, blue = 0, green = grn, maxColorValue = 255)
+  color
+#   plot(0,0, axes = FALSE, xlab = '', ylab = '', main = 'Adults in Field')
+#   rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], 
+#        col = color)
+#   points(runif(n, -1, 1), runif(n, -1, 1), pch = 19, cex = .5)
+}
+
+## begin server.R
+
+function(input, output, session) {
   generationsTillMaturity <- 1 # how many generations it takes for a generation
   # to mature
+  
 
   # compute probability for different death causes
   deathProbs <- function(n, b, d, m) {
@@ -18,7 +55,7 @@ function(input, output) {
     } else {
       mal <- 0
       lm <- 0.5 + 0.5 * 0.02^(n/m)
-      fox <- 1 - lawn
+      fox <- 1 - lm
     }
     c(lm, fox, mal)
   }
@@ -58,6 +95,8 @@ function(input, output) {
 
   observeEvent(input$reset,{
     rv$beginning <- TRUE
+    # tabsetpanel should always begin on the population graph:
+    updateTabsetPanel(session, "tabset", selected = "Population Size")
   })
 
   observeEvent(input$goButton,{
@@ -363,14 +402,30 @@ function(input, output) {
         xa <- runif(na)
         ya <- runif(na)
       }
+      
+      # determine filed color
+      b <- isolate(input$b)
+      d <- isolate(input$d)
+      if ( b > d ) {
+        top <- isolate(input$m)
+      } else {
+        top <- rv$daframe$population[1]
+      }
+      color <- field.color(top, na)
+      
       par(mfrow = c(1,2))
-      plot(xa,ya, axes = FALSE, cex = 0.5
+      plot(NULL,NULL, axes = FALSE, cex = 0.5
            , pch = 19
            , main = "Adults"
            , xlab = ""
            , ylab = ""
            , xlim = c(0,1)
            , ylim = c(0,1))
+      rect(par("usr")[1], par("usr")[3], par("usr")[2], 
+           par("usr")[4], col = color)
+      points(
+        xa, ya, cex = 0.5, pch = 19
+      )
       if (time == 0) {
         plot(0, 0, col = "transparent"
              , cex = 0.5
