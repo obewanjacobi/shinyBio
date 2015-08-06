@@ -49,6 +49,11 @@ navbarPage(
   mainPanel(
     conditionalPanel(
       condition = "input.goButton == 0 || output.beginning == true",
+      radioButtons("initialGraphType", "Y-Axis shows Population: ",
+                   choices = c("Size" = "pop",
+                               "Growth Rate" = "rate",
+                               "Per-captita Growth Rate" = "relRate"),
+                   inline = TRUE),
       plotOutput("initialGraph"),
       htmlOutput("initialDiscuss")
     ),
@@ -56,13 +61,14 @@ navbarPage(
       condition = "input.goButton > 0 && output.beginning == false",
       tabsetPanel(
       tabPanel(
-        title = "Population Size",
+        title = "Population Graphs",
+        radioButtons("graphType", "Y-Axis shows Population: ",
+                     choices = c("Size" = "pop",
+                                 "Growth Rate" = "rate",
+                                 "Per-captita Growth Rate" = "relRate"),
+                     inline = TRUE),
         plotOutput("pop"),
         htmlOutput('discuss')
-      ),
-      tabPanel(
-        title = "Growth Rate",
-        helpText("This section of the app is not finished yet.")
       ),
       tabPanel(
         title = "Field"

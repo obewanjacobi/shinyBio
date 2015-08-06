@@ -5,7 +5,7 @@ library(shiny)
 # Field Color Function
 # This function makes a graph that plots the population (n) in a field with
 # a color to represent how close the population is to the carrying capacity
-# (m). The closer it is, the more brown the graph becomes. Once it passes 
+# (m). The closer it is, the more brown the graph becomes. Once it passes
 # the carrying capacity, the graph becomes a dark brown.
 
 # modifed by H. White for implementation in server.R -- HSW, 8/5/2015
@@ -27,20 +27,33 @@ field.color <- function(m, n) {
   grn <- 255 - loss
   gain <- prop * 165
   rd <- gain
-  color <- rgb(red = rd, blue = 0, green = grn, maxColorValue = 255)
+  color <- rgb(red = rd, blue = 0, green = grn, maxColorValue = 555)
   color
 #   plot(0,0, axes = FALSE, xlab = '', ylab = '', main = 'Adults in Field')
-#   rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], 
+#   rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4],
 #        col = color)
 #   points(runif(n, -1, 1), runif(n, -1, 1), pch = 19, cex = .5)
 }
 
 ## begin server.R
 
+growthRate <- function( popSizes, b, d, m) {
+  rate = NULL
+  if(b > d) {
+    rate = (popSizes*(b - d)/m)*(m - popSizes)
+  }
+  else if(b == d) {
+    rate = 0
+  }
+  else {
+    rate = popSizes * (b - d)
+  }
+}
+
 function(input, output, session) {
   generationsTillMaturity <- 1 # how many generations it takes for a generation
   # to mature
-  
+
 
   # compute probability for different death causes
   deathProbs <- function(n, b, d, m) {
@@ -59,7 +72,7 @@ function(input, output, session) {
     }
     c(lm, fox, mal)
   }
-  
+
   # REACTIVE VALUES
   rv <- reactiveValues(sim = 0
                        , littersizes = list(integer(0))
@@ -96,7 +109,8 @@ function(input, output, session) {
   observeEvent(input$reset,{
     rv$beginning <- TRUE
     # tabsetpanel should always begin on the population graph:
-    updateTabsetPanel(session, "tabset", selected = "Population Size")
+    updateTabsetPanel(session, "tabset", selected = "Population Graphs")
+    updateRadioButtons(session, "initialGraphType", selected = "pop")
   })
 
   observeEvent(input$goButton,{
@@ -142,7 +156,7 @@ function(input, output, session) {
     if (dead[[t]] > n_t){
       dead[[t]] <<- n_t
     }
-    
+
     # now simulate causes of death:  lawnmover, fox, malnutrition
     deadNow <- dead[[t]]
     probs <- deathProbs(n_t, b, d, m)
@@ -236,12 +250,38 @@ function(input, output, session) {
     output$pop <- renderPlot({
       rv$sim
       disp <- as.numeric(input$display)
-      popGraph(m
-              , b
-              , d
-              , input$n_0
-              , input$totalTime
-              , disp)
+      if(input$graphType == "pop") {
+        popGraph(m
+                , b
+                , d
+                , input$n_0
+                , input$totalTime
+                , disp)
+      }
+      else if(input$graphType == "rate") {
+        plot(x = 1:input$totalTime
+             , y = growthRate(theoretical(1:input$totalTime)
+                              , b = b
+                              , d = d
+                              , m = m)
+             , type = "l"
+             , ylab = "Growth Rate"
+             , xlab = "Time (Insert Units here)")
+      }
+      else if(input$graphType == "relRate") {
+        # TODO: make a function for computing per-capita growth rate
+        plot(x = 1:input$totalTime
+             , y = growthRate(theoretical(1:input$totalTime)
+                              , b = b
+                              , d = d
+                              , m = m) / theoretical(1:input$totalTime)
+             , type = "l"
+             , ylab = "Per-Capita Growth Rate"
+             , xlab = "Time (Insert Units here)")
+      }
+      else {
+        # WE HAVE PROBLEMS
+      }
     })
   })
 
@@ -270,17 +310,44 @@ function(input, output, session) {
       d <- input$d
       m <- input$m
       times <- 1:endTime
-      plot(times, theoretical(times), type = "l"
-           , col = "red")
-      if (b > d) {
-        lines(x = c(0,endTime), y = c(m,m), col = "blue")
+      if(input$initialGraphType == "pop") {
+        plot(times, theoretical(times), type = "l"
+             , col = "red"
+             , ylab = "Population Size"
+             , xlab = "Time (Insert units here)")
+        if (b > d) {
+          lines(x = c(0,endTime), y = c(m,m), col = "blue")
+        }
+      }
+      else if(input$initialGraphType == "rate") {
+        plot(x = 1:input$totalTime
+             , y = growthRate(theoretical(1:input$totalTime)
+                              , b = b
+                              , d = d
+                              , m = m)
+             , type = "l"
+             , ylab = "Growth Rate"
+             , xlab = "Time (Insert Units here)")
+      }
+      else if(input$initialGraphType == "relRate") {
+        plot(x = 1:input$totalTime
+             , y = growthRate(theoretical(1:input$totalTime)
+                              , b = b
+                              , d = d
+                              , m = m) / theoretical(1:input$totalTime)
+             , type = "l"
+             , ylab = "Growth Rate"
+             , xlab = "Time (Insert Units here)")
+      }
+      else {
+        # WE HAVE PROBLEMS
       }
     })
   })
 
   output$initialDiscuss <- renderText(HTML(
       "<h2>Explanation</h2> <div><p>There can be up to two lines on the graph. </p>
-            <ol><li>The <font color='red'>red</font> line represents the theoretical population 
+            <ol><li>The <font color='red'>red</font> line represents the theoretical population
                   determined by the selected parameters.</li>
                 <li>The <font color='blue'>blue</font> line will only appear if the carrying
                   capacity is
@@ -288,13 +355,20 @@ function(input, output, session) {
                   at least as big as the maximum birth rate.</li>
             </ol></div>"))
 
-  output$discuss <- renderText(HTML("<h2>Explanation</h2> <div><p>There can be up to
-                          three lines on the graph. </p>
-                          <ol><li>The <font color='red'>red</font> line represents the theoretical population determined by the selected parameters. </li>
-                          <li>The <strong>black</strong> line represents a simulated population, using the given parameters. </li>
-                          <li>The <font color='blue'>blue</font> line will only appear if the carrying capacity is
-                         relevant. It is not relevant when the minimum death rate is
-                         at least as big as the maximum birth rate.</li></ol></div>"))
+  output$discuss <- renderText(HTML("
+<h2>Explanation</h2>
+<div>
+  <p>There can be up to three lines on the graph. </p>
+  <ol>
+    <li>The <font color='red'>red</font> line represents the theoretical
+    population determined by the selected parameters. </li>
+    <li>The <strong>black</strong> line represents a simulated population, using
+    the given parameters. </li>
+    <li>The <font color='blue'>blue</font> line will only appear if the carrying
+    capacity is relevant. It is not relevant when the minimum death rate is at
+    least as big as the maximum birth rate.</li>
+  </ol>
+</div>"))
 
 #  output$growth <- renderPlot({
 #    if(input$growthRate==1) {
@@ -315,7 +389,7 @@ function(input, output, session) {
                  , value = 0
                  , animate = animationOptions(loop = TRUE))
   })
-  
+
   output$momentG <- renderUI({
     sliderInput (  label = "Time To View"
                    , inputId = "momG"
@@ -325,8 +399,9 @@ function(input, output, session) {
                    , value = 0
                    , animate = animationOptions(loop = TRUE))
   })
-  
+
   observeEvent(rv$sim, {
+    updateRadioButtons(session, "graphType", selected = "pop")
     output$gy <- renderPlot({
       time <- input$momG
       if (is.null(time) || time == 0 ) {
@@ -338,7 +413,7 @@ function(input, output, session) {
       fox <- deaths[2]
       mal <- deaths[3]
       n <- sum(deaths)
-      
+
       if ( n == 0) {
         plot(0, 0, col = "transparent"
              , axes = FALSE
@@ -365,8 +440,8 @@ function(input, output, session) {
       }
     })
   })
-  
-  
+
+
   observeEvent(rv$sim, {
     output$field <- renderPlot({
       time <- input$mom
@@ -375,9 +450,7 @@ function(input, output, session) {
         xa <- runif(na)
         ya <- runif(na)
       }
-      else if (!is.null(rv$littersizes) && !is.null(rv$littersizes[[time]])
-               && sum(rv$littersizes[[time]] > 0)) {
-        
+      else {
         # number of adults
         na <- rv$daframe$population[time] - sum(rv$littersizes[[time]])
         xa <- runif(na)
@@ -388,21 +461,17 @@ function(input, output, session) {
         d <- myCens$distance
         xb <- NULL
         yb <- NULL
-        for(i in 1:nl){
-          cent <- cents[i,]
-          sd <- d/6
-          xbbit <- rnorm(rv$littersizes[[time]][i],mean = cent$x, sd = sd)
-          ybbit <- rnorm(rv$littersizes[[time]][i],mean = cent$y, sd = sd)
-          xb <- c(xb, xbbit)
-          yb <- c(yb, ybbit)
+        if(nl != 0) {
+          for(i in 1:nl){
+            cent <- cents[i,]
+            sd <- d/6
+            xbbit <- rnorm(rv$littersizes[[time]][i],mean = cent$x, sd = sd)
+            ybbit <- rnorm(rv$littersizes[[time]][i],mean = cent$y, sd = sd)
+            xb <- c(xb, xbbit)
+            yb <- c(yb, ybbit)
+          }
         }
       }
-      else {
-        na <- rv$daframe$population[time]
-        xa <- runif(na)
-        ya <- runif(na)
-      }
-      
       # determine filed color
       b <- isolate(input$b)
       d <- isolate(input$d)
@@ -412,7 +481,7 @@ function(input, output, session) {
         top <- rv$daframe$population[1]
       }
       color <- field.color(top, na)
-      
+
       par(mfrow = c(1,2))
       plot(NULL,NULL, axes = FALSE, cex = 0.5
            , pch = 19
@@ -421,7 +490,7 @@ function(input, output, session) {
            , ylab = ""
            , xlim = c(0,1)
            , ylim = c(0,1))
-      rect(par("usr")[1], par("usr")[3], par("usr")[2], 
+      rect(par("usr")[1], par("usr")[3], par("usr")[2],
            par("usr")[4], col = color)
       points(
         xa, ya, cex = 0.5, pch = 19
@@ -436,9 +505,9 @@ function(input, output, session) {
              , ylab = ""
              , xlim = c(0,1)
              , ylim = c(0,1))
+        rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4])
       }
-      else if (!is.null(rv$littersizes) && !is.null(rv$littersizes[[time]])
-               && sum(rv$littersizes[[time]]) > 0) {
+      else {
         plot(xb,yb, axes = FALSE, cex = 0.5
              , pch = 19
              , main = "Warren"
@@ -446,13 +515,13 @@ function(input, output, session) {
              , ylab = ""
              , xlim = c(0,1)
              , ylim = c(0,1))
+        rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4])
       }
-      else {}
       par(mfrow = c(1,1))
     })
   })
-  
-  
+
+
   output$population <- renderText({
     if (input$mom == 0) {
       num <- initial[3]
@@ -462,7 +531,7 @@ function(input, output, session) {
     }
     paste("Population: ", num)
   })
-  
+
   output$babies <- renderTable({
     if (input$mom == 0) {
       out <- NULL
@@ -480,8 +549,8 @@ function(input, output, session) {
     }
     out
   })
-  
-  
+
+
   output$deathTallies <- renderTable({
     time <- input$momG
     if (is.null(time) || time == 0) {
@@ -494,6 +563,6 @@ function(input, output, session) {
     rownames(mat) <- "Death Cause"
     mat
   })
-  
+
   outputOptions(output, "momentF", suspendWhenHidden = FALSE)
 }
