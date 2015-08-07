@@ -1,4 +1,5 @@
 library(shiny)
+# library(shinyjs)
 
 #---------------------------------------------------------------------------
 # Jacob Townson
@@ -29,10 +30,6 @@ field.color <- function(m, n) {
   rd <- gain
   color <- rgb(red = rd, blue = 0, green = grn, maxColorValue = 555)
   color
-#   plot(0,0, axes = FALSE, xlab = '', ylab = '', main = 'Adults in Field')
-#   rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4],
-#        col = color)
-#   points(runif(n, -1, 1), runif(n, -1, 1), pch = 19, cex = .5)
 }
 
 ## begin server.R
@@ -370,16 +367,6 @@ function(input, output, session) {
   </ol>
 </div>"))
 
-#  output$growth <- renderPlot({
-#    if(input$growthRate==1) {
-#      plot(rv$ne,rv$Re, type="l", xlim=c(0,input$k*1.05), ylim=c(0,max(rv$Rl)*2),
-#           lwd=2, col="red",
-#           main="Population Growth Rate (R) v. Population Size (n)",
-#           xlab="number of individuals (n)", ylab="new individuals/ time (R)",
-#           cex.main=0.8, cex.lab=0.8, cex.axis=0.8)
-#      points(rv$nl,rv$Rl, type="l", lwd=2, col="black")
-#    }
-
   output$momentF <- renderUI({
     sliderInput (  label = "Time To View"
                  , inputId = "mom"
@@ -485,7 +472,7 @@ function(input, output, session) {
       par(mfrow = c(1,2))
       plot(NULL,NULL, axes = FALSE, cex = 0.5
            , pch = 19
-           , main = "Adults"
+           , main = paste0("Field:  ",na, " Adults Foraging")
            , xlab = ""
            , ylab = ""
            , xlim = c(0,1)
@@ -500,7 +487,7 @@ function(input, output, session) {
              , cex = 0.5
              , pch = 19
              , axes = FALSE
-             , main = "Warren"
+             , main = "Warren:  No Babies Here Yet!"
              , xlab = ""
              , ylab = ""
              , xlim = c(0,1)
@@ -510,7 +497,7 @@ function(input, output, session) {
       else {
         plot(xb,yb, axes = FALSE, cex = 0.5
              , pch = 19
-             , main = "Warren"
+             , main = paste0("Warren:  ",length(xb)," Newborn Rabbits Here!")
              , xlab = ""
              , ylab = ""
              , xlim = c(0,1)
@@ -521,16 +508,6 @@ function(input, output, session) {
     })
   })
 
-
-  output$population <- renderText({
-    if (input$mom == 0) {
-      num <- initial[3]
-    }
-    else {
-      num <- rv$daframe[input$mom, "population"]
-    }
-    paste("Population: ", num)
-  })
 
   output$babies <- renderTable({
     if (input$mom == 0) {
@@ -549,6 +526,17 @@ function(input, output, session) {
     }
     out
   })
+  
+  # if relevant, create a table in graveyard tab to show where we stand with respect 
+  # to carrying capacity
+  output$gyPopCapRep <- renderTable({
+    time <- input$momG
+    num <- as.integer(rv$daframe$population[time + 1])
+    cap <- as.integer(input$m)
+    mat <- matrix(c(num, cap), ncol = 2)
+    colnames(mat) <- c("Population", "Capacity")
+    mat
+  })
 
 
   output$deathTallies <- renderTable({
@@ -560,9 +548,24 @@ function(input, output, session) {
     }
     mat <- matrix(deaths, ncol = 3)
     colnames(mat) <- c("Lawnmower (red)", "Fox (black)", "Malnutrition (blue)")
-    rownames(mat) <- "Death Cause"
+    rownames(mat) <- "Cause"
     mat
   })
+  
+  
+# Would like to use shinyjs to add help bubble below but must overcome problem.
+#   observe({
+#     if (input$helpDeathTallies > 0) {
+#     info(paste0("A rabbit can die in any one of three ways:  it can be run",
+#                 " over by a lawnmower, killed by a fox, or die from malnutrition.",
+#                 "  When the population is low, the field has a lot of grass, so",
+#                 " lawnmowers run frequently.  On the other hand few foxes patrol",
+#                 " the area when the population is low, and since there is plenty",
+#                 " of grass death by starvation is unlikely.  As the population",
+#                 " rise, foxes and malnutrition become more likely as causes of",
+#                 " death, and death by lawnmower becomes rare.  (People",
+#                 " usually don't mow when there is very little grass.)"))
+#     }
+#     })
 
-  outputOptions(output, "momentF", suspendWhenHidden = FALSE)
 }

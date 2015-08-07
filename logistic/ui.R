@@ -1,5 +1,6 @@
 library(shiny)
 library(shinythemes)
+# library(shinyjs)
 
 max.time<-1000
 max.b <- 1
@@ -9,6 +10,7 @@ max.n_0 <- 2000
 
 navbarPage(
   title = "Logistic Growth for a Population",
+  # useShinyjs()
   theme = shinytheme("spacelab"),
   tabPanel(
   title = "The App",
@@ -74,14 +76,23 @@ navbarPage(
         title = "Field"
         , uiOutput("momentF")
         , plotOutput("field")
-        , textOutput("population")
+        # , textOutput("population")
         , tableOutput("babies")
       ),
       tabPanel(
         title = "Graveyard"
-        , uiOutput("momentG")
+        ,  uiOutput("momentG")
+#        , actionButton("helpDeathTallies","More About Death")
         , plotOutput("gy")
-        , tableOutput("deathTallies")
+        , fluidRow(
+          column(width = 5,
+                 tableOutput("deathTallies")),
+          conditionalPanel(
+            condition = "input.b > input.d",
+            column(width = 4,
+                 tableOutput("gyPopCapRep"))
+          )
+        )
       ),
       id = "tabset"
     )
