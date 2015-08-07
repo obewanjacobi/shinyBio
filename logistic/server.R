@@ -113,6 +113,8 @@ function(input, output, session) {
   observeEvent(input$goButton,{
     if (input$goButton > 0) {
       rv$beginning <- FALSE
+      updateTabsetPanel(session, "tabset", selected = "Population Graphs")
+      updateRadioButtons(session, "initialGraphType", selected = "pop")
     }
   })
 
