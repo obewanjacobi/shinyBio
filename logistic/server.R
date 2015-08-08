@@ -471,7 +471,7 @@ function(input, output, session) {
       points(
         xa, ya, cex = 0.5, pch = 19
       )
-      if (time == 0) {
+      if (is.null(time) || time == 0) {
         plot(0, 0, col = "transparent"
              , cex = 0.5
              , pch = 19
@@ -499,7 +499,7 @@ function(input, output, session) {
 
 
   output$babies <- renderTable({
-    if (input$mom == 0) {
+    if (is.null(input$mom) || input$mom == 0) {
       out <- NULL
     }
     else {
