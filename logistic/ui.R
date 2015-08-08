@@ -88,15 +88,19 @@ navbarPage(
           column(width = 4, br(),br(),
                  actionLink("helpDeathTallies","Explain Death Causes")))
         , plotOutput("gy")
-        , fluidRow(
-          column(width = 5,
-                 tableOutput("deathTallies")),
-          conditionalPanel(
-            condition = "input.b > input.d",
-            column(width = 4,
-                 tableOutput("gyPopCapRep"))
-          )
-        )
+#         , fluidRow(
+#           column(width = 5,
+#                  tableOutput("deathTallies")),
+#           conditionalPanel(
+#             condition = "input.b > input.d",
+#             column(width = 4,
+#                  tableOutput("gyPopCapRep"))
+#           )
+#         )
+        , div(style = "display:inline-block; width: 60%",
+              tableOutput("deathTallies"))
+        , div(style = "display:inline-block; width: 30%",
+              tableOutput("gyPopCapRep"))
       ),
       id = "tabset"
     )

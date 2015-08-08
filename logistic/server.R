@@ -525,7 +525,7 @@ function(input, output, session) {
     mat <- matrix(c(num, cap), ncol = 2)
     colnames(mat) <- c("Population", "Capacity")
     mat
-  })
+  }, include.rownames = F)
 
 
   output$deathTallies <- renderTable({
