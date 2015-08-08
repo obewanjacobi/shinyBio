@@ -1,6 +1,6 @@
 library(shiny)
 library(shinythemes)
-# library(shinyjs)
+library(shinyjs)
 
 max.time<-1000
 max.b <- 1
@@ -10,16 +10,16 @@ max.n_0 <- 2000
 
 navbarPage(
   title = "Logistic Growth for a Population",
-  # useShinyjs()
   theme = shinytheme("spacelab"),
   tabPanel(
+  useShinyjs(),
   title = "The App",
   sidebarPanel(
-    conditionalPanel(condition = "output.beginning == false",
-      selectInput(inputId = "display", "Choose plots displayed:",
-                choices = c('Show All'=1,'Show Simulation'=2,
-                            'Show Theoretical'=3))
-      ),
+#     conditionalPanel(condition = "output.beginning == false",
+#       selectInput(inputId = "display", "Choose plots displayed:",
+#                 choices = c('Show All'=1,'Show Simulation'=2,
+#                             'Show Theoretical'=3))
+#       ),
     conditionalPanel(condition = "input.goButton == 0 || output.beginning == true",
       sliderInput(inputId = "totalTime", label = "Extent of Time",
                 min = max.time*.1, max = max.time, value = max.time*0.5),
@@ -74,15 +74,19 @@ navbarPage(
       ),
       tabPanel(
         title = "Field"
-        , uiOutput("momentF")
+        , fluidRow(
+          column(width = 5, uiOutput("momentF")),
+          column(width = 4, br(),br(),
+                 actionLink("helpField","Explain Field Color")))
         , plotOutput("field")
-        # , textOutput("population")
         , tableOutput("babies")
       ),
       tabPanel(
         title = "Graveyard"
-        ,  uiOutput("momentG")
-#        , actionButton("helpDeathTallies","More About Death")
+        , fluidRow(
+          column(width = 5, uiOutput("momentG")),
+          column(width = 4, br(),br(),
+                 actionLink("helpDeathTallies","Explain Death Causes")))
         , plotOutput("gy")
         , fluidRow(
           column(width = 5,

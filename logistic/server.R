@@ -1,24 +1,8 @@
 library(shiny)
 # library(shinyjs)
 
-#---------------------------------------------------------------------------
-# Jacob Townson
-# Field Color Function
-# This function makes a graph that plots the population (n) in a field with
-# a color to represent how close the population is to the carrying capacity
-# (m). The closer it is, the more brown the graph becomes. Once it passes
-# the carrying capacity, the graph becomes a dark brown.
 
-# modifed by H. White for implementation in server.R -- HSW, 8/5/2015
-
-#---------------------------------------------------------------------------
-
-
-# Full green for pop = 0
-
-# 1.2 times carrying capacity brown
-# red =165, green = 125
-
+# function to compute field color:
 field.color <- function(m, n) {
   prop <- n/m
   if(prop > 1.2){
@@ -64,8 +48,8 @@ function(input, output, session) {
       mal <- 0.5*(1 - lm)
     } else {
       mal <- 0
-      lm <- 0.5 + 0.5 * 0.02^(n/m)
-      fox <- 1 - lm
+      lm <- 0.5
+      fox <- 0.5
     }
     c(lm, fox, mal)
   }
@@ -123,6 +107,7 @@ function(input, output, session) {
   })
 
   outputOptions(output, "beginning", suspendWhenHidden = FALSE)
+  
 
 
   advanceTime <- function() {
@@ -248,7 +233,7 @@ function(input, output, session) {
     rv$sim <- rv$sim + 1
     output$pop <- renderPlot({
       rv$sim
-      disp <- as.numeric(input$display)
+      disp <- 1 #this used to vary with input$display
       if(input$graphType == "pop") {
         popGraph(m
                 , b
@@ -461,15 +446,17 @@ function(input, output, session) {
           }
         }
       }
-      # determine filed color
+      # determine field color
       b <- isolate(input$b)
       d <- isolate(input$d)
       if ( b > d ) {
         top <- isolate(input$m)
+        color <- field.color(top, na)
       } else {
-        top <- rv$daframe$population[1]
+        top <- 100 * rv$daframe$population[1]
+        color <- field.color(top,na)
       }
-      color <- field.color(top, na)
+      
 
       par(mfrow = c(1,2))
       plot(NULL,NULL, axes = FALSE, cex = 0.5
@@ -554,20 +541,34 @@ function(input, output, session) {
     mat
   })
   
+
+  observe({
+    if (input$helpDeathTallies > 0) {
+    info(paste0("A rabbit can die in any one of three ways:  it can be run",
+                " over by a lawnmower, killed by a fox, or die from malnutrition.",
+                "  When the population is low, the field has a lot of grass, so",
+                " lawnmowers run frequently.  On the other hand few foxes patrol",
+                " the area when the population is low, and since there is plenty",
+                " of grass death by starvation is unlikely.  As the population",
+                " rise, foxes and malnutrition become more likely as causes of",
+                " death, and death by lawnmower becomes rare.  (People",
+                " usually don't mow when there is very little grass.)",
+                "  When carrying capcity is not relvant then malnutrition",
+                " is not a cause of death and death by lawnmower and by fox",
+                " are considered equally likely."))
+    }
+    })
   
-# Would like to use shinyjs to add help bubble below but must overcome problem.
-#   observe({
-#     if (input$helpDeathTallies > 0) {
-#     info(paste0("A rabbit can die in any one of three ways:  it can be run",
-#                 " over by a lawnmower, killed by a fox, or die from malnutrition.",
-#                 "  When the population is low, the field has a lot of grass, so",
-#                 " lawnmowers run frequently.  On the other hand few foxes patrol",
-#                 " the area when the population is low, and since there is plenty",
-#                 " of grass death by starvation is unlikely.  As the population",
-#                 " rise, foxes and malnutrition become more likely as causes of",
-#                 " death, and death by lawnmower becomes rare.  (People",
-#                 " usually don't mow when there is very little grass.)"))
-#     }
-#     })
+  observe({
+    if ( input$helpField > 0) {
+      info(paste0(
+        "When carrying capacity is relevant, you will see that the field is",
+        " mostly green in color when the population is low (lots of grass)",
+        " and closer to brown when the poplulation is high (mostly bare ground)",
+        "  When carrying capacity is not relevant, the color of the field will",
+        " not change as population changes."
+      ))
+    }
+  })
 
 }
