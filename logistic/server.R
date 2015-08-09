@@ -1,6 +1,7 @@
 library(shiny)
-# library(shinyjs)
+library(png)
 
+img <- readPNG("dead_bunny.png")
 
 # function to compute field color:
 field.color <- function(m, n) {
@@ -391,14 +392,25 @@ function(input, output, session) {
       n <- sum(deaths)
 
       if ( n == 0) {
+        if (is.null(time) || time == 0) {
+          pop <- initial[3]
+        } else {
+          pop <- rv$daframe$population[time]
+        }
+        sub <- ifelse(pop == 0,
+                      "Sorry, all of the rabbits have died!",
+                      "Only recently-deceased unburied rabbits are shown.")
         plot(0, 0, col = "transparent"
              , axes = FALSE
              , main = "Graveyard"
-             , sub = "Only recently-deceased unburied rabbits are shown."
+             , sub = sub
              , xlab = ""
              , ylab = ""
              , xlim = c(0,1)
              , ylim = c(0,1))
+        if ( pop == 0 ) {
+          rasterImage(img, xleft = 0.25, ybottom = 0, xright = 0.75, ytop = 1)
+        }
       } else {
         xd <- runif(n)
         yd <- runif(n)
