@@ -92,6 +92,8 @@ function(input, output, session) {
     # tabsetpanel should always begin on the population graph:
     updateTabsetPanel(session, "tabset", selected = "Population Graphs")
     updateRadioButtons(session, "initialGraphType", selected = "pop")
+    updateSliderInput(session, "mom", value = 0)
+    updateSliderInput(session, "momG", value = 0)
   })
 
   observeEvent(input$goButton,{
