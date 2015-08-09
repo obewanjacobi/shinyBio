@@ -522,8 +522,13 @@ function(input, output, session) {
     time <- input$momG
     num <- as.integer(rv$daframe$population[time + 1])
     cap <- as.integer(input$m)
-    mat <- matrix(c(num, cap), ncol = 2)
-    colnames(mat) <- c("Population", "Capacity")
+    if (input$b > input$d) {
+      mat <- matrix(c(num, cap), ncol = 2)
+      colnames(mat) <- c("Population", "Capacity")
+    } else {
+      mat <- matrix(num, ncol = 1)
+      colnames(mat) <- "Population"
+    }
     mat
   }, include.rownames = F)
 
