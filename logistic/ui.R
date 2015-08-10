@@ -6,7 +6,7 @@ max.time<-1000
 max.b <- 1
 min.d <- 1
 max.m <-1000
-max.n_0 <- 2000
+max.n_0 <- 1000
 
 navbarPage(
   title = "Logistic Growth for a Population",
@@ -17,19 +17,21 @@ navbarPage(
   sidebarPanel(
     conditionalPanel(condition = "input.goButton == 0 || output.beginning == true",
       sliderInput(inputId = "totalTime", label = "Extent of Time",
-                min = max.time*.1, max = max.time, value = max.time*0.5),
+                min = max.time*.1, max = max.time, step = 50, value = max.time*0.5),
       sliderInput(inputId = "n_0", label = "Initial Population",
-                min = 2, max = max.n_0, value = 20, step = 1),
+                min = 10, max = max.n_0, value = 20, step = 10),
       sliderInput(inputId = "b", label = "Max Birth Rate",
-                min = 0, max = max.b, value = .05),
+                min = 0, max = max.b, value = .05, step = 0.01),
       sliderInput(inputId = "d", label = "Min Death Rate",
-                min = 0, max = min.d, value = .02),
+                min = 0, max = min.d, value = .02, step = 0.01),
       conditionalPanel(condition = "input.b > input.d",
         sliderInput(inputId = "m", label = "Carrying Capacity",
-                  min = 10, max = max.m, value = max.m*0.8)),
+                  min = 10, max = max.m, step = 10, value = max.m*0.8)),
       conditionalPanel(condition = "input.b < input.d",
         helpText("Carrying Capacity doesn't affect population when death rate",
                "is greater than birth rate.")),
+      actionLink(inputId = "sliderTip", "Tip for Using Sliders",
+                 icon = icon("info-sign", lib = "glyphicon")),
       checkboxInput(inputId = 'seed', label = "Do you want to set the seed?"),
       conditionalPanel(condition = "input.seed == true",
         numericInput(inputId = 'setter', label = "Set your seed", value = 2200,
@@ -74,7 +76,8 @@ navbarPage(
           column(width = 4, br(),br(),
                  conditionalPanel(
                    condition = "output.currentPopField > 0",
-                   actionLink("helpField","Explain Field Color"))))
+                   actionLink("helpField","Explain Field Color",
+                              icon = icon("question-sign", lib = "glyphicon")))))
         , conditionalPanel(
             condition = "output.currentPopField > 0"
             , plotOutput("field")
@@ -93,7 +96,8 @@ navbarPage(
         , fluidRow(
           column(width = 5, uiOutput("momentG")),
           column(width = 4, br(),br(),
-                 actionLink("helpDeathTallies","Explain Death Causes")))
+                 actionLink("helpDeathTallies","Explain Death Causes",
+                            icon = icon("question-sign", lib = "glyphicon"))))
         , conditionalPanel(
             condition = "output.currentPopGY > 0"
             , plotOutput("gy")

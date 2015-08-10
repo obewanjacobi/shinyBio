@@ -647,5 +647,14 @@ output$discuss <- renderText({
       ))
     }
   })
+  
+  observe({
+    if ( input$sliderTip > 0) {
+      info(paste0(
+        "To change a slider value by one unit per click, click on the",
+        " slider and then use left and right arrow-keys."
+      ))
+    }
+  })
 
 }
