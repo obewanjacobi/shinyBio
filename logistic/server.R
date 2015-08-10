@@ -521,19 +521,20 @@ output$discuss <- renderText({
       # determine field color
       b <- isolate(input$b)
       d <- isolate(input$d)
+      pop <- rv$currentPopField
       if ( b > d ) {
         top <- isolate(input$m)
-        color <- field.color(top, na)
+        color <- field.color(top, pop)
       } else {
         top <- 100 * rv$daframe$population[1]
-        color <- field.color(top,na)
+        color <- field.color(top,pop)
       }
       
 
       par(mfrow = c(1,2))
       plot(NULL,NULL, axes = FALSE, cex = 0.5
            , pch = 19
-           , main = paste0("Field:  ",na, " Adults Foraging")
+           , main = paste0("Field:  ",na, " Adult(s) Foraging")
            , xlab = ""
            , ylab = ""
            , xlim = c(0,1)
