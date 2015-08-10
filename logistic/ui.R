@@ -15,11 +15,6 @@ navbarPage(
   useShinyjs(),
   title = "The App",
   sidebarPanel(
-#     conditionalPanel(condition = "output.beginning == false",
-#       selectInput(inputId = "display", "Choose plots displayed:",
-#                 choices = c('Show All'=1,'Show Simulation'=2,
-#                             'Show Theoretical'=3))
-#       ),
     conditionalPanel(condition = "input.goButton == 0 || output.beginning == true",
       sliderInput(inputId = "totalTime", label = "Extent of Time",
                 min = max.time*.1, max = max.time, value = max.time*0.5),

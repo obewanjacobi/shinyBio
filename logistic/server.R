@@ -360,20 +360,37 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
     })
   })
 
-  output$initialDiscuss <- renderText(HTML(
+  output$initialDiscuss <- renderText({
+    type <- input$initialGraphType
+    if (type == "pop")  {
+      HTML(
       "<h2>Explanation</h2> <div><p>There can be up to two lines on the graph. </p>
-            <ol><li>The <font color='red'>red</font> line represents the theoretical population
-                  determined by the selected parameters.</li>
+            <ol><li>The <font color='red'>red</font> line represents the population
+                  based on the selected parameters, as determined by a differential
+                  equation.</li>
                 <li>The <font color='blue'>blue</font> line will only appear if the carrying
                   capacity is
                   relevant. It is not relevant when the minimum death rate is
                   at least as big as the maximum birth rate.</li>
-            </ol></div>"))
+            </ol></div>")
+    } else if (type == "rate") {
+      HTML(
+        "<h2>Explanation</h2> <div><p>The curve above represents the population 
+        growth-rate over time, based on the selected parameters.</p></div>")
+    } else {
+      HTML(
+        "<h2>Explanation</h2> <div><p>The curve above represents the <em>per-capita</em>
+        population growth-rate.  It's the growth rate at a given time,
+        divided by the population at that time.</p></div>")
+    }
+      })
 
-  output$discuss <- renderText(HTML("
-<h2>Explanation</h2>
-<div>
-  <p>There can be up to three lines on the graph. </p>
+output$discuss <- renderText({
+  type <- input$graphType
+  if (type == "pop") {
+    HTML("
+    <h2>Explanation</h2>
+    <div><p>There can be up to three lines on the graph. </p>
   <ol>
     <li>The <font color='red'>red</font> line represents the theoretical
     population determined by the selected parameters. </li>
@@ -383,7 +400,20 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
     capacity is relevant. It is not relevant when the minimum death rate is at
     least as big as the maximum birth rate.</li>
   </ol>
-</div>"))
+</div>")
+  } else if ( type == "rate" ) {
+    HTML(
+      "<h2>Explanation</h2> <div><p>The curve above represents the population 
+      growth-rate over time, based on the selected parameters.</p></div>")
+  } else {
+    HTML(
+      "<h2>Explanation</h2> <div><p>The curve above represents the <em>per-capita</em>
+        population growth-rate.  It's the growth rate at a given time,
+        divided by the population at that time.</p></div>")
+    }
+  
+    
+    })
 
   output$momentF <- renderUI({
     sliderInput (  label = "Time To View"
