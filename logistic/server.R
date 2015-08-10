@@ -17,7 +17,6 @@ field.color <- function(m, n) {
   color
 }
 
-## begin server.R
 
 growthRate <- function( popSizes, b, d, m) {
   rate = NULL
@@ -31,6 +30,8 @@ growthRate <- function( popSizes, b, d, m) {
     rate = popSizes * (b - d)
   }
 }
+
+## begin server function:
 
 function(input, output, session) {
   generationsTillMaturity <- 1 # how many generations it takes for a generation
@@ -66,7 +67,9 @@ function(input, output, session) {
                                     , born = NULL
                                     , deathrate = NULL
                                     , dead = NULL)
-                      , beginning = TRUE)
+                      , beginning = TRUE
+                      , currentPopField = NULL
+                      , currentPopGY = NULL)
   # END REACTIVE VALUES
 
   daframe <- data.frame(time = NULL
@@ -111,7 +114,35 @@ function(input, output, session) {
 
   outputOptions(output, "beginning", suspendWhenHidden = FALSE)
   
+observe({
+  time <- input$mom
+  if (is.null(time) || time == 0) {
+    rv$currentPopField <- input$n_0
+  } else{
+    rv$currentPopField <- rv$daframe$population[time]
+  }
+})
 
+output$currentPopField <- reactive({
+  rv$currentPopField
+})
+
+outputOptions(output, "currentPopField", suspendWhenHidden = FALSE)
+
+observe({
+  time <- input$momG
+  if (is.null(time) || time == 0) {
+    rv$currentPopGY <- input$n_0
+  } else{
+    rv$currentPopGY <- rv$daframe$population[time]
+  }
+})
+
+output$currentPopGY <- reactive({
+  rv$currentPopGY
+})
+
+outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
 
   advanceTime <- function() {
     dfrow = numeric(length = 7)
@@ -392,25 +423,25 @@ function(input, output, session) {
       n <- sum(deaths)
 
       if ( n == 0) {
-        if (is.null(time) || time == 0) {
-          pop <- initial[3]
-        } else {
-          pop <- rv$daframe$population[time]
-        }
-        sub <- ifelse(pop == 0,
-                      "Sorry, all of the rabbits have died!",
-                      "Only recently-deceased unburied rabbits are shown.")
+#         if (is.null(time) || time == 0) {
+#           pop <- initial[3]
+#         } else {
+#           pop <- rv$daframe$population[time]
+#         }
+#         sub <- ifelse(pop == 0,
+#                       "Sorry, all of the rabbits have died!",
+#                       "Only recently-deceased unburied rabbits are shown.")
         plot(0, 0, col = "transparent"
              , axes = FALSE
              , main = "Graveyard"
-             , sub = sub
+             , sub = "Only recently-deceased unburied rabbits are shown."
              , xlab = ""
              , ylab = ""
              , xlim = c(0,1)
              , ylim = c(0,1))
-        if ( pop == 0 ) {
-          rasterImage(img, xleft = 0.25, ybottom = 0, xright = 0.75, ytop = 1)
-        }
+#         if ( pop == 0 ) {
+#           rasterImage(img, xleft = 0.25, ybottom = 0, xright = 0.75, ytop = 1)
+#         }
       } else {
         xd <- runif(n)
         yd <- runif(n)

@@ -77,9 +77,21 @@ navbarPage(
         , fluidRow(
           column(width = 5, uiOutput("momentF")),
           column(width = 4, br(),br(),
-                 actionLink("helpField","Explain Field Color")))
-        , plotOutput("field")
-        , tableOutput("babies")
+                 conditionalPanel(
+                   condition = "output.currentPopField > 0",
+                   actionLink("helpField","Explain Field Color"))))
+        , conditionalPanel(
+            condition = "output.currentPopField > 0"
+            , plotOutput("field")
+            , tableOutput("babies")
+        )
+        , conditionalPanel(
+            condition = "output.currentPopField == 0"
+            , HTML('<figure>
+                     <img src="images/dead_bunny.png" width="400" height="400">
+                     <figcaption>All the bunnies are dead!</figcaption>
+                     </figure>')
+        )
       ),
       tabPanel(
         title = "Graveyard"
@@ -87,20 +99,21 @@ navbarPage(
           column(width = 5, uiOutput("momentG")),
           column(width = 4, br(),br(),
                  actionLink("helpDeathTallies","Explain Death Causes")))
-        , plotOutput("gy")
-#         , fluidRow(
-#           column(width = 5,
-#                  tableOutput("deathTallies")),
-#           conditionalPanel(
-#             condition = "input.b > input.d",
-#             column(width = 4,
-#                  tableOutput("gyPopCapRep"))
-#           )
-#         )
-        , div(style = "display:inline-block; width: 60%",
+        , conditionalPanel(
+            condition = "output.currentPopGY > 0"
+            , plotOutput("gy")
+            , div(style = "display:inline-block; width: 60%",
               tableOutput("deathTallies"))
-        , div(style = "display:inline-block; width: 30%",
+            , div(style = "display:inline-block; width: 30%",
               tableOutput("gyPopCapRep"))
+        )
+        , conditionalPanel(
+          condition = "output.currentPopGY == 0"
+          , HTML('<figure>
+                 <img src="images/dead_bunny.png" width="400" height="400">
+                 <figcaption>All the bunnies are dead!</figcaption>
+                 </figure>')
+          )
       ),
       id = "tabset"
     )
