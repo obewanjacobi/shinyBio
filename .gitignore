@@ -5,8 +5,9 @@
 */shinyapps
 */rsconnect
 .DS_Store
-.gitignore
 logistic/rsconnect
 logistic/info.files
 logistic/info.files/about.Rmd
 logistic/info.files/about.html
+Notes for Thesis.Rmd
+.gitignore
