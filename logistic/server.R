@@ -1,5 +1,4 @@
 library(shiny)
-library(png)
 
 img <- readPNG("dead_bunny.png")
 
