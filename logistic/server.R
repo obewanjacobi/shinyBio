@@ -1,7 +1,5 @@
 library(shiny)
 
-img <- readPNG("dead_bunny.png")
-
 # function to compute field color:
 field.color <- function(m, n) {
   prop <- n/m
