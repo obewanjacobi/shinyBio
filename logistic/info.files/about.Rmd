@@ -82,6 +82,3 @@ This portion of the application displays a model for the field, a hypothetical f
 This portion of the application is similar to the field in that it is a model used to present hypothetical information. It works in parallel to the field model, but instead of growing and shrinking, it just grows with the death from the simulation. So for every "rabbit" that dies in the population, a gravestone is added to the graveyard.
 
 <center> <h1>Thanks For Using Our App!</h1> </center>
-
-
-
