@@ -64,7 +64,7 @@ navbarPage(
         radioButtons("graphType", "Y-Axis shows Population: ",
                      choices = c("Size" = "pop",
                                  "Growth Rate" = "rate",
-                                 "Per-captita Growth Rate" = "relRate"),
+                                 "Per-capita Growth Rate" = "relRate"),
                      inline = TRUE),
         plotOutput("pop"),
         htmlOutput('discuss')
