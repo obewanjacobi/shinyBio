@@ -567,7 +567,7 @@ output$discuss <- renderText({
         rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4])
       }
       par(mfrow = c(1,1))
-    })
+    }, height = 375)
   })
 
 

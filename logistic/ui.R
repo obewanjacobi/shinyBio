@@ -19,7 +19,7 @@ navbarPage(
       sliderInput(inputId = "totalTime", label = "Extent of Time",
                 min = max.time*.1, max = max.time, step = 50, value = max.time*0.5),
       sliderInput(inputId = "n_0", label = "Initial Population",
-                min = 10, max = max.n_0, value = 20, step = 10),
+                min = 2, max = max.n_0, value = 20, step = 1),
       sliderInput(inputId = "b", label = "Max Birth Rate",
                 min = 0, max = max.b, value = .05, step = 0.01),
       sliderInput(inputId = "d", label = "Min Death Rate",
