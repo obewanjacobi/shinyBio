@@ -27,7 +27,7 @@ navbarPage(
       conditionalPanel(condition = "input.b > input.d",
         sliderInput(inputId = "m", label = "Carrying Capacity",
                   min = 10, max = max.m, step = 10, value = max.m*0.8)),
-      conditionalPanel(condition = "input.b < input.d",
+      conditionalPanel(condition = "input.b <= input.d",
         helpText("Carrying Capacity doesn't affect population when death rate",
                "is greater than birth rate.")),
       actionLink(inputId = "sliderTip", "Tip for Using Sliders",
