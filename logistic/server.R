@@ -28,6 +28,28 @@ growthRate <- function( popSizes, b, d, m) {
   }
 }
 
+# function to compute growth rate as a function of population size
+growthRatePops <- function( n0, b, d, m) {
+  # n0 = initial population
+  # first we compute a reasonable range of pop values for the x-axis
+  if (b > d) {
+    maxPop <- max(1.1*m, 1.3*n0)
+  } else maxPop <- 1.3*n0
+  popSizes <- 1:maxPop
+  rate = NULL
+  if(b > d) {
+    rate <- (popSizes*(b - d)/m)*(m - popSizes)
+  }
+  else if(b == d) {
+    rate  <- rep(0,popSizes)
+  }
+  else {
+    rate <- popSizes * (b - d)
+  }
+  results <- list(pops = popSizes, rates = rate)
+  results
+}
+
 ## begin server function:
 
 function(input, output, session) {
@@ -93,6 +115,8 @@ function(input, output, session) {
     # tabsetpanel should always begin on the population graph:
     updateTabsetPanel(session, "tabset", selected = "Population Graphs")
     updateRadioButtons(session, "initialGraphType", selected = "pop")
+    updateRadioButtons(session, "initialGraphX", selected = "time")
+    updateRadioButtons(session, "graphX", selected = "time")
     updateSliderInput(session, "mom", value = 0)
     updateSliderInput(session, "momG", value = 0)
   })
@@ -102,6 +126,8 @@ function(input, output, session) {
       rv$beginning <- FALSE
       updateTabsetPanel(session, "tabset", selected = "Population Graphs")
       updateRadioButtons(session, "initialGraphType", selected = "pop")
+      updateRadioButtons(session, "initialGraphX", selected = "time")
+      updateRadioButtons(session, "graphX", selected = "time")
     }
   })
 
@@ -264,8 +290,10 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
     rv$sim <- rv$sim + 1
     output$pop <- renderPlot({
       rv$sim
+      type <- input$graphType
+      typeX <- input$graphX
       disp <- 1 #this used to vary with input$display
-      if(input$graphType == "pop") {
+      if(type == "pop"  && typeX == "time") {
         popGraph(m
                 , b
                 , d
@@ -273,7 +301,7 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
                 , input$totalTime
                 , disp)
       }
-      else if(input$graphType == "rate") {
+      else if(type == "rate" && typeX == "time") {
         plot(x = 1:input$totalTime
              , y = growthRate(theoretical(1:input$totalTime)
                               , b = b
@@ -283,7 +311,7 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
              , ylab = "Growth Rate"
              , xlab = "Time (Insert Units here)")
       }
-      else if(input$graphType == "relRate") {
+      else if(type == "relRate"  && typeX == "time") {
         # TODO: make a function for computing per-capita growth rate
         plot(x = 1:input$totalTime
              , y = growthRate(theoretical(1:input$totalTime)
@@ -294,8 +322,20 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
              , ylab = "Per-Capita Growth Rate"
              , xlab = "Time (Insert Units here)")
       }
-      else {
-        # WE HAVE PROBLEMS
+      else if (type == "rate" && typeX == "pop") {
+        results <- growthRatePops(input$n_0, b, d, m)
+        plot(x = results$pops
+             , y = results$rates
+             , type = "l"
+             , ylab = "Growth Rate"
+             , xlab = "Population Size")
+      } else {
+        results <- growthRatePops(input$n_0, b, d, m)
+        plot(x = results$pops
+             , y = results$rates/results$pops
+             , type = "l"
+             , ylab = "Per-Capita Growth Rate"
+             , xlab = "Population Size")
       }
     })
   })
@@ -325,7 +365,7 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
       d <- input$d
       m <- input$m
       times <- 1:endTime
-      if(input$initialGraphType == "pop") {
+      if(input$initialGraphType == "pop"  && input$initialGraphX == "time") {
         plot(times, theoretical(times), type = "l"
              , col = "red"
              , ylab = "Population Size"
@@ -334,7 +374,7 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
           lines(x = c(0,endTime), y = c(m,m), col = "blue")
         }
       }
-      else if(input$initialGraphType == "rate") {
+      else if(input$initialGraphType == "rate" && input$initialGraphX == "time")  {
         plot(x = 1:input$totalTime
              , y = growthRate(theoretical(1:input$totalTime)
                               , b = b
@@ -344,7 +384,7 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
              , ylab = "Growth Rate"
              , xlab = "Time (Insert Units here)")
       }
-      else if(input$initialGraphType == "relRate") {
+      else if(input$initialGraphType == "relRate" && input$initialGraphX == "time") {
         plot(x = 1:input$totalTime
              , y = growthRate(theoretical(1:input$totalTime)
                               , b = b
@@ -354,15 +394,28 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
              , ylab = "Growth Rate"
              , xlab = "Time (Insert Units here)")
       }
-      else {
-        # WE HAVE PROBLEMS
+      else if (input$initialGraphType == "rate"  && input$initialGraphX == "pop") {
+        results <- growthRatePops(input$n_0, b, d, m)
+        plot(x = results$pops
+             , y = results$rates
+             , type = "l"
+             , ylab = "Growth Rate"
+             , xlab = "Population Size")
+      } else if (input$initialGraphType == "relRate" && input$initialGraphX == "pop") {
+        results <- growthRatePops(input$n_0, b, d, m)
+        plot(x = results$pops
+             , y = results$rates/results$pops
+             , type = "l"
+             , ylab = "Per-Capita Growth Rate"
+             , xlab = "Population Size")
       }
     })
   })
 
   output$initialDiscuss <- renderText({
     type <- input$initialGraphType
-    if (type == "pop")  {
+    typeX <- input$initialGraphX
+    if (type == "pop" && typeX == "time")  {
       HTML(
       "<h2>Explanation</h2> <div><p>There can be up to two lines on the graph. </p>
             <ol><li>The <font color='red'>red</font> line represents the population
@@ -373,21 +426,30 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
                   relevant. It is not relevant when the minimum death rate is
                   at least as big as the maximum birth rate.</li>
             </ol></div>")
-    } else if (type == "rate") {
+    } else if (type == "rate" && typeX == "time") {
       HTML(
         "<h2>Explanation</h2> <div><p>The curve above represents the population 
         growth-rate over time, based on the selected parameters.</p></div>")
-    } else {
+    } else if (type == "relRate" && typeX == "time") {
       HTML(
         "<h2>Explanation</h2> <div><p>The curve above represents the <em>per-capita</em>
         population growth-rate.  It's the growth rate at a given time,
         divided by the population at that time.</p></div>")
+    } else if (type == "rate" && typeX == "pop") {
+      HTML(
+        "<h2>Explanation</h2> <div><p>The curve above represents the population 
+        growth-rate as a function of population size, based on the selected parameters.</p></div>")
+    } else {
+      HTML(
+        "<h2>Explanation</h2> <div><p>The curve above represents the per-cpita population 
+        growth-rate as a function of population size, based on the selected parameters.</p></div>")
     }
       })
 
 output$discuss <- renderText({
   type <- input$graphType
-  if (type == "pop") {
+  typeX <- input$graphX
+  if (type == "pop" && typeX == "time") {
     HTML("
     <h2>Explanation</h2>
     <div><p>There can be up to three lines on the graph. </p>
@@ -401,15 +463,24 @@ output$discuss <- renderText({
     least as big as the maximum birth rate.</li>
   </ol>
 </div>")
-  } else if ( type == "rate" ) {
+  } else if ( type == "rate" && typeX == "time") {
     HTML(
       "<h2>Explanation</h2> <div><p>The curve above represents the population 
       growth-rate over time, based on the selected parameters.</p></div>")
-  } else {
+  } else if (type == "relRate" && typeX == "time") {
     HTML(
       "<h2>Explanation</h2> <div><p>The curve above represents the <em>per-capita</em>
         population growth-rate.  It's the growth rate at a given time,
         divided by the population at that time.</p></div>")
+  } else if (type == "rate" && typeX == "pop") {
+    HTML(
+      "<h2>Explanation</h2> <div><p>The curve above represents the population growth-rate.
+        It's plotted as a function of population size.</p></div>") 
+  } else {
+    HTML(
+      "<h2>Explanation</h2> <div><p>The curve above represents the <em>per-capita</em>
+      population growth-rate:  the growth rate at a given population,
+      divided by the population.  It's plotted s a function of population size.</p></div>")
     }
   
     
@@ -539,8 +610,7 @@ output$discuss <- renderText({
            , ylab = ""
            , xlim = c(0,1)
            , ylim = c(0,1))
-      rect(par("usr")[1], par("usr")[3], par("usr")[2],
-           par("usr")[4], col = color)
+      rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = color)
       points(
         xa, ya, cex = 0.5, pch = 19
       )
@@ -631,7 +701,7 @@ output$discuss <- renderText({
                 " rise, foxes and malnutrition become more likely as causes of",
                 " death, and death by lawnmower becomes rare.  (People",
                 " usually don't mow when there is very little grass.)",
-                "  When carrying capcity is not relvant then malnutrition",
+                "  When carrying capcity is not relevant then malnutrition",
                 " is not a cause of death and death by lawnmower and by fox",
                 " are considered equally likely."))
     }

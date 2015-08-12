@@ -48,11 +48,19 @@ navbarPage(
   mainPanel(
     conditionalPanel(
       condition = "input.goButton == 0 || output.beginning == true",
-      radioButtons("initialGraphType", "Y-Axis shows Population: ",
+      div(style = "display:inline-block; width: 60%",
+        radioButtons("initialGraphType", "Y-Axis shows Population: ",
                    choices = c("Size" = "pop",
                                "Growth Rate" = "rate",
                                "Per-capita Growth Rate" = "relRate"),
-                   inline = TRUE),
+                   inline = TRUE)),
+      div(style = "display:inline-block; width: 30%",
+          conditionalPanel(condition = 'input.initialGraphType != "pop"',
+                        radioButtons("initialGraphX", "X-Axis shows: ",
+                          choices = c("Time" = "time",
+                                    "Population" = "pop"),
+                          inline = TRUE))
+                       ),
       plotOutput("initialGraph"),
       htmlOutput("initialDiscuss")
     ),
@@ -61,11 +69,19 @@ navbarPage(
       tabsetPanel(
       tabPanel(
         title = "Population Graphs",
-        radioButtons("graphType", "Y-Axis shows Population: ",
-                     choices = c("Size" = "pop",
-                                 "Growth Rate" = "rate",
-                                 "Per-capita Growth Rate" = "relRate"),
-                     inline = TRUE),
+        div(style = "display:inline-block; width: 60%",
+            radioButtons("graphType", "Y-Axis shows Population: ",
+                         choices = c("Size" = "pop",
+                                     "Growth Rate" = "rate",
+                                     "Per-capita Growth Rate" = "relRate"),
+                         inline = TRUE)),
+        div(style = "display:inline-block; width: 30%",
+            conditionalPanel(condition = 'input.graphType != "pop"',
+                             radioButtons("graphX", "X-Axis shows: ",
+                                          choices = c("Time" = "time",
+                                                      "Population" = "pop"),
+                                          inline = TRUE))
+        ),
         plotOutput("pop"),
         htmlOutput('discuss')
       ),
