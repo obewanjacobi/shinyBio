@@ -183,8 +183,8 @@ outputOptions(output, "currentPopGY", suspendWhenHidden = FALSE)
       dt <- d
     }
 
-    st <<- 8*sqrt(bt)/sqrt(b) # averate size of litters
-    lt <<- sqrt(bt)*sqrt(b)/8 # rate of litters
+    st <<- 8*bt/b  # expected value of litter-size
+    lt <<- b/8  # per-capita litter rate
     Lt <<- rpois(n = 1, lambda = lt*n_t) # number of litters based on litter
     # rate
     littersizes[[t]] <<- rpois(Lt, lambda = st) # produce sizes of each litter
@@ -647,17 +647,17 @@ output$discuss <- renderText({
     }
     else {
       num <- rv$littersizes[[input$mom]]
+      num <- num[num > 0]
       if (length(num) > 0) {
-        mat <- matrix(num, ncol = length(num))
-        colnames(mat) <- paste0("Litter ",1:length(num))
-        rownames(mat) <- "Litter Sizes"
-        out <- mat
+        df <- data.frame(length(num), mean(num))
+        names(df) <- c("Number of Litters", "Mean Litter Size")
+        out <- df
       } else {
         out <- NULL
         }
     }
     out
-  })
+  }, include.rownames = FALSE)
   
   # if relevant, create a table in graveyard tab to show where we stand with respect 
   # to carrying capacity
