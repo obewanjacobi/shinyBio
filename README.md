@@ -3,7 +3,7 @@ Jacob Townson & Andrew Giles
 July 21, 2015  
 
 # Overview
-This app works with the math behind an evolution and ecology course. It is a joint project between Jacob Townson and Andrew Giles of Georgetown College for a research project. The app is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for its actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the *Population Size* tab. Below we will explain the purpose and uses of the rest of the tabs, as well as the meaning behind the variables input by the user in the sidebar. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at <a href = "https://github.com/agiles231/shinyBio" target = "_blank"> this link. </a>
+This app works with the math behind an evolution and ecology course. It is a joint project between Jacob Townson and Andrew Giles of Georgetown College for a research project. The app is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for its actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the *Population Size* tab. Below we will explain the purpose and uses of the rest of the tabs, as well as the meaning behind the variables input by the user in the sidebar. 
 
 # Sidebar
 
