@@ -137,6 +137,14 @@ function(input, output, session) {
 
   outputOptions(output, "beginning", suspendWhenHidden = FALSE)
   
+  observeEvent(input$initialGraphType,{
+    updateRadioButtons(session, "initialGraphX", selected = "time")
+  })
+  
+  observeEvent(input$graphType,{
+    updateRadioButtons(session, "graphX", selected = "time")
+  }) 
+  
 observe({
   time <- input$mom
   if (is.null(time) || time == 0) {
