@@ -1,5 +1,8 @@
 library(shiny)
 
+# repeated info:
+max.n_0 <- 1000
+
 # function to compute field color:
 field.color <- function(m, n) {
   prop <- n/m
@@ -69,8 +72,8 @@ function(input, output, session) {
       mal <- 0.5*(1 - lm)
     } else {
       mal <- 0
-      lm <- 0.5
-      fox <- 0.5
+      lm <- 0.10^(n/(1.2*max.n_0))
+      fox <- 1 - lm
     }
     c(lm, fox, mal)
   }
@@ -702,16 +705,15 @@ output$discuss <- renderText({
     if (input$helpDeathTallies > 0) {
     info(paste0("A rabbit can die in any one of three ways:  it can be run",
                 " over by a lawnmower, killed by a fox, or die from malnutrition.",
-                "  When the population is low, the field has a lot of grass, so",
-                " lawnmowers run frequently.  On the other hand few foxes patrol",
-                " the area when the population is low, and since there is plenty",
-                " of grass death by starvation is unlikely.  As the population",
-                " rise, foxes and malnutrition become more likely as causes of",
-                " death, and death by lawnmower becomes rare.  (People",
-                " usually don't mow when there is very little grass.)",
+                "  When carrying capacity is relevant and population is low,",
+                " there is plenty of grass and few foxes patrol the field,",
+                " so foxes and malnutrion will be unlikely as causes of death.",
+                " As the population",
+                " rises, fox-death and malnutrition-death become more likely",
+                " death by lawnmower becomes less likely.",
                 "  When carrying capcity is not relevant then malnutrition",
-                " is not a cause of death and death by lawnmower and by fox",
-                " are considered equally likely."))
+                " is not a cause of death  and death by fox is unlikely at",
+                " low population size and more likely at high population size."))
     }
     })
   
