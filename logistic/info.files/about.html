@@ -48,7 +48,37 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>This app works with the math behind an evolution and ecology course. It is a joint project between Jacob Townson and Andrew Giles of Georgetown College for a research project. The app is used to show a population growth rate when there is a specific carrying capacity, birth rate, and death rate. Currently, the app is not finished for its actual purpose, which is to help teach the evolution and ecology class, however, the main graph used to explain the growth is given under the <em>Population Size</em> tab. Below we will explain the purpose and uses of the rest of the tabs, as well as the meaning behind the variables input by the user in the sidebar. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at <a href="https://github.com/agiles231/shinyBio" target="_blank"> this link. </a></p>
+<p>This app works with the math behind an evolution and ecology course. It is a joint project between Jacob Townson and Andrew Giles of Georgetown College for a research project. The app is used to show/simulate a population’s growth when there is a specific carrying capacity, birth rate, and death rate. The app’s purpose is to help teach an evolution and ecology class. Below we will explain the purpose and uses of the nav bar, the tabs, the model we used, as well as the meaning behind the variables input by the user in the sidebar. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at <a href="https://github.com/agiles231/shinyBio" target="_blank"> this link. </a></p>
+</div>
+<div id="sidebar" class="section level1">
+<h1>Sidebar</h1>
+<ul>
+<li><p><strong>Time</strong>: This lets you choose the time value displayed on the x axis of the graph under the <em>Population Size</em> tab.</p></li>
+<li><p><strong>Initial Population</strong>: This lets you choose the initial population, or the y intercept under the <em>Population Size</em> tab.</p></li>
+<li><p><strong>Birth Rate</strong>: This lets you choose the maximum birth rate for the population. The effective birth rate will change according to how close the population gets to the carrying capacity.</p></li>
+<li><p><strong>Death Rate</strong>: This lets you choose the minimum death rate for the population. The effective death rate will change according to how close the population gets to the carrying capacity.</p></li>
+<li><p><strong>Carrying Capacity</strong>: This lets you choose the carrying capacity for a population. It could be thought of as the amount of resources a population has to survive/thrive. Note, carrying capacity option is removed if death rate is above birth rate because a carrying capacity doesn’t affect this given situation.</p></li>
+<li><p><strong>Setting the Seed</strong>: This check box gives the user the option to set the seed of the simulated values. By setting the seed, the user can get the same outcomes for every time the <em>Simulate</em> button is pushed while the seed is set to that specific value. When the box is unchecked, the option goes away and the simulation is random again.</p></li>
+<li><p><strong>Simulate</strong>: This button runs the app with a new simulation with the given input parameters.</p></li>
+</ul>
+</div>
+<div id="population-graphs" class="section level1">
+<h1>Population Graphs</h1>
+<p>This section is the main portion of the application. This is the only tab available before the <strong>Simulate</strong> button is hit. This tab displays the graphs used to convey information on the population growth. Before the <strong>Simulate</strong> button is hit, the graph displays only the theoretical results. If the <em>Size</em> button is chosen, then the population size graph will be shown. This graph shows the growth of a population over an arbitrary amount of time as it approaches it’s carrying capacity. Here the population is conveyed by the red line and the carrying capacity is shown in blue. The next option under this tab is to plot the growth rate. Here the growth rate is plotted against either time or the population itself. This switching between what is plotted on the x axis can help to teach students how the growth rate changes, and makes it easier to understand through a look at it from both perspectives. Similar to this structure, the next option under this tab is to plot the per capita growth rate. Again, the user can choose what to put on the x axis, either time or population to give the user an easier way of understanding depending on their perspective.</p>
+<p>The only change that is made under this tab by hitting the <strong>Simulate</strong> button is that a simulated population is displayed on the <em>Size</em> graph. This is conveyed by a black line. This simulated line is made using our model and with the help of the rpois() function in R. For more information on the model and how the simulation works, skip down to the <strong>Model Description</strong> Section of the Help File.</p>
+</div>
+<div id="field" class="section level1">
+<h1>Field</h1>
+<p>This portion of the application displays a model for the field, which is a hypothetical situation for the simulated data shown in the <em>Population Graphs</em> tab. Here there are two plots next to each other, with an animation bar above them. The two plots are used to show the total population at the time that is shown in the animation slider. When the play button is hit below the slider, the slider will move from time value to the next time value for every second or so. Whatever the simulated population is at that time, that is the total number of dots on the plots. The plot on the left shows the adults in the field foraging for food for their children.</p>
+<p>The plot on the right shows the newborn rabbits in what is cleverly called the “Warren”. Here, the litters are grouped closely together using a plotting system we made involving keeping litters close together using the rnorm() function. In the field function, you may also notice the color of the graph changing over time. If there is a carrying capacity used in the simulation, then the color of the graph will change. The idea is that if the rabbits are far away from the carrying capacity, then the field will be more green. On the other hand, if the population is above, close to, or on the carrying capacity, they will naturally be running out of resources, making the field a more brown and barren color. This makes the app more interactive, and maybe fun for the students to learn the concepts, and actually get the feeling that they are seeing the changes in the environment.</p>
+<p>Below both graphs, a table will be displayed if any rabbits were born and added to the Warren. The table will show the numbr of litters at that time, and also show the average size of the litters born.</p>
+<p>One final feature of this tab happens when the simulated population dies out. You as the user will have to find out what happens then for yourself.</p>
+</div>
+<div id="graveyard" class="section level1">
+<h1>Graveyard</h1>
+<p>This portion of the application is similar to the field in that it is a model used to present hypothetical information. It uses the simulated population to show the deaths at each time. It is uses a similar format to the field in that it uses an animation slider to show the graveyard over time.</p>
+<p>This tab also gives the rabbits a cause of death, again, to give the user a feeling of the whole situation being more real. The deaths are divided into three categories, death by lawnmower, death by foxes, and death by malnutrition. The death by lawnmowers is more likely to happen when the population is small, and the death by foxes and malnutrition’s likelihood go up as the population grows. The app also has an info link to tell the user this explanation. There is also a table to show the population and the carrying capacity at the bottom, just to remind the user to give more of a reference on the amount of deaths at that certain time.</p>
+<p>One final feature of this tab happens when the simulated population dies out again. You as the user will have to find out what happens then for yourself.</p>
 </div>
 <div id="model-description" class="section level1">
 <h1>Model Description</h1>
@@ -74,41 +104,12 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>Now we want to find what the <span class="math">\(C\)</span> value is. In order to do this, let <span class="math">\(t=0\)</span> so <span class="math">\(n=n_0\)</span>. After simplifying this equation for <span class="math">\(C\)</span>, we get that <span class="math">\(C = \frac{1}{m}(ln(\frac{n_0}{m-n_0}))\)</span>. This gives us that <span class="math">\[\frac{1}{m} ln(\frac{n}{m-n}) = \frac{b-d}{m}t + \frac{1}{m}ln(\frac{n_0}{m-n_0})\]</span></p>
 <p>Finally we need to make n the outcome of the equation. This mostly just involved some elementary algebra, which lead us to get that <span class="math">\[n = \frac{m}{1+(\frac{m-n_0}{n_0})e^{(d-b)t}}\]</span> if <span class="math">\(m &gt; n_0\)</span>. This was our equation for the theoretical model. However, we realized later that you cannot take the natural log of a negative number, so to account for this, we put everything in the natural logs to be the absolute value. To account for this, we found that <span class="math">\[n= \frac{-m}{\frac{n_0-m}{n_0}e^{(d-b)t}-1}\]</span> if <span class="math">\(n_0 &gt; m\)</span>. This is our model for the theoretical graph.</p>
 <p>After some research, our group found that this model follows the theoretical equation for biologists as well. Their equation was <span class="math">\[N(t) = \frac{K}{1+(\frac{K-N(0)}{N(0)})e^{-rt}}\]</span> found by Roughgarden(1979), Emlen(1984), and Neuhauser(2000). This relates to our equation because <span class="math">\(N(t) = n\)</span>, <span class="math">\(K=m\)</span>, <span class="math">\(N(0)=n_0\)</span>, and <span class="math">\(r = b-d\)</span>.</p>
-</div>
-</div>
-<div id="sidebar" class="section level1">
-<h1>Sidebar</h1>
-<ul>
-<li><p><strong>Choose Plot</strong>: This chooses whether you want to display the theoretical graph, the simulated data, or both under the <em>Population Size</em> tab.</p></li>
-<li><p><strong>Extent of Time</strong>: This lets you choose the time value displayed on the x axis of the graph under the <em>Population Size</em> tab.</p></li>
-<li><p><strong>Initial Population</strong>: This lets you choose the initial population, or the y intercept under the <em>Population Size</em> tab.</p></li>
-<li><p><strong>Max Birth Rate</strong>: This lets you choose the maximum birth rate for the population. The effective birth rate will change according to how close the population gets to the carrying capacity.</p></li>
-<li><p><strong>Min Death Rate</strong>: This lets you choose the minimum death rate for the population. The effective death rate will change according to how close the population gets to the carrying capacity.</p></li>
-<li><p><strong>Carrying Capacity</strong>: This lets you choose the carrying capacity for a population. It could be thought of as the amount of resources a population has to survive/thrive. Note, carrying capacity option is removed if death rate is above birth rate because a carrying capacity doesn’t affect this given situation.</p></li>
-<li><p><strong>Setting the Seed</strong>: This check box gives the user the option to set the seed of the simulated values. By setting the seed, the user can get the same outcomes for every time the <em>Simulate</em> button is pushed while the seed is set to that specific value. When the box is unchecked, the option goes away and the simulation is random again.</p></li>
-<li><p><strong>Simulate</strong>: This button runs the app with a new simulation with the given input parameters.</p></li>
-</ul>
-</div>
-<div id="population-size" class="section level1">
-<h1>Population Size</h1>
-<p>This section is the main portion of the application. This tab displays the chosen graphs from the sidebar and the carrying capacity line (if applicable) on a single graph. This graph can be used to explain to students how the population grows theoretically, and the simulated line shows how the situation may actually pan out in reality. If the maximum birth rate is higher than the minimum death rate, both the chosen graphs and the carrying capacity will be displayed. If the minimum death rate is higher than the maximum birth rate, the carrying capacity will not be displayed. In order to run the simulation, and print the new graph with the given inputs from the sidebar, the user must press the simulate button at the bottom of the sidebar. Some more information is given below the graph in the tab.</p>
-</div>
-<div id="growth-rate" class="section level1">
-<h1>Growth Rate</h1>
-<p>This portion of the app is not currently finished. More details will come on it later.</p>
-</div>
-<div id="field" class="section level1">
-<h1>Field</h1>
-<p>This portion of the application displays a model for the field, a hypothetical for the simulated data shown in the <em>Population Size</em> tab. The idea is that this graph presents a field that rabbits (the population) live in, and if you hit the play button or choose a time on the slider within the tab, you can watch the population grow and shrink within the range of the input of the <em>Extent of Time</em> variable.</p>
-</div>
-<div id="graveyard" class="section level1">
-<h1>Graveyard</h1>
-<p>This portion of the application is similar to the field in that it is a model used to present hypothetical information. It works in parallel to the field model, but instead of growing and shrinking, it just grows with the death from the simulation. So for every “rabbit” that dies in the population, a gravestone is added to the graveyard.</p>
 <center>
 <h1>
 Thanks For Using Our App!
 </h1>
 </center>
+</div>
 </div>
 
 
