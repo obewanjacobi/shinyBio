@@ -103,13 +103,11 @@ After some research, our group found that this model follows the theoretical equ
 
 # Bibliography
 
--
+-Alstad, Don. *Basic Populus Models of Ecology*. Upper Saddle River, NJ: Prentice Hall, 2001. Print. This book helped us in making our model, and is reflected perfectly in our final model.
 
--
+-Matloff, Norman S. *The Art of R Programming: A Tour of Statistical Software Design*. San Francisco, Calif: No Starch, 2011. Print. This book was used to help me learn about some of the coding in R Studio.
 
--
-
--
+-Wickham, Hadley. *Advanced R*. N.p.: CRC, 2015. Print. This book was used to help me learn about some of the coding in R Studio.
 
 
 
