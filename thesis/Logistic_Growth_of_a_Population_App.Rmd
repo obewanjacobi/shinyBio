@@ -1,7 +1,7 @@
 ---
-title: "About"
-author: "Jacob Townson & Andrew Giles"
-date: "July 21, 2015"
+title: "Logistic Growth of a Population App"
+author: "Jacob Townson"
+date: "October 7, 2015"
 output:
   pdf_document: default
   html_document:
@@ -9,8 +9,11 @@ output:
     theme: null
 ---
 
-# Overview
-This app works with the math behind an evolution and ecology course. It is a joint project between Jacob Townson and Andrew Giles of Georgetown College for a research project. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach an evolution and ecology class. Below we will explain the purpose and uses of the nav bar, the tabs, the model we used, as well as the meaning behind the variables input by the user in the sidebar. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at <a href = "https://github.com/agiles231/shinyBio" target = "_blank"> this link. </a>
+# Research Question
+
+Over the summer of 2015, I worked in a research group on Georgetown College's campus with Dr. White and Andrew Giles. Originally, we were working on learning about Data Science, and began taking classes in a Data Science Specialization Course online. After learning some of the material, Dr. White recommended we work on shiny apps, and make a succesful shiny app by the end of the summer. We found a project to do with the help of Dr. Griffith, and made a shiny app for his evolution and ecology course at Georgetown. So the question arose, how well will this app work in the classroom setting with biology students? In other words, does using an app rather than learning the full and heavy math behind the model help students more, or does it mask too much of the details?
+
+As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach an evolution and ecology class. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at https://github.com/agiles231/shinyBio. Or to see the app itself, visit https://obewanjacobi.shinyapps.io/logistic.
 
 # Sidebar
 
