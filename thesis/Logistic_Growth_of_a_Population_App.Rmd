@@ -13,13 +13,25 @@ output:
 
 Over the summer of 2015, I worked in a research group on Georgetown College's campus with Dr. White and Andrew Giles. Originally, we were working on learning about Data Science, and began taking classes in a Data Science Specialization Course online. After learning some of the material, Dr. White recommended we work on Shiny apps, and make a successful Shiny app by the end of the summer. We found a project to do with the help of Dr. Griffith, and made a Shiny app for his evolution and ecology course at Georgetown. So the question arose, how well will this app work in the classroom setting with biology students? In other words, does using an app rather than learning the full and heavy math behind the model help students more, or does it mask too much of the details?
 
-As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach an evolution and ecology class. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at https://github.com/obewanjacobi/shinyBio/tree/master. Or to see the app itself, visit https://obewanjacobi.shinyapps.io/logistic.
+As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach an evolution and ecology class. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our GitHub repository for this project at https://github.com/obewanjacobi/shinyBio/tree/master. Or to see the app itself, visit https://obewanjacobi.shinyapps.io/logistic.
 
 # Significance
 
 Using technology in the classroom has been an up and coming subject in the past few years. Schools all around the US and even out of the country have begun bringing in new tech to try and help enhance the learning experience to make it easier for students. So, the reason that my question matters is because if apps like these are easy to make, if they are helpful, then we can start integrating them into classes more regularly. Students wouldn't be required to try and understand the gory details of a subject that don't apply to them, unless they really want to. The teacher can easily regulate what is shown at one certain time versus another. When asked, future teachers prefer having apps because it helps to get all of the students involved in the learning process, as well as organize thoughts to help manage the class and how they learn.
 
+Studies show especially for the subject of evolution and ecology (the course that this app was made for), because understanding the theory behind many things requires the conceptualization of some fairly difficult mathematics, biology students have difficulty learning it. People are looking for new ways to teach this subject, and many others as well. Using an app like this one could make a huge difference to students everywhere. Other studies show that the entrance of apps and applets into the classroom have actually increased results on tests. So making these apps more integrated into the way we teach could actually help students learn easier.
+
 # Methodology
+
+## Tools
+
+Before going into the design and models used in the app, one must first understand what R and RStudio are. R is a coding language and environment, mostly used for statistical purposes. I won't go into the entire history of how the language was made, but it is based off of the S language. When I say that it's a language and environment, I mean that it is a language in that R is a type of coding language, and it's an environment because it is a system of tools rather than a group of seemingly unrelated tools as is the case with some other languages. It has a large range of graphical, and many different kinds of statistical abilities, thus why it is extremely useful for this project.
+
+RStudio is the IDE, or integrated development environment for R. What that means is that RStudio can be used to make R code and run it, while also helping along the way by attempting to help correct errors when they are made. This is where our group did all of our coding with R to make the app. 
+
+The other tools that were essential to our project were git and GitHub. Git is a version control system, which means that it is a method used for keeping track of the versions made of software. We used git to handle when we would make changes to our app overtime. Having version control is important so that if something went wrong, we could trace it back to a certain version that we had made. 
+
+GitHub is used for similar things, however it has a nicer user interface, and is on the internet for everyone to see. So when we would make an updated version of the app and commit it using git, we would then "push" our changes to GitHub so that the rest of the group could get the newest version of the app. This helped so that the entire group was on the same page of where the app was in development. If you would like to see the GitHub repository with all of our work, please visit https://github.com/obewanjacobi/shinyBio/tree/master. Feel free to make an account as well, that way you can comment on any of our work by using the "Issues" button on GitHub. This helps us so that we can make any necessary changes as soon as possible.
 
 ## App Design
 
@@ -118,6 +130,10 @@ Using this measurement, we will be able to see if having technology in the class
 -Alstad, Don. *Basic Populus Models of Ecology*. Upper Saddle River, NJ: Prentice Hall, 2001. Print. This book helped us in making our model, and is reflected perfectly in our final model.
 
 -Matloff, Norman S. *The Art of R Programming: A Tour of Statistical Software Design*. San Francisco, Calif: No Starch, 2011. Print. This book was used to help me learn about some of the coding in R.
+
+-McDaniel, Scott N., and Lisa B. Green. "Using Applets and Video Instruction to Foster Students' Understanding of Sampling Variability." *EScholarship*. N.p., 2012. Web. 10 Oct. 2015. This article was used to help with the significance section.
+
+-Serra, H. & Godoy, W. (2011). Using Ecological Modeling to Enhance Instruction in Population Dynamics and to Stimulate Scientific Thinking. *Creative Education*, 2, 83-90. doi: 10.4236/ce.2011.22012. This article was used to help with the significance section.
 
 -Wickham, Hadley. *Advanced R*. N.p.: CRC, 2015. Print. This book was used to help me learn about some of the coding in R.
 
