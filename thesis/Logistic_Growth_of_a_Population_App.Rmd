@@ -13,7 +13,7 @@ output:
 
 Over the summer of 2015, I worked in a research group on Georgetown College's campus with Dr. White and Andrew Giles. Originally, we were working on learning about Data Science, and began taking classes in a Data Science Specialization Course online. After learning some of the material, Dr. White recommended we work on Shiny apps, and make a successful Shiny app by the end of the summer. We found a project to do with the help of Dr. Griffith, and made a Shiny app for his evolution and ecology course at Georgetown. So the question arose, how well will this app work in the classroom setting with biology students? In other words, does using an app rather than learning the full and heavy math behind the model help students more, or does it mask too much of the details?
 
-As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach an evolution and ecology class. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at https://github.com/agiles231/shinyBio. Or to see the app itself, visit https://obewanjacobi.shinyapps.io/logistic.
+As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach an evolution and ecology class. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at https://github.com/obewanjacobi/shinyBio/tree/master. Or to see the app itself, visit https://obewanjacobi.shinyapps.io/logistic.
 
 # Significance
 
@@ -43,9 +43,9 @@ Before going deep into the app design, I invite you once more to experience the 
 
 ### Population Graphs
 
-This section is the main portion of the application. This is the only tab available before the **Simulate** button is hit. This tab displays the graphs used to convey information on the population growth. Before the **Simulate** button is hit, the graph displays only the theoretical results. If the *Size* button is chosen, then the population size graph will be shown. This graph shows the growth of a population over an arbitrary amount of time as it approaches it's carrying capacity. Here the population is conveyed by the red line and the carrying capacity is shown in blue. The next option under this tab is to plot the growth rate. Here the growth rate is plotted against either time or the population itself. This switching between what is plotted on the x axis can help to teach students how the growth rate changes, and makes it easier to understand through a look at it from both perspectives. Similar to this structure, the next option under this tab is to plot the per capita growth rate. Again, the user can choose what to put on the x axis, either time or population to give the user an easier way of understanding depending on their perspective.
+This section is the main portion of the application. This is the only tab available before the **Simulate** button is hit. This tab displays the graphs used to convey information on the population growth. Before the **Simulate** button is hit, the graph displays only the theoretical results. These theoretical results are what would happen "on average". This means that if we can imagine an infinite amount of populations were observed, the average would look like our theoretical results. If the *Size* button is chosen, then the population size graph will be shown. This graph shows the growth of a population over an arbitrary amount of time as it approaches it's carrying capacity. Here the population is conveyed by the red line and the carrying capacity is shown in blue. The next option under this tab is to plot the growth rate. Here the growth rate is plotted against either time or the population itself. This switching between what is plotted on the x axis can help to teach students how the growth rate changes, and makes it easier to understand through a look at it from both perspectives. Similar to this structure, the next option under this tab is to plot the per capita growth rate. Again, the user can choose what to put on the x axis, either time or population to give the user an easier way of understanding depending on their perspective.
 
-The only change that is made under this tab by hitting the **Simulate** button is that a simulated population is displayed on the *Size* graph. This is conveyed by a black line. This simulated line is made using our model and with the help of the rpois() function in R. For more information on the model and how the simulation works, skip down to the **Model Description** Section of the Help File.
+The only change that is made under this tab by hitting the **Simulate** button is that a simulated population is displayed on the *Size* graph. This is conveyed by a black line. This simulated line is made using our model and with the help of the rpois() function in R. So this creates a possible outcome for a single population to show what it could look like over a certain given time. This is not the same thing as the theoretical graph, as the theoretical graph shows the "average" situation, whereas the simulated shows a possible situation for one group. For more information on the model and how the simulation works, skip down to the **Model Description** Section of the Help File.
 
 ### Field
 
@@ -57,6 +57,8 @@ Below both graphs, a table will be displayed if any rabbits were born and added 
 
 One final feature of this tab happens when the simulated population dies out. You as the user will have to find out what happens then for yourself. 
 
+This section of the app is important because we were tasked with giving visual representations that could be fun for the students, but also educational. One thing we were assigned is to attempt to make the students learn how to read graphs better. Because of this, we not only made the different graph settings in the population section, but we also made this section to make the students read a graph in which they can watch the population grow and decrease. This makes the experience more interactive and much more interesting for students.
+
 ### Graveyard
 
 This portion of the application is similar to the field in that it is a model used to present hypothetical information. It uses the simulated population to show the deaths at each time. It is uses a similar format to the field in that it uses an animation slider to show the graveyard over time. 
@@ -65,7 +67,7 @@ This tab also gives the rabbits a cause of death, again, to give the user a feel
 
 One final feature of this tab happens when the simulated population dies out again. You as the user will have to find out what happens then for yourself. 
 
-
+Similarly to how we made the *Field* section of the graph more interactive, we did the same with this section for the same purposes. We want these sections to make the user learn how to read graphs better, and to do so, we have tried to make a fun environment for the student to learn.
 
 ## Model Description
 
@@ -104,6 +106,12 @@ Now we want to find what the $C$ value is. In order to do this, let $t=0$ so $n=
 Finally we need to make n the outcome of the equation. This mostly just involved some elementary algebra, which lead us to get that $$n = \frac{m}{1+(\frac{m-n_0}{n_0})e^{(d-b)t}}$$ if $m > n_0$. This was our equation for the theoretical model. However, we realized later that you cannot take the natural log of a negative number, so to account for this, we put everything in the natural logs to be the absolute value. To account for this, we found that $$n= \frac{-m}{\frac{n_0-m}{n_0}e^{(d-b)t}-1}$$ if $n_0 > m$. This is our model for the theoretical graph. 
 
 After some research, our group found that this model follows the theoretical equation for biologists as well. Their equation was $$N(t) = \frac{K}{1+(\frac{K-N(0)}{N(0)})e^{-rt}}$$ found by Roughgarden(1979), Emlen(1984), and Neuhauser(2000). This relates to our equation because $N(t) = n$, $K=m$, $N(0)=n_0$, and $r = b-d$.
+
+## Measurement
+
+The final part of this project will take place in the spring of 2016 with the help of Dr. Griffith. We are currently working on making a before and after survey for the students of the class to take. This survey will help to quantify how helpful the app actually was to the class. The first survey will be taken before using the app, and the students will quantify how well they feel that they learned the subject. Then Dr. Griffith will introduce the app to the class and teach them how to use it. After using the app in class, the students will be presented with one more survey to help quantify how well they understand the subject after using the app. 
+
+Using this measurement, we will be able to see if having technology in the classroom such as applications like this one can truly be helpful and create a better environment for learning, and thus answer the big question stated at the beginning of this proposal: "does using an app rather than learning the full and heavy math behind the model help students more?"
 
 # Bibliography
 
