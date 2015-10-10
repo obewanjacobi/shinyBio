@@ -11,7 +11,7 @@ output:
 
 # Research Question
 
-Over the summer of 2015, I worked in a research group on Georgetown College's campus with Dr. White and Andrew Giles. Originally, we were working on learning about Data Science, and began taking classes in a Data Science Specialization Course online. After learning some of the material, Dr. White recommended we work on shiny apps, and make a succesful shiny app by the end of the summer. We found a project to do with the help of Dr. Griffith, and made a shiny app for his evolution and ecology course at Georgetown. So the question arose, how well will this app work in the classroom setting with biology students? In other words, does using an app rather than learning the full and heavy math behind the model help students more, or does it mask too much of the details?
+Over the summer of 2015, I worked in a research group on Georgetown College's campus with Dr. White and Andrew Giles. Originally, we were working on learning about Data Science, and began taking classes in a Data Science Specialization Course online. After learning some of the material, Dr. White recommended we work on Shiny apps, and make a successful Shiny app by the end of the summer. We found a project to do with the help of Dr. Griffith, and made a Shiny app for his evolution and ecology course at Georgetown. So the question arose, how well will this app work in the classroom setting with biology students? In other words, does using an app rather than learning the full and heavy math behind the model help students more, or does it mask too much of the details?
 
 As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach an evolution and ecology class. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our github repository for this project at https://github.com/agiles231/shinyBio. Or to see the app itself, visit https://obewanjacobi.shinyapps.io/logistic.
 
@@ -22,6 +22,8 @@ Using technology in the classroom has been an up and coming subject in the past 
 # Methodology
 
 ## App Design
+
+Before going deep into the app design, I invite you once more to experience the app for yourself so that the design process makes more sense. Again, the app can be found at https://obewanjacobi.shinyapps.io/logistic. Also, this proposal will be connected to the app under a tab labeled "About", so if you would like, you may read the proposal and follow along in the app yourself!
 
 ### Sidebar
 
@@ -51,7 +53,7 @@ This portion of the application displays a model for the field, which is a hypot
 
 The plot on the right shows the newborn rabbits in what is cleverly called the "Warren". Here, the litters are grouped closely together using a plotting system we made involving keeping litters close together using the rnorm() function. In the field function, you may also notice the color of the graph changing over time. If there is a carrying capacity used in the simulation, then the color of the graph will change. The idea is that if the rabbits are far away from the carrying capacity, then the field will be more green. On the other hand, if the population is above, close to, or on the carrying capacity, they will naturally be running out of resources, making the field a more brown and barren color. This makes the app more interactive, and maybe fun for the students to learn the concepts, and actually get the feeling that they are seeing the changes in the environment. 
 
-Below both graphs, a table will be displayed if any rabbits were born and added to the Warren. The table will show the numbr of litters at that time, and also show the average size of the litters born.
+Below both graphs, a table will be displayed if any rabbits were born and added to the Warren. The table will show the number of litters at that time, and also show the average size of the litters born.
 
 One final feature of this tab happens when the simulated population dies out. You as the user will have to find out what happens then for yourself. 
 
@@ -66,6 +68,8 @@ One final feature of this tab happens when the simulated population dies out aga
 
 
 ## Model Description
+
+For reference, this section is heavy in mathematics. I have attempted to simplify the wording and steps as much as possible, however there are some explanations that cannot change due to their importance in the topic. I advise the less technical readers to simply skim this section. Skimming this section won't take away too much from the main idea from the project. If you can attempt to follow the dense math parts though, it is actually quite interesting.
 
 ### Variables and their Relations
 
@@ -105,9 +109,9 @@ After some research, our group found that this model follows the theoretical equ
 
 -Alstad, Don. *Basic Populus Models of Ecology*. Upper Saddle River, NJ: Prentice Hall, 2001. Print. This book helped us in making our model, and is reflected perfectly in our final model.
 
--Matloff, Norman S. *The Art of R Programming: A Tour of Statistical Software Design*. San Francisco, Calif: No Starch, 2011. Print. This book was used to help me learn about some of the coding in R Studio.
+-Matloff, Norman S. *The Art of R Programming: A Tour of Statistical Software Design*. San Francisco, Calif: No Starch, 2011. Print. This book was used to help me learn about some of the coding in R.
 
--Wickham, Hadley. *Advanced R*. N.p.: CRC, 2015. Print. This book was used to help me learn about some of the coding in R Studio.
+-Wickham, Hadley. *Advanced R*. N.p.: CRC, 2015. Print. This book was used to help me learn about some of the coding in R.
 
 
 
