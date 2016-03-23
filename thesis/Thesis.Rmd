@@ -15,7 +15,7 @@ $\pagebreak$
 
 ## Question
 
-Over the summer of 2015, I worked in a research group on Georgetown College's campus with Dr. Homer White and fellow student Andrew Giles. Originally, we were working on learning about Data Science, and began taking classes in a Data Science Specialization Course online. After Andrew and I learned some of the material, Dr. White recommended we work on Shiny apps, and make a successful Shiny app by the end of the summer. We were approached by a biology professor, Dr. Griffith, with a project to make a shiny app for his Evolution and Ecology class at Georgetown. We chose to do this project and made a functional and easy to use app for the class. So the question arose, how well will this app work in the classroom setting with biology students? In other words, does using an app rather than learning the full and heavy math behind the model help students more, or does it mask too much of the details?
+Over the summer of 2015, I worked in a research group on Georgetown College's campus with Dr. Homer White and fellow student Andrew Giles. Originally, we were working on learning about Data Science, and began taking classes in a Data Science Specialization Course online. After Andrew and I learned some of the material, Dr. White recommended we work on Shiny apps, and make a successful Shiny app by the end of the summer. We were approached by a biology professor, Dr. Timothy Griffith, with a project to make a shiny app for his Evolution and Ecology class at Georgetown. We chose to do this project and made a functional and easy to use app for the class. So the question arose, how well will this app work in the classroom setting with biology students? In other words, does using an app rather than learning the full and heavy math behind the model help students more, or does it mask too much of the details?
 
 As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our GitHub repository for this project at https://github.com/obewanjacobi/shinyBio/tree/master. Or to see the app itself, visit https://obewanjacobi.shinyapps.io/logistic.
 
@@ -41,7 +41,37 @@ The other tools that were essential to our project were git and GitHub. Git is a
 
 GitHub is used for similar things, however it has a nicer user interface, and is on the internet for everyone to see. So when we would make an updated version of the app and commit it using git, we would then "push" our changes to GitHub so that the rest of the group could get the newest version of the app. This helped so that the entire group was on the same page of where the app was in development. If you would like to see the GitHub repository with all of our work, please visit https://github.com/obewanjacobi/shinyBio/tree/master. Feel free to make an account as well, that way you can comment on any of our work by using the "Issues" button on GitHub. This helps us so that we can make any necessary changes as soon as possible.
 
+## Mathematical Modeling
 
+Before one can understand the methods and reasoning behind each step of making this app, one must first understand where the math comes from that the app is based on. Our model relies on the use of differential equations and their solutions for the theoretical portion of the app, and probability and statistical models for the simulations made and run in the app. One last thing to understand before I delve into how we made the models used in the app is the notation and vairables that we used for the models themselves. Let us establish the following notation:
+
+- $n(t) =$ population at time $t$
+
+- $n_0 =$ initial population
+
+- $b =$ unconstrained birth rate (or the maximum birth rate)
+
+- $d =$ unconstrained death rate (or the minimum death rate)
+
+- $m =$ carrying capacity (max population that an environment can safely sustain)
+
+- $L_t =$ number of litters at time $t$
+
+- $S_t^i =$ size of the $i^{th}$ litter born at time $t$. These are independent of each other and of $L_t$
+
+- $B_t =$ number of births at time $t$
+
+### Differential Equations
+
+This section will explain how we found the differential equation that was used in the theoretical calculation of the population and its growth. We will begin with what we know, and expand from their using our previous definitions given.
+
+We know that the rate of population growth is going to be the the number of rabbits times the birth rate at that specific time minus the death rate at that specific time. To put this in terms of math, we would write it as $\frac{dn}{dt} = nb_t-d_t$ which simplifies to be $$\frac{dn}{dt} = n(\frac{b-d}{m})(m-n)$$ by our model. To solve this theoretical equation, we must use knowledge of differential equations. To start, we want to move all of the $n$ values to one side of the equation to make it easy to integrate. This leads us to get $$\int \frac{dn}{n(m-n)} = \int \frac{b-d}{m} dt = \frac{b-d}{m} t + C$$ where C is some constant that we will find later. So now we want to integrate the left side of the equation. In order to do this, we will need to use partial fractions to simplify it to make it easy to integrate. After doing this, we get that $\int(\frac{1}{mn}+\frac{1}{m^2-mn})dn = \frac{b-d}{m} t + C$. When we integrate this simpler integral and apply some natural log rules, we get that $$\frac{1}{m}(ln(\frac{n}{m-n})) = \frac{b-d}{m} t + C$$ 
+
+Now we want to find what the $C$ value is. In order to do this, let $t=0$ so $n=n_0$. After simplifying this equation for $C$, we get that $C = \frac{1}{m}(ln(\frac{n_0}{m-n_0}))$. This gives us that $$\frac{1}{m} ln(\frac{n}{m-n}) = \frac{b-d}{m}t + \frac{1}{m}ln(\frac{n_0}{m-n_0})$$ 
+
+Finally we need to make n the outcome of the equation. This mostly just involved some elementary algebra, which lead us to get that $$n = \frac{m}{1+(\frac{m-n_0}{n_0})e^{(d-b)t}}$$ if $m > n_0$. This was our equation for the theoretical model. However, we realized later that you cannot take the natural log of a negative number, so to account for this, we put everything in the natural logs to be the absolute value. To account for this, we found that $$n= \frac{-m}{\frac{n_0-m}{n_0}e^{(d-b)t}-1}$$ if $n_0 > m$. This is our model for the theoretical graph. 
+
+After some research, our group found that this model follows the theoretical equation for biologists as well. Their equation was $$N(t) = \frac{K}{1+(\frac{K-N(0)}{N(0)})e^{-rt}}$$ found by Roughgarden(1979), Emlen(1984), and Neuhauser(2000). This relates to our equation because $N(t) = n$, $K=m$, $N(0)=n_0$, and $r = b-d$.
 
 
 
