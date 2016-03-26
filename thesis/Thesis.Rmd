@@ -1,5 +1,5 @@
 ---
-title: "Thesis"
+title: "Logistic Growth of a Population App"
 author: "Jacob Townson"
 date: "January 20, 2016"
 output: pdf_document
@@ -43,7 +43,7 @@ GitHub is used for similar things, however it has a nicer user interface, and is
 
 ## Mathematical Modeling
 
-Before one can understand the methods and reasoning behind each step of making this app, one must first understand where the math comes from that the app is based on. Our model relies on the use of differential equations and their solutions for the theoretical portion of the app, and probability and statistical models for the simulations made and run in the app. One last thing to understand before I delve into how we made the models used in the app is the notation and vairables that we used for the models themselves. Let us establish the following notation:
+Before one can understand the methods and reasoning behind each step of making this app, one must first understand where the math comes from that the app is based on. Our model relies on the use of differential equations and their solutions for the theoretical portion of the app, and probability and statistical models for the simulations made and run in the app. One last thing to understand before I delve into how we made the models used in the app is the notation and variables that we used for the models themselves. Let us establish the following notation:
 
 - $n_0 =$ initial population
 
@@ -65,7 +65,7 @@ This next set of variables are dependent on time. The reason we have need these 
 
 - $b_t =$ expected value of birthrate at time $t$. Defined as $b_t = \frac{E(B_t)}{n}$
 
-- $d_t =$ expected deathrate at time $t$. Defined as $d_t = d + max(0, b(\frac{n}{m} - 1))$
+- $d_t =$ expected death rate at time $t$. Defined as $d_t = d + max(0, b(\frac{n}{m} - 1))$
 
 ### Differential Equations
 
@@ -81,7 +81,13 @@ Now we can simply solve the equation for $n$. This mostly just involves some ele
 
 After some research, our group found that this model follows the theoretical equation for biologists as well. Their equation was $$N(t) = \frac{K}{1+(\frac{K-N(0)}{N(0)})e^{-rt}}$$ found by Roughgarden(1979), Emlen(1984), and Neuhauser(2000). This relates to our equation because $N(t) = n$, $K=m$, $N(0)=n_0$, and $r = b-d$.
 
+### Probability Model
 
+In order to run simulations to convey to the students that the deterministic model isn't always true, we need a probability model for the simulation to follow. This is where the variables defined before as being reliant on time come into play. They are reliant on time is because at each given time interval, the app will run a simulation based on what the previous time values were. We will get more into the programming of this later, but for now, here is the math behind our model.
+
+To start, let's make two more variables just to help the overall calculations: let $$s_t = E(S_t^i)$$ and $$l_t = \frac{E(L_t)}{n}$$ 
+
+We know that the number of births at time $t$ will be the sum of the sizes of all of the litters, so $B_t = \sum_{i=1}^{L_t} S_t^i$. We call the expected birth rate $b_t = \frac{E(B_t)}{n}$, as we defined before. We can assume then that the expected birth rate is the expected litter rate times the expected size of the litters, or $E(B_t) = E(S_t^i)\times E(L_t)$. This can be proven as well using what we know about each variable and simple algebra. When this is simplified becomes $$b_t = s_t\times l_t$$ The $s_t$ and the $l_t$ are what we simulate using the rpois() function in R, which as previously stated, we will address more later. After some research, we found that the average litter sizes for rabbits was $8$, so we let the $$s_t = \frac{8\sqrt{b_t}}{\sqrt{b}}$$ and $$l_t = \frac{\sqrt{b_t}}{8}\times \sqrt{b}$$ in order to be able to calculate the the number of births at time $t$ for the simulated numbers. Then to calculate the number of deaths for each time interval for the simulation, we have our $d_t$ function that we defined previously that depends on how close the population is to the carrying capacity, $$d_t = d + max(0, b(\frac{n}{m}-1))$$ By simply adding the values of $b_t$ and $d_t$ together we obtain our simulated data.
 
 
 
