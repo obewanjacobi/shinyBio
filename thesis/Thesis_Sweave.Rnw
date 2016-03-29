@@ -81,7 +81,7 @@ We know that the rate of population growth is going to be the the number of rabb
 \frac{dn}{dt} = n(\frac{b-d}{m})(m-n) 
 \end{equation}
 
-by our model. To solve this theoretical equation, we must use knowledge of differential equations. From here we will split into 3 cases, when \(n_0 =m\), \(n_0 > m\), and \(n_0 < m\). To start, take note of the almost trivial answer when \(n_0 = m\). Here, based off of our differential equation we made, we can note that we get that \(\frac{dn}{dt} = 0\). This tells us that the theoretical equation is a constant, which makes sense considering that if a population starts off at it's carrying capacity, theoretically it wouldn't grow (even though this isn't necessarily true, which we make note of with our simulation).
+\noindent by our model. To solve this theoretical equation, we must use knowledge of differential equations. From here we will split into 3 cases, when \(n_0 =m\), \(n_0 > m\), and \(n_0 < m\). To start, take note of the almost trivial answer when \(n_0 = m\). Here, based off of our differential equation we made, we can note that we get that \(\frac{dn}{dt} = 0\). This tells us that the theoretical equation is a constant, which makes sense considering that if a population starts off at it's carrying capacity, theoretically it wouldn't grow (even though this isn't necessarily true, which we make note of with our simulation).
 
 Next, we must look at our other two cases, \(n_0 > m\) and \(n_0 < m\). For each we want to move all of the \(n\) values to one side of the equation to make it easy to integrate. This leads us to get 
 
@@ -95,7 +95,7 @@ Next, we must look at our other two cases, \(n_0 > m\) and \(n_0 < m\). For each
 \int\frac{1}{mn}+\frac{1}{m^2-mn})dn = \frac{b-d}{m} t + C
 \end{equation}
 
-When we integrate this simpler integral and apply some natural log rules, we get that 
+\noindent When we integrate this simpler integral and apply some natural log rules, we get that 
 
 \begin{equation}
 \frac{1}{m}\left(\ln\left(\frac{n}{m-n}\right)\right) = \frac{b-d}{m} t + C
@@ -107,13 +107,13 @@ Now we want to find what the \(C\) value is. In order to do this, let \(t=0\) so
 \frac{1}{m} ln(\frac{n}{m-n}) = \frac{b-d}{m}t + \frac{1}{m}ln(\frac{n_0}{m-n_0})
 \end{equation}
 
-Now we can simply solve the equation for \(n\). This mostly just involves some elementary algebra, which leads us to get that 
+\noindent Now we can simply solve the equation for \(n\). This mostly just involves some elementary algebra, which leads us to get that 
 
 \begin{equation}
 n = \frac{m}{1+(\frac{m-n_0}{n_0})\mathrm{e}^{(d-b)t}}
 \end{equation}
 
-if \(m > n_0\). This is our equation for the theoretical model. However, we must realize that you cannot take the natural log of a negative number hence our third case of \(n_0 >m\). To account for this we must go back to equation four. Here, we notice that because \(n_0 > m\) we get a negative value inside the natural log. Thus we must take the absolute value of the number inside the natural log, then go through the steps as we did in the second case. After doing these algebra steps, we find that 
+\noindent if \(m > n_0\). This is our equation for the theoretical model. However, we must realize that you cannot take the natural log of a negative number hence our third case of \(n_0 >m\). To account for this we must go back to equation four. Here, we notice that because \(n_0 > m\) we get a negative value inside the natural log. Thus we must take the absolute value of the number inside the natural log, then go through the steps as we did in the second case. After doing these algebra steps, we find that 
 
 \begin{equation}
 n= \frac{-m}{\frac{n_0-m}{n_0}\mathrm{e}^{(d-b)t}-1}
@@ -129,7 +129,7 @@ After some research, our group found that this model follows the theoretical equ
 N(t) = \frac{K}{1+(\frac{K-N(0)}{N(0)})e^{-rt}}
 \end{equation}
 
-found by Roughgarden(1979), Emlen(1984), and Neuhauser(2000). This relates to our equation because \(N(t) = n\), \(K=m\), \(N(0)=n_0\), and \(r = b-d\).
+\noindent found by Roughgarden(1979), Emlen(1984), and Neuhauser(2000). This relates to our equation because \(N(t) = n\), \(K=m\), \(N(0)=n_0\), and \(r = b-d\).
 
 \subsubsection{Probability Model}
 
@@ -141,7 +141,7 @@ To start, let's make two more variables just to help the overall calculations: l
 s_t = E(S_t^i)$$ and $$l_t = \frac{E(L_t)}{n}
 \end{equation}
 
-We know that the number of births at time \(t\) will be the sum of the sizes of all of the litters, so \(B_t = \sum_{i=1}^{L_t} S_t^i\). We call the expected birth rate \(b_t = \frac{E(B_t)}{n}\), as we defined before. We can assume then that the expected birth rate is the expected litter rate times the expected size of the litters, or \(E(B_t) = E(S_t^i)\times E(L_t)\). This can be proven as well using what we know about each variable and simple algebra. When this is simplified becomes 
+\noindent We know that the number of births at time \(t\) will be the sum of the sizes of all of the litters, so \(B_t = \sum_{i=1}^{L_t} S_t^i\). We call the expected birth rate \(b_t = \frac{E(B_t)}{n}\), as we defined before. We can assume then that the expected birth rate is the expected litter rate times the expected size of the litters, or \(E(B_t) = E(S_t^i)\times E(L_t)\). This can be proven as well using what we know about each variable and simple algebra. When this is simplified becomes 
 
 \begin{equation}
 b_t = s_t\times l_t
@@ -159,12 +159,12 @@ and
 l_t = \frac{\sqrt{b_t}}{8}\times \sqrt{b}
 \end{equation}
 
-in order to be able to calculate the the number of births at time \(t\) for the simulated numbers. Then to calculate the number of deaths for each time interval for the simulation, we have our \(d_t\) function that we defined previously that depends on how close the population is to the carrying capacity, 
+\noindent in order to be able to calculate the the number of births at time \(t\) for the simulated numbers. Then to calculate the number of deaths for each time interval for the simulation, we have our \(d_t\) function that we defined previously that depends on how close the population is to the carrying capacity, 
 
 \begin{equation}
 d_t = d + max(0, b(\frac{n}{m}-1))
 \end{equation}
 
-By simply adding the values of \(b_t\) and \(d_t\) together we obtain our simulated data.
+\noindent By simply adding the values of \(b_t\) and \(d_t\) together we obtain our simulated data.
 
 \end{document}
