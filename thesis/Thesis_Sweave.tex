@@ -99,21 +99,13 @@ Before one can understand the methods and reasoning behind each step of making t
 
 - \(n_0 =\) initial population
 
+- \(n(t) =\) population at time \(t\), sometimes abbreviated as \(n\)
+
 - \(b =\) unconstrained birth rate (or the maximum birth rate)
 
 - \(d =\) unconstrained death rate (or the minimum death rate)
 
 - \(m =\) carrying capacity (max population that an environment can safely sustain)
-
-This next set of variables are dependent on time. The reason we have need these variables is for the probability model and the simulation of the population that will be run. There is a divide between the previous and following notations because as the following have to do with the probability model, the previous are important to the deterministic model for the theoretical population equation. 
-
-- \(n(t) =\) population at time \(t\), sometimes abbreviated as \(n\)
-
-- \(L_t =\) number of litters at time \(t\)
-
-- \(S_t^i =\) size of the \(i^{th}\) litter born at time \(t\). These are independent of each other and of \(L_t\)
-
-- \(B_t =\) number of births at time \(t\)
 
 - \(b_t =\) per capita birthrate at time \(t\). Defined as \(b_t = \frac{E(B_t)}{n}\)
 
@@ -189,7 +181,17 @@ N(t) = \frac{K}{1+(\frac{K-N(0)}{N(0)})\mathrm{e}^{-rt}}
 
 In order to run simulations to convey to the students that the deterministic model isn't always true, we need a probability model for the simulation to follow. This is where the variables defined before as being reliant on time come into play. They are reliant on time is because at each given time interval, the app will run a simulation based on what the previous time values were. We will get more into the programming of this later, but for now, here is the math behind our model.
 
-To start, let's make two more variables just to help set up the overall calculations: let 
+To begin, let's define some variables that will be needed to create our model:
+
+- \(L_t =\) number of litters at time \(t\)
+
+- \(S_t^i =\) size of the \(i^{th}\) litter born at time \(t\). These are independent of each other and of \(L_t\)
+
+- \(B_t =\) number of births at time \(t\)
+
+\noindent These are random variables that are dependent on time. Random variables are variables that are dependent on chance factors. To put this in persepective of the app, the number of baby rabbits born to a litter won't always be the same. Rather, the number of babies is dependent on multiple chance factors such as health of the rabbits, rabbit genetics, etc. To represent this chance variation, we will use a poisson distribution to describe the variables here and give us our simulated data. A poisson distribution is convenient for this situation because it is used to express the probability of a given number of events happening in a certain interval of time. So for us, this is used to represent the number of rabbits born to a litter at time \(t\), and the number of litters born at time \(t\). 
+
+Next, one must understand the concept of an expected value. An expected value is a predicted value of a variable, and is found in different ways depending on the distribution used to describe that variable. In our case, we are using a poisson distribution to describe the population of rabbits. Luckily, RStudio can calculate this easily for us. For now, we will simply represent the expected value of a random variable as \(E(x)\) where \(x\) is the random variable. Now we can proceed, so let's make two more variables just to help set up the overall calculations: let 
 
 \begin{equation}
 s_t = E(S_t^i)$$ and $$l_t = \frac{E(L_t)}{n}
