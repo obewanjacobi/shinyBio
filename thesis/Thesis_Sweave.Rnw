@@ -121,7 +121,7 @@ if \(n_0 > m\). This is our model for the theoretical graph.
 
 \bigskip
 
-After some research, our group found that this model follows the theoretical equation for biologists as well. Their equation was 
+In order to be sure of our deterministic model, we wanted to consult a biology text to see if there was anything similar done before. After some research, our group found that this model follows the theoretical equation for other biologists as well. Their equation was 
 
 \begin{equation}
 N(t) = \frac{K}{1+(\frac{K-N(0)}{N(0)})\mathrm{e}^{-rt}}
@@ -155,7 +155,7 @@ s_t = E(S_t^i)$$ and $$l_t = \frac{E(L_t)}{n}
 b_t = s_t\times l_t
 \end{equation}
 
-The \(s_t\) and the \(l_t\) are what we simulate using the rpois() function in R, which as previously stated, we will address more later. After some research, we found that the average litter sizes for rabbits was \(8\), so we let the 
+The \(s_t\) and the \(l_t\) are what we simulate using the rpois() function in R, which as previously stated, we will address more later. Our group needed an expected average litter size, so we simply googled the average rabbit litter sizes for this value. The number born to each litter isn't entirely important to our model because the model still accounts for carrying capacity and theoretical growth rather than the litters affecting the outcome. We found that the average litter sizes for rabbits was \(8\), so we let the 
 
 \begin{equation}
 s_t = \frac{8\sqrt{b_t}}{\sqrt{b}}
