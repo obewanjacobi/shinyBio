@@ -260,6 +260,38 @@ Similarly to how we made the \textit{Field} section of the graph more interactiv
 
 
 
+\pagebreak
+
+\begin{thebibliography}{5}
+
+\bibitem{biobook} 
+Alstad, Don. 
+\textit{Basic Populus Models of Ecology}. 
+Upper Saddle River, \linebreak
+NJ: Prentice Hall, 2001. Print.
+
+\bibitem{RProgramming} 
+Matloff, Norman S. 
+\textit{The Art of R Programming: A Tour of Statistical \linebreak Software Design}. 
+San Francisco, Calif: No Starch, 2011. Print.
+
+\bibitem{educationref} 
+McDaniel, Scott N., and Lisa B. Green. 
+"Using Applets and Video \linebreak Instruction to Foster Students' Understanding of Sampling Variability." 
+\linebreak \textit{EScholarship}. 
+N.p., 2012. Web. 10 Oct. 2015.
+
+\bibitem{educationref2} 
+Serra, H. & Godoy, W. (2011). 
+Using Ecological Modeling to Enhance \linebreak Instruction in Population Dynamics and to Stimulate Scientific Thinking. \textit{Creative Education}, 2, 83-90. 
+doi: 10.4236/ce.2011.22012.
+
+\bibitem{RProgramming2} 
+Wickham, Hadley. \textit{Advanced R}. N.p.: CRC, 2015. Print.
+
+\end{thebibliography}
+
+
 
 
 \end{document}
