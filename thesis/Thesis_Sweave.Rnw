@@ -1,11 +1,12 @@
 \documentclass{article}
+\usepackage{hyperref}
 
 
 \begin{document}
 
 \title{Logistic Growth of a Population App}
 \author{Jacob S. Townson}
-\date{March 27, 2016}
+\date{April 5, 2016}
 \maketitle
 
 
@@ -27,7 +28,7 @@ The classroom is becoming more of a technological advanced place with each passi
 
 Over the summer of 2015, I worked in a research group on Georgetown College's campus with Dr. Homer White and fellow student Andrew Giles. Originally, we were working on learning about Data Science, and began taking classes in a Data Science Specialization Course online. After Andrew and I learned some of the material, Dr. White recommended we work on Shiny apps, and make a successful Shiny app by the end of the summer. We were approached by a biology professor, Dr. Timothy Griffith, with a project to make a shiny app for his Evolution and Ecology class at Georgetown. We chose to do this project and made a functional and easy to use app for the class. So the question arose, how well will this app work in the classroom setting with biology students? In other words, does using an app rather than learning the full and heavy math behind the model help students more, or does it mask too much of the details?
 
-As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our GitHub repository for this project at https://github.com/obewanjacobi/shinyBio/tree/master. Or to see the app itself, visit https://obewanjacobi.shinyapps.io/logistic.
+As mentioned, our app works with the math behind an evolution and ecology course. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. Below I will explain the design and methods we used to make the app. To see our code, and more details on how we did our work, feel free to visit our GitHub repository for this project at \url{https://github.com/obewanjacobi/shinyBio/tree/master}. Or to see the app itself, visit \url{https://obewanjacobi.shinyapps.io/logistic}.
 
 \subsection{Significance}
 
@@ -41,9 +42,8 @@ Population biology is a branch of biology involving evolution, ecology, and beha
 
 
 
+
 \section{Methods}
-
-
 
 
 
@@ -55,7 +55,7 @@ RStudio is the IDE, or integrated development environment for R. What that means
 
 The other tools that were essential to our project were git and GitHub. Git is a version control system, which means that it is a method used for keeping track of the versions made of software. We used git to handle when we would make changes to our app overtime. Having version control is important so that if something went wrong, we could trace it back to a certain version that we had made. 
 
-GitHub is used for similar things, however it has a nicer user interface, and is on the internet for everyone to see. So when we would make an updated version of the app and commit it using git, we would then "push" our changes to GitHub so that the rest of the group could get the newest version of the app. This helped so that the entire group was on the same page of where the app was in development. If you would like to see the GitHub repository with all of our work, please visit https://github.com/obewanjacobi/shinyBio/tree/master. Feel free to make an account as well, that way you can comment on any of our work by using the "Issues" button on GitHub. This helps us so that we can make any necessary changes as soon as possible.
+GitHub is used for similar things, however it has a nicer user interface, and is on the internet for everyone to see. So when we would make an updated version of the app and commit it using git, we would then "push" our changes to GitHub so that the rest of the group could get the newest version of the app. This helped so that the entire group was on the same page of where the app was in development. If you would like to see the GitHub repository with all of our work, please visit \url{https://github.com/obewanjacobi/shinyBio/tree/master}. Feel free to make an account as well, that way you can comment on any of our work by using the "Issues" button on GitHub. This helps us so that we can make any necessary changes as soon as possible.
 
 
 
@@ -66,19 +66,21 @@ GitHub is used for similar things, however it has a nicer user interface, and is
 
 Before one can understand the methods and reasoning behind each step of making this app, one must first understand where the math comes from that the app is based on. Our model relies on the use of differential equations and their solutions for the theoretical portion of the app, and probability and statistical models for the simulations made and run in the app. One last thing to understand before I delve into how we made the models used in the app is the notation and variables that we used for the models themselves. Let us establish the following notation:
 
-- \(n_0 =\) initial population
+\begin{itemize}
+\item \(n_0 =\) initial population
 
-- \(n(t) =\) population at time \(t\), sometimes abbreviated as \(n\)
+\item \(n(t) =\) population at time \(t\), sometimes abbreviated as \(n\)
 
-- \(b =\) unconstrained birth rate (or the maximum birth rate)
+\item \(b =\) unconstrained birth rate (or the maximum birth rate)
 
-- \(d =\) unconstrained death rate (or the minimum death rate)
+\item \(d =\) unconstrained death rate (or the minimum death rate)
 
-- \(m =\) carrying capacity (max population that an environment can safely sustain)
+\item \(m =\) carrying capacity (max population that an environment can safely sustain)
 
-- \(b_t =\) per capita birthrate at time \(t\). Defined as \(b_t = \frac{E(B_t)}{n}\)
+\item \(b_t =\) per capita birthrate at time \(t\). Defined as \(b_t = \frac{E(B_t)}{n}\)
 
-- \(d_t =\) expected death rate at time \(t\). Defined as \(d_t = d + max(0, b(\frac{n}{m} - 1))\)
+\item \(d_t =\) expected death rate at time \(t\). Defined as \(d_t = d + max(0, b(\frac{n}{m} - 1))\)
+\end{itemize}
 
 \subsubsection{Differential Equations}
 
@@ -154,11 +156,13 @@ In order to run simulations to convey to the students that the deterministic mod
 
 To begin, let's define some variables that will be needed to create our model:
 
-- \(L_t =\) number of litters at time \(t\)
+\begin{itemize}
+\item \(L_t =\) number of litters at time \(t\)
 
-- \(S_t^i =\) size of the \(i^{th}\) litter born at time \(t\). These are independent of each other and of \(L_t\)
+\item \(S_t^i =\) size of the \(i^{th}\) litter born at time \(t\). These are independent of each other and of \(L_t\)
 
-- \(B_t =\) number of births at time \(t\)
+\item \(B_t =\) number of births at time \(t\)
+\end{itemize}
 
 \noindent These are random variables that are dependent on time. Random variables are variables that are dependent on chance factors. To put this in persepective of the app, the number of baby rabbits born to a litter won't always be the same. Rather, the number of babies is dependent on multiple chance factors such as health of the rabbits, rabbit genetics, etc. To represent this chance variation, we will use a poisson distribution to describe the variables here and give us our simulated data. A poisson distribution is convenient for this situation because it is used to express the probability of a given number of events happening in a certain interval of time. So for us, this is used to represent the number of rabbits born to a litter at time \(t\), and the number of litters born at time \(t\). 
 
@@ -209,7 +213,7 @@ d_t = d + max(0, b(\frac{n}{m}-1))
 
 \subsection{App Design - The User Interface}
 
-Before going deep into the app design on the user interface (or ui for short), I invite the reader to experience the app for themself so that the design process makes more sense. The app can be found at https://obewanjacobi.shinyapps.io/logistic. 
+Before going deep into the app design on the user interface (or ui for short), I invite the reader to experience the app for themself so that the design process makes more sense. The app can be found at \url{https://obewanjacobi.shinyapps.io/logistic}. 
 
 \subsubsection{Sidebar}
 
@@ -243,7 +247,7 @@ The only change that is made under this tab by hitting the \textbf{Simulate} but
 
 This portion of the application displays a model for the field, which is a hypothetical situation for the simulated data shown in the \textit{Population Graphs} tab. Here there are two plots next to each other, with an animation bar above them. The two plots are used to show the total population at the time that is shown in the animation slider. When the play button is hit below the slider, the slider will move from time value to the next time value for every second or so. Whatever the simulated population is at that time, that is the total number of dots on the plots. The plot on the left shows the adults in the field foraging for food for their children. 
 
-The plot on the right shows the newborn rabbits in what is cleverly called the "Warren". Here, the litters are grouped closely together using a plotting system we made involving keeping litters close together using the rnorm() function. In the field function, you may also notice the color of the graph changing over time. If there is a carrying capacity used in the simulation, then the color of the graph will change. The idea is that if the rabbits are far away from the carrying capacity, then the field will be more green. On the other hand, if the population is above, close to, or on the carrying capacity, they will naturally be running out of resources, making the field a more brown and barren color. This makes the app more interactive, and maybe fun for the students to learn the concepts, and actually get the feeling that they are seeing the changes in the environment. 
+The plot on the right shows the newborn rabbits in what is cleverly called the Warren. Here, the litters are grouped closely together using a plotting system we made involving keeping litters close together using the rnorm() function. In the field function, you may also notice the color of the graph changing over time. If there is a carrying capacity used in the simulation, then the color of the graph will change. The idea is that if the rabbits are far away from the carrying capacity, then the field will be more green. On the other hand, if the population is above, close to, or on the carrying capacity, they will naturally be running out of resources, making the field a more brown and barren color. This makes the app more interactive, and maybe fun for the students to learn the concepts, and actually get the feeling that they are seeing the changes in the environment. 
 
 Below both graphs, a table will be displayed if any rabbits were born and added to the Warren. The table will show the number of litters at that time, and also show the average size of the litters born.
 
@@ -259,37 +263,6 @@ Similarly to how we made the \textit{Field} section of the graph more interactiv
 
 
 
-
-\pagebreak
-
-\begin{thebibliography}{5}
-
-\bibitem{biobook} 
-Alstad, Don. 
-\textit{Basic Populus Models of Ecology}. 
-Upper Saddle River, \linebreak
-NJ: Prentice Hall, 2001. Print.
-
-\bibitem{RProgramming} 
-Matloff, Norman S. 
-\textit{The Art of R Programming: A Tour of Statistical \linebreak Software Design}. 
-San Francisco, Calif: No Starch, 2011. Print.
-
-\bibitem{educationref} 
-McDaniel, Scott N., and Lisa B. Green. 
-"Using Applets and Video \linebreak Instruction to Foster Students' Understanding of Sampling Variability." 
-\linebreak \textit{EScholarship}. 
-N.p., 2012. Web. 10 Oct. 2015.
-
-\bibitem{educationref2} 
-Serra, H. & Godoy, W. (2011). 
-Using Ecological Modeling to Enhance \linebreak Instruction in Population Dynamics and to Stimulate Scientific Thinking. \textit{Creative Education}, 2, 83-90. 
-doi: 10.4236/ce.2011.22012.
-
-\bibitem{RProgramming2} 
-Wickham, Hadley. \textit{Advanced R}. N.p.: CRC, 2015. Print.
-
-\end{thebibliography}
 
 
 
