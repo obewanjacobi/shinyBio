@@ -8,7 +8,7 @@
 \contentsline {subsubsection}{\numberline {2.2.1}Differential Equations}{5}{subsubsection.2.2.1}
 \contentsline {subsubsection}{\numberline {2.2.2}Probability Model}{7}{subsubsection.2.2.2}
 \contentsline {subsection}{\numberline {2.3}App Design - The User Interface}{9}{subsection.2.3}
-\contentsline {subsubsection}{\numberline {2.3.1}Sidebar}{9}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.1}Sidebar}{10}{subsubsection.2.3.1}
 \contentsline {subsubsection}{\numberline {2.3.2}Population Graphs}{10}{subsubsection.2.3.2}
-\contentsline {subsubsection}{\numberline {2.3.3}Field}{10}{subsubsection.2.3.3}
-\contentsline {subsubsection}{\numberline {2.3.4}Graveyard}{11}{subsubsection.2.3.4}
+\contentsline {subsubsection}{\numberline {2.3.3}Field}{11}{subsubsection.2.3.3}
+\contentsline {subsubsection}{\numberline {2.3.4}Graveyard}{12}{subsubsection.2.3.4}

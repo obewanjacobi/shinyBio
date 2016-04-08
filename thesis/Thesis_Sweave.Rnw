@@ -38,7 +38,7 @@ Studies show especially for the subject of evolution and ecology (the course tha
 
 \subsection{Population Biology Overview}
 
-Population biology is a branch of biology involving evolution, ecology, and behavioral biology. It is also heavily reliant on some knowledge of mathematical modelling. Unfortunately being on the more mathematical sides of things, it is difficult for myself to define population biology in such a way that I convey it correctly. Luckily, Don Alstad (an actual biologist) puts it quite well in his book \textit{Basic Populus Models of Ecology} by describing: "Population biology is a quantitiative science dealing with changes in the size and composition of populations, and population biologists often use mathematical models to infer population dynamics." Because students aren't necessarily population biologists yet, this is where my app development group comes into play to help with the education of these students so that they can see the importance of mathematical modelling in population biology.
+Population biology is a branch of biology involving evolution, ecology, and behavioral biology. It is also heavily reliant on some knowledge of mathematical modelling. Unfortunately being on the more mathematical sides of things, it is difficult for myself to define population biology in such a way that I convey it correctly. Luckily, Don Alstad (an actual biologist) puts it quite well in his book \textit{Basic Populus Models of Ecology} by describing: "Population biology is a quantitative science dealing with changes in the size and composition of populations, and population biologists often use mathematical models to infer population dynamics." Because students aren't necessarily population biologists yet, this is where my app development group comes into play to help with the education of these students so that they can see the importance of mathematical modelling in population biology.
 
 
 
@@ -79,7 +79,7 @@ Before one can understand the methods and reasoning behind each step of making t
 
 \item \(b_t =\) per capita birthrate at time \(t\). Defined as \(b_t = \frac{E(B_t)}{n}\)
 
-\item \(d_t =\) expected death rate at time \(t\). Defined as \(d_t = d + max(0, b(\frac{n}{m} - 1))\)
+\item \(d_t =\) per capita deathrate at time \(t\). Defined as \(d_t = d + max(0, b(\frac{n}{m} - 1))\)
 \end{itemize}
 
 \subsubsection{Differential Equations}
@@ -164,9 +164,9 @@ To begin, let's define some variables that will be needed to create our model:
 \item \(B_t =\) number of births at time \(t\)
 \end{itemize}
 
-\noindent These are random variables that are dependent on time. Random variables are variables that are dependent on chance factors. To put this in persepective of the app, the number of baby rabbits born to a litter won't always be the same. Rather, the number of babies is dependent on multiple chance factors such as health of the rabbits, rabbit genetics, etc. To represent this chance variation, we will use a poisson distribution to describe the variables here and give us our simulated data. A poisson distribution is convenient for this situation because it is used to express the probability of a given number of events happening in a certain interval of time. So for us, this is used to represent the number of rabbits born to a litter at time \(t\), and the number of litters born at time \(t\). 
+\noindent These are random variables that are dependent on time. Random variables are variables that are dependent on chance factors. To put this in perspective of the app, the number of baby rabbits born to a litter won't always be the same. Rather, the number of babies is dependent on multiple chance factors such as health of the rabbits, rabbit genetics, etc. To represent this chance variation, we will use a Poisson distribution to describe the variables here and give us our simulated data. A Poisson distribution is convenient for this situation because it is used to express the probability of a given number of events happening in a certain interval of time. So for us, this is used to represent the number of rabbits born to a litter at time \(t\), and the number of litters born at time \(t\). 
 
-Next, one must understand the concept of an expected value. An expected value is a predicted value of a variable, and is found in different ways depending on the distribution used to describe that variable. In our case, we are using a poisson distribution to describe the population of rabbits. Luckily, RStudio can calculate this easily for us. For now, we will simply represent the expected value of a random variable as \(E(x)\) where \(x\) is the random variable. 
+Next, one must understand the concept of an expected value. An expected value is an average value of a variable that you would expect to happen if you gathered an infinite amount of data for the subject, and is found in different ways depending on the distribution used to describe that variable. In our case, we are using a Poisson distribution to describe the population of rabbits. Luckily, RStudio can calculate this easily for us. For now, we will simply represent the expected value of a random variable as \(E(X)\) where \(X\) is the random variable. 
 
 Now we can proceed with the explanation of the model, so let's make two more variables just to help set up the overall calculations: let 
 
@@ -174,19 +174,39 @@ Now we can proceed with the explanation of the model, so let's make two more var
 s_t = E(S_t^i)$$ and $$l_t = \frac{E(L_t)}{n}
 \end{equation}
 
-\noindent We know that the number of births at time \(t\) will be the sum of the sizes of all of the litters, so \(B_t = \sum_{i=1}^{L_t} S_t^i\). We call the per capita birth rate \(b_t = \frac{E(B_t)}{n}\), as we defined before. We must then prove that the expected birth rate is the expected litter rate times the expected size of the litters, or \(E(B_t) = E(S_t^i)\times E(L_t)\). To do this, we must use properties of expected values. First take the expected value of \(B_t\), giving us 
+\noindent We know that the number of births at time \(t\) will be the sum of the sizes of all of the litters, so 
+
+\begin{equation}
+B_t = \sum_{i=1}^{L_t} S_t^i 
+\end{equation}
+
+We call the per capita birth rate \(b_t = \frac{E(B_t)}{n}\), as we defined before. We would like to show then that the expected number of births is the expected number of litters times the expected size of the litters, or \(E(B_t) = E(S_t^i)\times E(L_t)\). To do this, we must use properties of expected values. First take the expected value of \(B_t\), giving us 
 
 \begin{equation}
 E(B_t) = E(\sum_{i=1}^{L_t} S_t^i)
 \end{equation}
 
-\noindent From this using expected value properties shows us that \(E(B_t) = E(S_t^i\times L_t)\). Again using properties of expected values we then simplify such that \(E(B_t) = E(S_t^i)\times E(L_t)\) which completes our proof. When this is simplified based on our definitions we can write it as
+\noindent From this using conditional expected value properties we see that 
+
+\begin{equation}
+E(B_t) = E(E(\sum_{i=1}^{L_t} S_t^i | L_t))
+\end{equation}
+
+\noindent In words, equation (13) means we want the expected value of the expected value of the sum given \(L_t\). We can assume that \(S_t\) is independent of \(L_t\) here because the litter sizes do not depend on the number of litters birthed in a population. To explain a real life situation, to say that these things are dependent is equivalent to saying that if a rabbit is near or witnesses another rabbit having babies, it will control or naturally have a different amount of births because of this, which isn't true. Thus we can make our assumption. Now using properties of expected values and independent conditional circumstances, we then simplify such that \(E(B_t) = E(\sum_{i=1}^{L_t} s_t)\). The sum can now be changed such that \(E(L_t \times s_t)\), and because \(s_t\) is a constant here, we know that 
+
+\begin{equation}
+E(B_t) = s_t \times E(L_t)
+\end{equation}
+
+\noindent When (14) is simplified based on our definitions we can write it as
 
 \begin{equation}
 b_t = s_t\times l_t
 \end{equation}
 
-\noindent The \(s_t\) and the \(l_t\) are what we simulate using the rpois() function in R, which as previously stated, we will address more later. Our group needed an expected average litter size, so we simply googled the average rabbit litter sizes for this value. The number born to each litter isn't entirely important to our model because the model still accounts for carrying capacity and theoretical growth rather than the litters affecting the outcome. We found that the average litter sizes for rabbits was \(8\), so we let the 
+\noindent Which completes our proof. 
+
+ The \(s_t\) and the \(l_t\) are what we simulate using the rpois() function in R, which as previously stated, we will address more later. Our group needed an expected average litter size, so we simply googled the average rabbit litter sizes for this value. The number born to each litter isn't entirely important to our model because the model still accounts for carrying capacity and theoretical growth rather than the litters affecting the outcome. We found that the average litter sizes for rabbits was \(8\), so we let the 
 
 \begin{equation}
 s_t = \frac{8\sqrt{b_t}}{\sqrt{b}}
@@ -213,7 +233,7 @@ d_t = d + max(0, b(\frac{n}{m}-1))
 
 \subsection{App Design - The User Interface}
 
-Before going deep into the app design on the user interface (or ui for short), I invite the reader to experience the app for themself so that the design process makes more sense. The app can be found at \url{https://obewanjacobi.shinyapps.io/logistic}. 
+Before going deep into the app design on the user interface (or ui for short), I invite the reader to experience the app for themselves so that the design process makes more sense. The app can be found at \url{https://obewanjacobi.shinyapps.io/logistic}. 
 
 \subsubsection{Sidebar}
 
