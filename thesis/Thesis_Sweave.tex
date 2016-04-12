@@ -57,6 +57,12 @@
 \date{April 5, 2016}
 \maketitle
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: ggplot2}}\end{kframe}
+\end{knitrout}
 
 \begin{abstract}
 
@@ -213,6 +219,26 @@ To begin, let's define some variables that will be needed to create our model:
 \end{itemize}
 
 \noindent These are random variables that are dependent on time. Random variables are variables that are dependent on chance factors. To put this in perspective of the app, the number of baby rabbits born to a litter won't always be the same. Rather, the number of babies is dependent on multiple chance factors such as health of the rabbits, rabbit genetics, etc. To represent this chance variation, we will use a Poisson distribution to describe the variables here and give us our simulated data. A Poisson distribution is convenient for this situation because it is used to express the probability of a given number of events happening in a certain interval of time. So for us, this is used to represent the number of rabbits born to a litter at time \(t\), and the number of litters born at time \(t\). 
+
+A poisson distribution is also useful to our purposes because of the shape of the distribution. To show an example of this, view Figures 1 and 2. Here, the \(y\) axis represents the probability of \(x\) happening, and the \(x\) axis represents the number of occurences of the event that \(x\) defines. Notice that the values seem to peak somewhere around 1, because in these Figures, the expected value (or \(\lambda)\) for this kind of distribution) is 1. The graphs then have a tail (decrease towards 0) as the number of occurrences approaches infinity. This shape fits our situation of rabbit births quite well, as we know there will be an expected value of rabbit births, but we also know that the chance variation for rabbit births is likely to trail off to large numbers as well, but the likelyhood is much less for this to happen. 
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+
+\end{knitrout}
+\caption{This dot plot represents a standard Poisson distribution with an expected value of 1}
+\end{figure}
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+
+\end{knitrout}
+\caption{This histogram represents a standard Poisson distribution with an expected value of 1}
+\end{figure}
 
 Next, one must understand the concept of an expected value. An expected value is an average value of a variable that you would expect to happen if you gathered an infinite amount of data for the subject, and is found in different ways depending on the distribution used to describe that variable. In our case, we are using a Poisson distribution to describe the population of rabbits. Luckily, RStudio can calculate this easily for us. For now, we will simply represent the expected value of a random variable as \(E(X)\) where \(X\) is the random variable. 
 
