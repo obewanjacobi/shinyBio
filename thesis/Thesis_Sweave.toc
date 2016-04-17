@@ -6,9 +6,13 @@
 \contentsline {subsection}{\numberline {2.1}Tools}{4}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Mathematical Modeling}{5}{subsection.2.2}
 \contentsline {subsubsection}{\numberline {2.2.1}Differential Equations}{5}{subsubsection.2.2.1}
-\contentsline {subsubsection}{\numberline {2.2.2}Probability Model}{7}{subsubsection.2.2.2}
-\contentsline {subsection}{\numberline {2.3}App Design - The User Interface}{12}{subsection.2.3}
-\contentsline {subsubsection}{\numberline {2.3.1}Sidebar}{12}{subsubsection.2.3.1}
-\contentsline {subsubsection}{\numberline {2.3.2}Population Graphs}{13}{subsubsection.2.3.2}
-\contentsline {subsubsection}{\numberline {2.3.3}Field}{13}{subsubsection.2.3.3}
-\contentsline {subsubsection}{\numberline {2.3.4}Graveyard}{14}{subsubsection.2.3.4}
+\contentsline {subsubsection}{\numberline {2.2.2}Probability Model}{9}{subsubsection.2.2.2}
+\contentsline {subsubsection}{\numberline {2.2.3}Checking the Model}{12}{subsubsection.2.2.3}
+\contentsline {subsection}{\numberline {2.3}App Design - The User Interface}{13}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Sidebar}{14}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Population Graphs}{14}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}Field}{15}{subsubsection.2.3.3}
+\contentsline {subsubsection}{\numberline {2.3.4}Graveyard}{16}{subsubsection.2.3.4}
+\contentsline {subsection}{\numberline {2.4}App Design - Server Coding}{16}{subsection.2.4}
+\contentsline {section}{\numberline {3}Results}{16}{section.3}
+\contentsline {section}{\numberline {4}Conclusion}{16}{section.4}

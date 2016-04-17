@@ -49,6 +49,7 @@
 
 \usepackage{alltt}
 \usepackage{hyperref}
+\usepackage{amsmath}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -131,22 +132,22 @@ Before one can understand the methods and reasoning behind each step of making t
 
 \item \(m =\) carrying capacity (max population that an environment can safely sustain)
 
-\item \(b_t =\) per capita birthrate at time \(t\). Defined as \(b_t = \frac{E(B_t)}{n}\)
+\item \(b_t =\) per capita birthrate at time \(t\)
 
-\item \(d_t =\) per capita deathrate at time \(t\). Defined as \(d_t = d + max(0, b(\frac{n}{m} - 1))\)
+\item \(d_t =\) per capita number of deaths at time \(t\)
 \end{itemize}
 
 \subsubsection{Differential Equations}
 
 This section will explain how we found the differential equation that was used in the theoretical calculation of the population and its growth. We will begin with what we know, and expand from there using our previous definitions given.
 
-We know that the rate of population growth is going to be the the number of rabbits times the birth rate at that specific time minus the death rate at that specific time. To put this in terms of math, we would write it as \(\frac{dn}{dt} = nb_t-d_t\) which simplifies to be 
+We know that the rate of population growth is going to be the the number of rabbits times the birth rate at that specific time minus the per capita number of deaths at that specific time. To put this in terms of math, we would write it as \(\frac{dn}{dt} = nb_t-d_t\) which simplifies to be 
 
 \begin{equation}
 \frac{dn}{dt} = n\left(\frac{b-d}{m}\right)(m-n) 
 \end{equation}
 
-\noindent by our model. To solve this theoretical equation, we must use knowledge of differential equations. From here we will split into 3 cases, when \(n_0 =m\), \(n_0 > m\), and \(n_0 < m\). 
+\noindent by our model when \(b > d\). We will look at the case when \(d > b\) at the end of this section. To solve this theoretical equation, we must use knowledge of differential equations. From here we will split into 3 cases, when \(n_0 =m\), \(n_0 > m\), and \(n_0 < m\). 
 
 To start, take note of the almost trivial answer when \(n_0 = m\). Here, I propose that based off of our differential equation we made, we can find that \(\frac{dn}{dt} = 0\). While proving this using differential equations and algebra is difficult and hard to follow mathematically, let's look at it from a logical point of view. If a population starts off at it's carrying capacity, it would only make sense that it would not grow anymore or drop any lower than that value. If we solve the differential equation using the initial value of \(n_0 = m\), we find that the equation simplifies in such a way that in fact for any time value, \(n=m\). This tells us that the theoretical equation is a constant, which makes sense considering that if a population starts off at it's carrying capacity, theoretically it wouldn't grow (even though this isn't necessarily true, which we make note of with our simulation).
 
@@ -180,7 +181,7 @@ Next, we must look at our other two cases, \(n_0 > m\) and \(n_0 < m\). For each
 n = \frac{m}{1+\left(\frac{m-n_0}{n_0}\right)\mathrm{e}^{(d-b)t}}
 \end{equation}
 
-\noindent if \(m > n_0\). This is our equation for the theoretical model. However as mentioned, we must realize that you cannot take the natural log of a negative number hence our third case of \(n_0 >m\). To account for this we must go back to equation (4). Here, we notice that because \(n_0 > m\) we get a negative value inside the natural log giving us the new equation:
+\noindent if \(m > n_0\). This is our standard equation for the theoretical model. However as mentioned, we must realize that you cannot take the natural log of a negative number hence our third case of \(n_0 >m\). To account for this we must go back to equation (4). Here, we notice that because \(n_0 > m\) we get a negative value inside the natural log giving us the new equation:
 
 \begin{equation}
 \frac{1}{m}\left(\ln\left(\frac{n}{n-m}\right)\right) = \frac{b-d}{m} t + C
@@ -192,9 +193,36 @@ n = \frac{m}{1+\left(\frac{m-n_0}{n_0}\right)\mathrm{e}^{(d-b)t}}
 n= \frac{-m}{\frac{n_0-m}{n_0}\mathrm{e}^{(d-b)t}-1}
 \end{equation}
 
-if \(n_0 > m\). This is our model for the theoretical graph. 
-
+\noindent if \(n_0 > m\). This is our model for the theoretical graph when \(b > d\).
 \bigskip
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+
+}
+
+
+
+\end{knitrout}
+\caption{This graph is an example plot of what the population of rabbits would look like if \(b > d\) and \(m > n_0\). Here \(n_0 = 20\), \(m = 800\), \(b = .1\), and \(d = .05\).}
+\end{figure}
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+
+}
+
+
+
+\end{knitrout}
+\caption{This graph is an example plot of what the population of rabbits would look like if \(b > d\) and \(m < n_0\). Here \(n_0 = 900\), \(m = 800\), \(b = .1\), and \(d = .05\).}
+\end{figure}
 
 In order to be sure of our deterministic model, we wanted to consult a biology text to see if there was anything similar done before. After some research, our group found that this model follows the theoretical equation for other biologists as well. Their equation was 
 
@@ -202,7 +230,35 @@ In order to be sure of our deterministic model, we wanted to consult a biology t
 N(t) = \frac{K}{1+(\frac{K-N(0)}{N(0)})\mathrm{e}^{-rt}}
 \end{equation}
 
-\noindent found by Roughgarden(1979), Emlen(1984), and Neuhauser(2000). This relates to our equation because \(N(t) = n\), \(K=m\), \(N(0)=n_0\), and \(r = b-d\).
+\noindent found by Roughgarden(1979), Emlen(1984), and Neuhauser(2000). This relates to our equation because \(N(t) = n\), \(K=m\), \(N(0)=n_0\), and \(r = b-d\). In order to see example graphs of this deterministic model, consult Figures 1 and 2.
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+
+}
+
+
+
+\end{knitrout}
+\caption{This graph is an example plot of what the population of rabbits would look like if \(d > b\). Here \(n_0 = 20\), \(b = .05\), and \(d = .1\).}
+\end{figure}
+
+Now let's look at the case of when \(d > b\). This case is unusual compared to our work above because here, the carrying capacity is insignificant. To explain why, imagine a population of rabbits whose death rate is higher than their birth rate. In other words, the rabbits are dying faster than they can be born. If this is the case, then what does a carrying capacity even matter? The rabbits will most likely die off either way, no matter what the population can or won't support. So for this part of the model, we don't consider the value of \(m\) as it doesn't affect the situation. Instead, we will write the differential equation as 
+
+\begin{equation}
+\frac{dn}{dt} = n(b-d)
+\end {equation}
+
+\noindent After some simple integation and solving the equation for \(n\), we see that the equation for \(n\) in this situation gives us that 
+
+\begin{equation}
+n = n_0 \times \mathrm{e}^{(b-d)t}
+\end{equation}
+
+Looking at the example graph of equation (11) in Figure 3 where \(d > b\) shows us that theoretically this graph would make sense. The population starts at the initial population then decreases based on how much greater the unconstrained death rate is compared to the unconstrained birth rate. Thus we have our complete deterministic model for the population based on multiple cases. 
 
 \subsubsection{Probability Model}
 
@@ -220,27 +276,23 @@ To begin, let's define some variables that will be needed to create our model:
 
 \noindent These are random variables that are dependent on time. Random variables are variables that are dependent on chance factors. To put this in perspective of the app, the number of baby rabbits born to a litter won't always be the same. Rather, the number of babies is dependent on multiple chance factors such as health of the rabbits, rabbit genetics, etc. To represent this chance variation, we will use a Poisson distribution to describe the variables here and give us our simulated data. A Poisson distribution is convenient for this situation because it is used to express the probability of a given number of events happening in a certain interval of time. So for us, this is used to represent the number of rabbits born to a litter at time \(t\), and the number of litters born at time \(t\). 
 
-A poisson distribution is also useful to our purposes because of the shape of the distribution. To show an example of this, view Figures 1 and 2. Here, the \(y\) axis represents the probability of \(x\) happening, and the \(x\) axis represents the number of occurences of the event that \(x\) defines. Notice that the values seem to peak somewhere around 1, because in these Figures, the expected value (or \(\lambda)\) for this kind of distribution) is 1. The graphs then have a tail (decrease towards 0) as the number of occurrences approaches infinity. This shape fits our situation of rabbit births quite well, as we know there will be an expected value of rabbit births, but we also know that the chance variation for rabbit births is likely to trail off to large numbers as well, but the likelyhood is much less for this to happen. 
+First, one must understand the concept of an expected value. An expected value is an average value of a variable that you would expect to happen if you gathered an infinite amount of data for the subject, and is found in different ways depending on the distribution used to describe that variable. In our case, we are using a Poisson distribution to describe the population of rabbits. Luckily, RStudio can calculate this easily for us. For now, we will simply represent the expected value of a random variable as \(E(X)\) where \(X\) is the random variable. 
+
+A Poisson distribution is useful to our purposes because of the shape of the distribution. To show an example of this, view Figure 4. Here, the \(y\) axis represents the probability of \(x\) happening, and the \(x\) axis represents the number of occurrences of the event that \(x\) defines. Notice that the values seem to peak somewhere around 8, because in Figure 2, the expected value (or \(\lambda\) for this kind of distribution) is 8. The graph then has a tail (decrease towards 0) as the number of occurrences approaches infinity. This shape fits our situation of rabbit births quite well, as we know there will be an expected value of rabbit births, but we also know that the chance variation for rabbit births is likely to trail off to large numbers as well, but this is much less likely to happen. 
 
 \begin{figure}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+
+}
+
+
 
 \end{knitrout}
-\caption{This dot plot represents a standard Poisson distribution with an expected value of 1}
+\caption{This histogram represents a standard Poisson distribution with an expected value of 8.}
 \end{figure}
-
-\begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
-
-\end{knitrout}
-\caption{This histogram represents a standard Poisson distribution with an expected value of 1}
-\end{figure}
-
-Next, one must understand the concept of an expected value. An expected value is an average value of a variable that you would expect to happen if you gathered an infinite amount of data for the subject, and is found in different ways depending on the distribution used to describe that variable. In our case, we are using a Poisson distribution to describe the population of rabbits. Luckily, RStudio can calculate this easily for us. For now, we will simply represent the expected value of a random variable as \(E(X)\) where \(X\) is the random variable. 
 
 Now we can proceed with the explanation of the model, so let's make two more variables just to help set up the overall calculations: let 
 
@@ -248,7 +300,7 @@ Now we can proceed with the explanation of the model, so let's make two more var
 s_t = E(S_t^i)$$ and $$l_t = \frac{E(L_t)}{n}
 \end{equation}
 
-\noindent We know that the number of births at time \(t\) will be the sum of the sizes of all of the litters, so 
+\noindent where \(s_t\) is the expected litter size and \(l_t\) is the per capita number of litters to expect in the population. We know that the number of births at time \(t\) will be the sum of the sizes of all of the litters, so 
 
 \begin{equation}
 B_t = \sum_{i=1}^{L_t} S_t^i 
@@ -257,16 +309,19 @@ B_t = \sum_{i=1}^{L_t} S_t^i
 We call the per capita birth rate \(b_t = \frac{E(B_t)}{n}\), as we defined before. We would like to show then that the expected number of births is the expected number of litters times the expected size of the litters, or \(E(B_t) = E(S_t^i)\times E(L_t)\). To do this, we must use properties of expected values. First take the expected value of \(B_t\), giving us 
 
 \begin{equation}
-E(B_t) = E(\sum_{i=1}^{L_t} S_t^i)
+E(B_t) = E\left(\sum_{i=1}^{L_t} S_t^i\right)
 \end{equation}
 
 \noindent From this using conditional expected value properties we see that 
 
 \begin{equation}
-E(B_t) = E(E(\sum_{i=1}^{L_t} S_t^i | L_t))
+\begin{split}
+E(B_t) & = E(E(B_t | L_t)) \\
+& = E\left(E\left(\sum_{i=1}^{L_t} S_t^i | L_t\right)\right)
+\end{split}
 \end{equation}
 
-\noindent In words, equation (13) means we want the expected value of the expected value of the sum given \(L_t\). We can assume that \(S_t\) is independent of \(L_t\) here because the litter sizes do not depend on the number of litters birthed in a population. To explain a real life situation, to say that these things are dependent is equivalent to saying that if a rabbit is near or witnesses another rabbit having babies, it will control or naturally have a different amount of births because of this, which isn't true. Thus we can make our assumption. Now using properties of expected values and independent conditional circumstances, we then simplify such that \(E(B_t) = E(\sum_{i=1}^{L_t} s_t)\). The sum can now be changed such that \(E(L_t \times s_t)\), and because \(s_t\) is a constant here, we know that 
+\noindent In words, equation (13) means we want the expected value of the expected value of the sum given \(L_t\). We can assume that \(S_t\) is independent of \(L_t\) here because the litter sizes do not depend on the number of litters birthed in a population. To explain a real life situation, to say that these things are dependent is equivalent to saying that if a rabbit is near or witnesses another rabbit having babies, it will control or naturally have a different amount of births because of this, which isn't true. Thus we can make our assumption. Now using properties of expected values and independent conditional circumstances, we then simplify such that \(E(B_t) = E(\sum_{i=1}^{L_t} s_t)\). The sum can now be changed such that \(E(B_t) = E(L_t \times s_t)\), and because \(s_t\) is a constant here, we know that 
 
 \begin{equation}
 E(B_t) = s_t \times E(L_t)
@@ -280,7 +335,7 @@ b_t = s_t\times l_t
 
 \noindent Which completes our proof. 
 
- The \(s_t\) and the \(l_t\) are what we simulate using the rpois() function in R, which as previously stated, we will address more later. Our group needed an expected average litter size, so we simply googled the average rabbit litter sizes for this value. The number born to each litter isn't entirely important to our model because the model still accounts for carrying capacity and theoretical growth rather than the litters affecting the outcome. We found that the average litter sizes for rabbits was \(8\), so we let the 
+ The \(s_t\) and the \(l_t\) are what we simulate using the \textit{rpois()} function in R, which as previously stated, we will address more later. Our group needed an expected average litter size, so we simply googled the average rabbit litter sizes for this value. The number born to each litter isn't entirely important to our model because the model still accounts for carrying capacity and theoretical growth rather than the litters affecting the outcome. We found that the average litter sizes for rabbits was \(8\), so we let the 
 
 \begin{equation}
 s_t = \frac{8\sqrt{b_t}}{\sqrt{b}}
@@ -292,13 +347,52 @@ and
 l_t = \frac{\sqrt{b_t}}{8}\times \sqrt{b}
 \end{equation}
 
-\noindent in order to be able to calculate the the number of births at time \(t\) for the simulated numbers. Then to calculate the number of deaths for each time interval for the simulation, we have our \(d_t\) function that we defined previously that depends on how close the population is to the carrying capacity, 
+\noindent in order to be able to calculate the the simulated number of births at time \(t\) based on litter size and number of litters. Using what we have found here, we can associate each litter with a simulated litter size which we will use in two sections of the app, The Field and The Graveyard. These two sections of the app will be addressed when discussing the user interface. It should also be noted that defining \(s_t\) and \(l_t\) is only one way of doing it. We could have made other choices, but we chose these because of how we found the average litter size to be 8 for a standard population of rabbits. This makes the overarching probability model that we will use for the simulation of our app. The final mathematical step is to relate the differential equation to the probability model itself, and using what we find, we can then use that in our code for what we want to accomplish. 
+
+
+
+
+
+
+
+
+
+\subsubsection{Checking the Model}
+
+In this section, in order to check the model, we must show that the deterministic and propability models connect. To do this, we have to use everything we have proven, defined, and assumed up to this point in both the deterministic and the probability models. This part is also crucial to the coding of our app because of how the code write up will look. Connecting the two models together helps to make the code writing much more organized and fluid so that the computer won't have to process two ideas at once, making the app run as quickly as possible for the students. 
+
+To begin, let's define one last variable: \(b* = b + \frac{d-b}{2} \left( \frac{n}{m}\right)\). Now, we will be looking at the case of \(b > d\). Let 
 
 \begin{equation}
-d_t = d + max(0, b(\frac{n}{m}-1))
+b_t = max(0, b*)$$ and $$d_t = d + \frac{b-d}{2} \left(\frac{n}{m}\right) + max(0, -b*)
 \end{equation}
 
-\noindent By simply subtracting the values of \(d_t\) from \(b_t\) we obtain our simulated data.
+\noindent Recall that we defined \(\frac{dn}{dt} = nb_t-d_t\) and \(\frac{\frac{dn}{dt}}{n} = (b-d)\left(1-\frac{n}{m}\right)\). Our goal here is to prove that based on what we have found in the deterministic and probability model that 
+
+\begin{equation}
+nb_t-d_t = \left(\frac{b-d}{m}\right)(m-n)
+\end{equation}
+
+Consider the case where \(b* < 0\) (the case where b* > 0 is similar). Here
+
+\begin{equation}
+\begin{split}
+nb_t - d_t & = 0 - d - \frac{b-d}{2} \left(\frac{n}{m}\right)- -b* \\ 
+& = -d-\frac{b-d}{2} \left(\frac{n}{m}\right) +b + \frac{d-b}{2} \left(\frac{n}{m}\right) \\
+& = b-d-(b-d)\left(\frac{n}{m}\right) \\
+& =(b-d)\left(1-\frac{n}{m}\right)
+\end{split}
+\end{equation}
+
+\noindent Thus we have proven that when \(b* < 0\) that our model works. It not only makes sense mathematically, but also through example. Consider the rabbits, it makes sense that the population will grow based off of \((b-d)\) (the unconstrained birth rate minus the unconstrained death rate), but the growth rate will slow as the population \(n\) approaches the carrying capacity \(m\), which is handled by the fraction \(\frac{n}{m}\). 
+
+There is also the case of when \(d>b\). This case is interesting because as we explained before in the Differential Equation section, carrying capacity is not relevant here. Thus, to keep things simple, we just use the unconstrained birth rate and unconstrained death rate to define the birth rate over time and per capita number of deaths over time. In mathematical terms, in this case we simply let \(b_t = b\) and \(d_t=d\). Thus we have covered all of the cases we must check to make sure that our model is correct. 
+
+This concludes the Mathematical Modelling section. Now that we have an accurate model that works correctly, we can move on to the making of the app itself. 
+
+
+
+
 
 
 
@@ -335,13 +429,13 @@ This section of the app is where the students input their values for the graphs 
 
 This section is the main portion of the application. This is the only tab available before the \textbf{Simulate} button is hit. This tab displays the graphs used to convey information on the population growth. Before the \textbf{Simulate} button is hit, the graph displays only the theoretical results. These theoretical results are what would happen "on average". This means that if we can imagine an infinite amount of populations were observed, the average would look like our theoretical results. If the \textit{Size} button is chosen, then the population size graph will be shown. This graph shows the growth of a population over an arbitrary amount of time as it approaches its carrying capacity. Here the population is conveyed by the red line and the carrying capacity is shown in blue. The next option under this tab is to plot the growth rate. Here the growth rate is plotted against either time or the population itself. This switching between what is plotted on the x axis can help to teach students how the growth rate changes, and makes it more easily understood through a look at it from both perspectives. Similar to this structure, the next option under this tab is to plot the per capita growth rate. Again, the user can choose what to put on the x axis, either time or population to give the user an easier way of understanding depending on their perspective.
 
-The only change that is made under this tab by hitting the \textbf{Simulate} button is that a simulated population is displayed on the \textit{Size} graph. This is conveyed by a black line. This simulated line is made using our model and with the help of the rpois() function in R. So this creates a possible outcome for a single population to show what it could look like over a certain given time. This is not the same thing as the theoretical graph, as the theoretical graph shows the "average" situation, whereas the simulated shows a possible situation for one group made by our probability model. 
+The only change that is made under this tab by hitting the \textbf{Simulate} button is that a simulated population is displayed on the \textit{Size} graph. This is conveyed by a black line. This simulated line is made using our model and with the help of the \textit{rpois()} function in R. So this creates a possible outcome for a single population to show what it could look like over a certain given time. This is not the same thing as the theoretical graph, as the theoretical graph shows the "average" situation, whereas the simulated shows a possible situation for one group made by our probability model. 
 
 \subsubsection{Field}
 
 This portion of the application displays a model for the field, which is a hypothetical situation for the simulated data shown in the \textit{Population Graphs} tab. Here there are two plots next to each other, with an animation bar above them. The two plots are used to show the total population at the time that is shown in the animation slider. When the play button is hit below the slider, the slider will move from time value to the next time value for every second or so. Whatever the simulated population is at that time, that is the total number of dots on the plots. The plot on the left shows the adults in the field foraging for food for their children. 
 
-The plot on the right shows the newborn rabbits in what is cleverly called the Warren. Here, the litters are grouped closely together using a plotting system we made involving keeping litters close together using the rnorm() function. In the field function, you may also notice the color of the graph changing over time. If there is a carrying capacity used in the simulation, then the color of the graph will change. The idea is that if the rabbits are far away from the carrying capacity, then the field will be more green. On the other hand, if the population is above, close to, or on the carrying capacity, they will naturally be running out of resources, making the field a more brown and barren color. This makes the app more interactive, and maybe fun for the students to learn the concepts, and actually get the feeling that they are seeing the changes in the environment. 
+The plot on the right shows the newborn rabbits in what is cleverly called the Warren. Here, the litters are grouped closely together using a plotting system we made involving keeping litters close together using the \textit{rnorm()} function. In the field function, you may also notice the color of the graph changing over time. If there is a carrying capacity used in the simulation, then the color of the graph will change. The idea is that if the rabbits are far away from the carrying capacity, then the field will be more green. On the other hand, if the population is above, close to, or on the carrying capacity, they will naturally be running out of resources, making the field a more brown and barren color. This makes the app more interactive, and maybe fun for the students to learn the concepts, and actually get the feeling that they are seeing the changes in the environment. 
 
 Below both graphs, a table will be displayed if any rabbits were born and added to the Warren. The table will show the number of litters at that time, and also show the average size of the litters born.
 
@@ -357,6 +451,38 @@ Similarly to how we made the \textit{Field} section of the graph more interactiv
 
 
 
+
+
+
+\subsection{App Design - Server Coding}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Results}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Conclusion}
 
 
 

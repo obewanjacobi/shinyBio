@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.24)  11 APR 2016 22:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.24)  17 APR 2016 17:01
 entering extended mode
 **Thesis_Sweave.tex
 (Thesis_Sweave.tex
@@ -187,118 +187,184 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip44
 )
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty"
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip45
+
+For additional information on amsmath, use the `?' option.
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amstext.sty"
+Package: amstext 2000/06/29 v2.01
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty"
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen113
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty"
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen114
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty"
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count98
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count99
+\leftroot@=\count100
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count101
+\DOTSCASE@=\count102
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen115
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count103
+\c@MaxMatrixCols=\count104
+\dotsspace@=\muskip11
+\c@parentequation=\count105
+\dspbrk@lvl=\count106
+\tag@help=\toks16
+\row@=\count107
+\column@=\count108
+\maxfields@=\count109
+\andhelp@=\toks17
+\eqnshift@=\dimen116
+\alignsep@=\dimen117
+\tagshift@=\dimen118
+\tagwidth@=\dimen119
+\totwidth@=\dimen120
+\lineht@=\dimen121
+\@envbody=\toks18
+\multlinegap=\skip46
+\multlinetaggap=\skip47
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
 ("C:\Program Files\MiKTeX 2.9\tex\latex\upquote\upquote.sty"
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 )
 (Thesis_Sweave.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 53.
-LaTeX Font Info:    ... okay on input line 53.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
  ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count98
-\scratchdimen=\dimen113
-\scratchbox=\box26
-\nofMPsegments=\count99
-\nofMParguments=\count100
-\everyMPshowfont=\toks15
-\MPscratchCnt=\count101
-\MPscratchDim=\dimen114
-\MPnumerator=\count102
-\makeMPintoPDFobject=\count103
-\everyMPtoPDFconversion=\toks16
+\scratchcounter=\count110
+\scratchdimen=\dimen122
+\scratchbox=\box28
+\nofMPsegments=\count111
+\nofMParguments=\count112
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count113
+\MPscratchDim=\dimen123
+\MPnumerator=\count114
+\makeMPintoPDFobject=\count115
+\everyMPtoPDFconversion=\toks21
 )
-\AtBeginShipoutBox=\box27
-Package hyperref Info: Link coloring OFF on input line 53.
+\AtBeginShipoutBox=\box29
+Package hyperref Info: Link coloring OFF on input line 54.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 ("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty"
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count104
+\c@section@level=\count116
 )
-LaTeX Info: Redefining \ref on input line 53.
-LaTeX Info: Redefining \pageref on input line 53.
-LaTeX Info: Redefining \nameref on input line 53.
+LaTeX Info: Redefining \ref on input line 54.
+LaTeX Info: Redefining \pageref on input line 54.
+LaTeX Info: Redefining \nameref on input line 54.
 
 (Thesis_Sweave.out) (Thesis_Sweave.out)
 \@outlinefile=\write3
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 59.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 59.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 59.
-Package color Info: Redefining color shadecolor on input line 61.
+Package color Info: Redefining color shadecolor on input line 62.
  [1
 
 {C:/Users/obewa_000/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] (Thesis
-_Sweave.toc
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 2.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 2.
-)
+_Sweave.toc)
 \tf@toc=\write4
  [2] [3] [4]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 124.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 125.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 124.
- [5] [6] [7]
-Package color Info: Redefining color shadecolor on input line 227.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 125.
+ [5] [6]
+Package color Info: Redefining color shadecolor on input line 201.
 
-<figure/unnamed-chunk-2-1.pdf, id=135, 505.89pt x 505.89pt>
+<figure/unnamed-chunk-2-1.pdf, id=145, 216.81pt x 216.81pt>
 File: figure/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-2-1.pdf used on input line 228.
-(pdftex.def)             Requested size: 345.0pt x 345.00414pt.
-Package color Info: Redefining color shadecolor on input line 236.
+Package pdftex.def Info: figure/unnamed-chunk-2-1.pdf used on input line 203.
+(pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
+Package color Info: Redefining color shadecolor on input line 215.
 
-<figure/unnamed-chunk-3-1.pdf, id=136, 505.89pt x 505.89pt>
+<figure/unnamed-chunk-3-1.pdf, id=146, 216.81pt x 216.81pt>
 File: figure/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf used on input line 237.
-(pdftex.def)             Requested size: 345.0pt x 345.00414pt.
- [8] [9 <./figure/unnamed-chunk-2-1.pdf>]
-[10 <./figure/unnamed-chunk-3-1.pdf>] [11] [12] [13]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 364.
- [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 364.
+Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf used on input line 217.
+(pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
+ [7 <./figure/unnamed-chunk-2-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 237.
+
+<figure/unnamed-chunk-4-1.pdf, id=161, 216.81pt x 216.81pt>
+File: figure/unnamed-chunk-4-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-4-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf used on input line 239.
+(pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
+ [8 <./figure/unnamed-chunk-3-1.pdf>]
+[9 <./figure/unnamed-chunk-4-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 285.
+
+<figure/unnamed-chunk-5-1.pdf, id=185, 216.81pt x 216.81pt>
+File: figure/unnamed-chunk-5-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-5-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-5-1.pdf used on input line 287.
+(pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
+ [10] [11 <./figure/unnamed-chunk-5-1.pdf>]
+[12] [13] [14] [15]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 490.
+ [16]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 490.
  (Thesis_Sweave.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 364.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 364.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 490.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 490.
 Package rerunfilecheck Info: File `Thesis_Sweave.out' has not changed.
-(rerunfilecheck)             Checksum: 3E43130681863E75B08D1075282C76C9;937.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 364.
+(rerunfilecheck)             Checksum: 0229889D6C41C5FEB851C2413D00F6F0;1184.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 490.
  ) 
 Here is how much of TeX's memory you used:
- 5183 strings out of 493673
- 76537 string characters out of 3143948
- 164220 words of memory out of 3000000
- 8447 multiletter control sequences out of 15000+200000
- 9184 words of font info for 33 fonts, out of 3000000 for 9000
+ 5790 strings out of 493673
+ 83593 string characters out of 3143948
+ 173608 words of memory out of 3000000
+ 9022 multiletter control sequences out of 15000+200000
+ 10312 words of font info for 38 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 29i,6n,28p,1414b,332s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,17n,28p,1414b,387s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Program Files/MiKTe
@@ -316,9 +382,9 @@ ublic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
 sfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
 /cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.
 pfb>
-Output written on Thesis_Sweave.pdf (14 pages, 270552 bytes).
+Output written on Thesis_Sweave.pdf (16 pages, 294868 bytes).
 PDF statistics:
- 259 PDF objects out of 1000 (max. 8388607)
- 50 named destinations out of 1000 (max. 500000)
- 123 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 307 PDF objects out of 1000 (max. 8388607)
+ 62 named destinations out of 1000 (max. 500000)
+ 165 words of extra memory for PDF output out of 10000 (max. 10000000)
 
