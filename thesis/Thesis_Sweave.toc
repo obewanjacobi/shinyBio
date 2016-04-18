@@ -14,5 +14,6 @@
 \contentsline {subsubsection}{\numberline {2.3.3}Field}{15}{subsubsection.2.3.3}
 \contentsline {subsubsection}{\numberline {2.3.4}Graveyard}{16}{subsubsection.2.3.4}
 \contentsline {subsection}{\numberline {2.4}App Design - Server Coding}{16}{subsection.2.4}
-\contentsline {section}{\numberline {3}Results}{16}{section.3}
-\contentsline {section}{\numberline {4}Conclusion}{16}{section.4}
+\contentsline {subsection}{\numberline {2.5}Gathering Data}{18}{subsection.2.5}
+\contentsline {section}{\numberline {3}Results}{18}{section.3}
+\contentsline {section}{\numberline {4}Conclusion}{18}{section.4}

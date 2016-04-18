@@ -58,12 +58,7 @@
 \date{April 5, 2016}
 \maketitle
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: ggplot2}}\end{kframe}
-\end{knitrout}
 
 \begin{abstract}
 
@@ -252,7 +247,7 @@ Now let's look at the case of when \(d > b\). This case is unusual compared to o
 \frac{dn}{dt} = n(b-d)
 \end {equation}
 
-\noindent After some simple integation and solving the equation for \(n\), we see that the equation for \(n\) in this situation gives us that 
+\noindent After some simple integration and solving the equation for \(n\), we see that the equation for \(n\) in this situation gives us that 
 
 \begin{equation}
 n = n_0 \times \mathrm{e}^{(b-d)t}
@@ -359,7 +354,7 @@ l_t = \frac{\sqrt{b_t}}{8}\times \sqrt{b}
 
 \subsubsection{Checking the Model}
 
-In this section, in order to check the model, we must show that the deterministic and propability models connect. To do this, we have to use everything we have proven, defined, and assumed up to this point in both the deterministic and the probability models. This part is also crucial to the coding of our app because of how the code write up will look. Connecting the two models together helps to make the code writing much more organized and fluid so that the computer won't have to process two ideas at once, making the app run as quickly as possible for the students. 
+In this section, in order to check the model, we must show that the deterministic and probability models connect. To do this, we have to use everything we have proven, defined, and assumed up to this point in both the deterministic and the probability models. This part is also crucial to the coding of our app because of how the code write up will look. Connecting the two models together helps to make the code writing much more organized and fluid so that the computer won't have to process two ideas at once, making the app run as quickly as possible for the students. 
 
 To begin, let's define one last variable: \(b* = b + \frac{d-b}{2} \left( \frac{n}{m}\right)\). Now, we will be looking at the case of \(b > d\). Let 
 
@@ -401,7 +396,7 @@ This concludes the Mathematical Modelling section. Now that we have an accurate 
 
 \subsection{App Design - The User Interface}
 
-Before going deep into the app design on the user interface (or ui for short), I invite the reader to experience the app for themselves so that the design process makes more sense. The app can be found at \url{https://obewanjacobi.shinyapps.io/logistic}. 
+Before going deep into the app design on the user interface (or UI for short), I invite the reader to experience the app for themselves so that the design process makes more sense. The app can be found at \url{https://obewanjacobi.shinyapps.io/logistic}. 
 
 \subsubsection{Sidebar}
 
@@ -456,9 +451,39 @@ Similarly to how we made the \textit{Field} section of the graph more interactiv
 
 \subsection{App Design - Server Coding}
 
+In this section I will explain how our group organized the coding of the app itself. I will avoid going into too much detail about the code, as it can get extremely tedious and difficult to follow. Instead I will give an abstraction of the ideas used behind our coding.
+
+As mentioned before, the app is a Shiny App, made with R studio and output into an html setting. In order to understand more of what these tools are, please consult the \textbf{Tools} section of the paper. The coding involves two main files that make the app what it is. The first is the ui.R file, where the code goes in for the user interface which was explained in the previous section. The second file is the server.R, where all of the background code runs for the app. We will focus from here on out on the methods done in the server.R file. 
+
+The first thing our code does is take the input from the user. The input data from the user comes from the sidebar in the UI. These are things ranging from the carrying capacity, to whether or not the user wants to set the seed for the simulation that is run. The output is always displayed to the right of this sidebar. 
+
+The code is set up such that different things happen depending on whether or not the user hits the \textbf{Simulate} button in the sidebar. If this button is not pressed, then the user will only see the deterministic model displayed on the graphs given. The graph will also change if the user moves the sliders to chose different values for input. This is an automatic change, and happens immediately when the user moves the slider. The values for these graphs are computed in our code and saved into a dataframe, then the values of the dataframe are then plotted onto the graph that the user sees. A dataframe is basically a large table that the computer uses to store the data plotted on the graph. 
+
+When the user hits the simulate button, a simulation is run using the \textit{rpois()} function. This generates a random number to fit a Poisson distribution (which is how we've modeled the situation) based on the expected value (which we calculated how to find in previous sections). Using this function we generate data for each unit of time to simulate how the population could grow if it were based purely off of chance. If the user chooses to set the seed before simulating, they will get the same outcome each time they simulate, otherwise the data will change to another simulation each time the user hits the \textbf{Simulate} button. 
+
+The layout of the app itself changes when the user hits the \textbf{Simulate} or the \textbf{Start Over} buttons. Before the \textbf{Simulate} button is pressed, the app is in what we call theory mode, where it only displays the theoretical calculations. After the button is pressed, we go into what we dubbed simulate mode. Other than just the simulated graph appearing, we coded it such that more options are presented for the user to see, the \textit{Field} and \textit{Graveyard} tabs. These tabs are explained in the previous sections. 
+
+The coding behind the \textit{Field} tab involves looking at the simulated data for number of litters and litter sizes. Using the \textit{rpois()} function we are able to create these values, and then appropriately graph the litters and their respective number of rabbits in the Warren of the Field. We also made it so that the depending on how closely the population is to the carrying capacity, the color of the displayed field changes, from green to brown, indicating how much food/resources the population has left. 
+
+The \textit{Graveyard} also uses randomly generated numbers based on chance. First the app looks at how many rabbits died in a each time interval, and then it randomly assigns them a death circumstance based on how close the population is to the carrying capacity. The closer the population gets to the carrying capacity, the more likely the rabbits die from malnutrition or biotic factors. However, if the population is relatively low compared to the carrying capacity, the deaths are more likely to be abiotic, like being hit by a lawnmower. 
+
+In both the \textit{Field} and \textit{Graveyard} tabs, the user can both set the time, or hit the play button next to the time slider to watch the dynamic graphs. This basically means that time will pass on its own for the graphs, and the users can just watch and start and stop the animations as they see fit. 
+
+The final thing we coded in was the \textit{About} section of the app. It is above the rest of the app next to the title. In this section, we give a rough explanation to the user of the app in an html file written in R Studio. It conveniently fits into the app as if it is just another section, when in all actuality it is a completely different file of its own. 
 
 
 
+
+
+
+
+
+
+\subsection{Gathering Data}
+
+Although our primary purpose for making the app was for our own education and want to learn how an app such as this is made, we also genuinely wanted this app to be used by a class. So we were curious as to if this app genuinely made a better way for students to learn rather than just being lectured about the subject. In order to see if the app could make a difference for student learning, we wanted to test our app out in a class. Luckily for us, our school had two Evolution and Ecology classes going at the same time, so after some discussion with the professors, we let one class use the app, and the other was deprived. 
+
+Each class was given a pre and post test, the pre test being given before the classes began the subject of logistic growth of a population with a carrying capacity, and the post test being after they finished the subject. The test contained a mixture of biological based questions and mathematical based questions. After the quizzes were collected and graded, all of the grades were put into a dataframe, each class having their own dataframe. The quizz grades were then compared class to class. To do this comparison, we used what is called a t test to find which class improved more. This should show if our app was helpful to the class.
 
 
 
