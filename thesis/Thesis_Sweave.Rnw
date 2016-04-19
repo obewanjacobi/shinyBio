@@ -5,7 +5,7 @@
 
 \begin{document}
 
-\title{Logistic Growth of a Population App}
+\title{The Design and Implementation of an Interactive Web Application to Model Logistic Population Growth}
 \author{Jacob S. Townson}
 \date{April 5, 2016}
 \maketitle
@@ -81,16 +81,13 @@ Before one can understand the methods and reasoning behind each step of making t
 
 \item \(m =\) carrying capacity (max population that an environment can safely sustain)
 
-\item \(b_t =\) per capita birthrate at time \(t\)
-
-\item \(d_t =\) per capita number of deaths at time \(t\)
 \end{itemize}
 
 \subsubsection{Differential Equations}
 
 This section will explain how we found the differential equation that was used in the theoretical calculation of the population and its growth. We will begin with what we know, and expand from there using our previous definitions given.
 
-We know that the rate of population growth is going to be the the number of rabbits times the birth rate at that specific time minus the per capita number of deaths at that specific time. To put this in terms of math, we would write it as \(\frac{dn}{dt} = nb_t-d_t\) which simplifies to be 
+We know that the rate of population growth is going to be the the number of rabbits times the birth rate at that specific time minus the per capita number of deaths at that specific time. To put this in terms of math, we would write it as
 
 \begin{equation}
 \frac{dn}{dt} = n\left(\frac{b-d}{m}\right)(m-n) 
@@ -194,6 +191,11 @@ n = n_0 \times \mathrm{e}^{(b-d)t}
 
 Looking at the example graph of equation (11) in Figure 3 where \(d > b\) shows us that theoretically this graph would make sense. The population starts at the initial population then decreases based on how much greater the unconstrained death rate is compared to the unconstrained birth rate. Thus we have our complete deterministic model for the population based on multiple cases. 
 
+
+
+
+
+
 \subsubsection{Probability Model}
 
 In order to run simulations to convey to the students that the deterministic model isn't always true, we need a probability model for the simulation to follow. This is where the variables defined before as being reliant on time come into play. They are reliant on time is because at each given time interval, the app will run a simulation based on what the previous time values were. We will get more into the programming of this later, but for now, here is the math behind our model.
@@ -201,11 +203,18 @@ In order to run simulations to convey to the students that the deterministic mod
 To begin, let's define some variables that will be needed to create our model:
 
 \begin{itemize}
+
 \item \(L_t =\) number of litters at time \(t\)
 
 \item \(S_t^i =\) size of the \(i^{th}\) litter born at time \(t\). These are independent of each other and of \(L_t\)
 
 \item \(B_t =\) number of births at time \(t\)
+
+\item \(D_t =\) number of deaths at time \(t\)
+
+\item \(b_t =\) per capita birthrate at time \(t\)
+
+\item \(d_t =\) per capita number of deaths at time \(t\)
 \end{itemize}
 
 \noindent These are random variables that are dependent on time. Random variables are variables that are dependent on chance factors. To put this in perspective of the app, the number of baby rabbits born to a litter won't always be the same. Rather, the number of babies is dependent on multiple chance factors such as health of the rabbits, rabbit genetics, etc. To represent this chance variation, we will use a Poisson distribution to describe the variables here and give us our simulated data. A Poisson distribution is convenient for this situation because it is used to express the probability of a given number of events happening in a certain interval of time. So for us, this is used to represent the number of rabbits born to a litter at time \(t\), and the number of litters born at time \(t\). 
@@ -235,7 +244,7 @@ s_t = E(S_t^i)$$ and $$l_t = \frac{E(L_t)}{n}
 B_t = \sum_{i=1}^{L_t} S_t^i 
 \end{equation}
 
-We call the per capita birth rate \(b_t = \frac{E(B_t)}{n}\), as we defined before. We would like to show then that the expected number of births is the expected number of litters times the expected size of the litters, or \(E(B_t) = E(S_t^i)\times E(L_t)\). To do this, we must use properties of expected values. First take the expected value of \(B_t\), giving us 
+We would like to show then that the expected number of births is the expected number of litters times the expected size of the litters, or \(E(B_t) = E(S_t^i)\times E(L_t)\). To do this, we must use properties of expected values. First take the expected value of \(B_t\), giving us 
 
 \begin{equation}
 E(B_t) = E\left(\sum_{i=1}^{L_t} S_t^i\right)
@@ -256,10 +265,10 @@ E(B_t) & = E(E(B_t | L_t)) \\
 E(B_t) = s_t \times E(L_t)
 \end{equation}
 
-\noindent When (14) is simplified based on our definitions we can write it as
+\noindent When (16) is simplified based on our definitions  in  equation (12) we can write it as
 
 \begin{equation}
-b_t = s_t\times l_t
+E(B_t) = s_t\times n(l_t)
 \end{equation}
 
 \noindent Which completes our proof. 
@@ -276,7 +285,7 @@ and
 l_t = \frac{\sqrt{b_t}}{8}\times \sqrt{b}
 \end{equation}
 
-\noindent in order to be able to calculate the the simulated number of births at time \(t\) based on litter size and number of litters. Using what we have found here, we can associate each litter with a simulated litter size which we will use in two sections of the app, The Field and The Graveyard. These two sections of the app will be addressed when discussing the user interface. It should also be noted that defining \(s_t\) and \(l_t\) is only one way of doing it. We could have made other choices, but we chose these because of how we found the average litter size to be 8 for a standard population of rabbits. This makes the overarching probability model that we will use for the simulation of our app. The final mathematical step is to relate the differential equation to the probability model itself, and using what we find, we can then use that in our code for what we want to accomplish. 
+\noindent in order to be able to calculate the the simulated number of births at time \(t\) based on litter size and number of litters. Using what we have found here, we can associate each litter with a simulated litter size which we will use in one section of the app, The Field. This section of the app will be addressed when discussing the user interface. It should also be noted that defining \(s_t\) and \(l_t\) is only one way of doing it. We could have made other choices, but we chose these because of how we found the average litter size to be 8 for a standard population of rabbits. This makes the overarching probability model that we will use for the simulation of our app. The final mathematical step is to relate the differential equation to the probability model itself, and using what we find, we can then use that in our code for what we want to accomplish. 
 
 
 
@@ -288,12 +297,12 @@ l_t = \frac{\sqrt{b_t}}{8}\times \sqrt{b}
 
 \subsubsection{Checking the Model}
 
-In this section, in order to check the model, we must show that the deterministic and probability models connect. To do this, we have to use everything we have proven, defined, and assumed up to this point in both the deterministic and the probability models. This part is also crucial to the coding of our app because of how the code write up will look. Connecting the two models together helps to make the code writing much more organized and fluid so that the computer won't have to process two ideas at once, making the app run as quickly as possible for the students. 
+In this section, in order to check the model, we must show that the deterministic and probability models connect. To do this, we have to use everything we have proven, defined, and assumed up to this point in both the deterministic and the probability models. This part is also crucial to the coding of our app because of how the code write up will look. 
 
-To begin, let's define one last variable: \(b* = b + \frac{d-b}{2} \left( \frac{n}{m}\right)\). Now, we will be looking at the case of \(b > d\). Let 
+To begin, let's define one last variable: \(b^* = b + \frac{d-b}{2} \left( \frac{n}{m}\right)\). Now, we will be looking at the case of \(b > d\). Let 
 
 \begin{equation}
-b_t = max(0, b*)$$ and $$d_t = d + \frac{b-d}{2} \left(\frac{n}{m}\right) + max(0, -b*)
+b_t = max(0, b^*)$$ and $$d_t = d + \frac{b-d}{2} \left(\frac{n}{m}\right) + max(0, -b^*)
 \end{equation}
 
 \noindent Recall that we defined \(\frac{dn}{dt} = nb_t-d_t\) and \(\frac{\frac{dn}{dt}}{n} = (b-d)\left(1-\frac{n}{m}\right)\). Our goal here is to prove that based on what we have found in the deterministic and probability model that 
@@ -302,18 +311,18 @@ b_t = max(0, b*)$$ and $$d_t = d + \frac{b-d}{2} \left(\frac{n}{m}\right) + max(
 nb_t-d_t = \left(\frac{b-d}{m}\right)(m-n)
 \end{equation}
 
-Consider the case where \(b* < 0\) (the case where b* > 0 is similar). Here
+Consider the case where \(b^* < 0\) (the case where \(b^* > 0\) is similar). Here
 
 \begin{equation}
 \begin{split}
-nb_t - d_t & = 0 - d - \frac{b-d}{2} \left(\frac{n}{m}\right)- -b* \\ 
+nb_t - d_t & = 0 - d - \frac{b-d}{2} \left(\frac{n}{m}\right)- -b^* \\ 
 & = -d-\frac{b-d}{2} \left(\frac{n}{m}\right) +b + \frac{d-b}{2} \left(\frac{n}{m}\right) \\
 & = b-d-(b-d)\left(\frac{n}{m}\right) \\
 & =(b-d)\left(1-\frac{n}{m}\right)
 \end{split}
 \end{equation}
 
-\noindent Thus we have proven that when \(b* < 0\) that our model works. It not only makes sense mathematically, but also through example. Consider the rabbits, it makes sense that the population will grow based off of \((b-d)\) (the unconstrained birth rate minus the unconstrained death rate), but the growth rate will slow as the population \(n\) approaches the carrying capacity \(m\), which is handled by the fraction \(\frac{n}{m}\). 
+\noindent Thus we have proven that when \(b^* < 0\) that our model works. It not only makes sense mathematically, but also through example. Consider the rabbits, it makes sense that the population will grow based off of \((b-d)\) (the unconstrained birth rate minus the unconstrained death rate), but the growth rate will slow as the population \(n\) approaches the carrying capacity \(m\), which is handled by the fraction \(\frac{n}{m}\). 
 
 There is also the case of when \(d>b\). This case is interesting because as we explained before in the Differential Equation section, carrying capacity is not relevant here. Thus, to keep things simple, we just use the unconstrained birth rate and unconstrained death rate to define the birth rate over time and per capita number of deaths over time. In mathematical terms, in this case we simply let \(b_t = b\) and \(d_t=d\). Thus we have covered all of the cases we must check to make sure that our model is correct. 
 
@@ -356,7 +365,9 @@ This section of the app is where the students input their values for the graphs 
 
 \subsubsection{Population Graphs}
 
-This section is the main portion of the application. This is the only tab available before the \textbf{Simulate} button is hit. This tab displays the graphs used to convey information on the population growth. Before the \textbf{Simulate} button is hit, the graph displays only the theoretical results. These theoretical results are what would happen "on average". This means that if we can imagine an infinite amount of populations were observed, the average would look like our theoretical results. If the \textit{Size} button is chosen, then the population size graph will be shown. This graph shows the growth of a population over an arbitrary amount of time as it approaches its carrying capacity. Here the population is conveyed by the red line and the carrying capacity is shown in blue. The next option under this tab is to plot the growth rate. Here the growth rate is plotted against either time or the population itself. This switching between what is plotted on the x axis can help to teach students how the growth rate changes, and makes it more easily understood through a look at it from both perspectives. Similar to this structure, the next option under this tab is to plot the per capita growth rate. Again, the user can choose what to put on the x axis, either time or population to give the user an easier way of understanding depending on their perspective.
+This section is the main portion of the application. This is the only tab available before the \textbf{Simulate} button is hit. This tab displays the graphs used to convey information on the population growth. Before the \textbf{Simulate} button is hit, the graph displays only the theoretical results. These theoretical results are what would happen "on average". This means that if we can imagine an infinite amount of populations were observed, the average would look like our theoretical results. 
+
+If the \textit{Size} button is chosen, then the population size graph will be shown. This graph shows the growth of a population over an arbitrary amount of time as it approaches its carrying capacity. Here the population is conveyed by the red line and the carrying capacity is shown in blue. The next option under this tab is to plot the growth rate. Here the growth rate is plotted against either time or the population itself. This switching between what is plotted on the x axis can help to teach students how the growth rate changes, and makes it more easily understood through a look at it from both perspectives. Similar to this structure, the next option under this tab is to plot the per capita growth rate. Again, the user can choose what to put on the x axis, either time or population to give the user an easier way of understanding depending on their perspective.
 
 The only change that is made under this tab by hitting the \textbf{Simulate} button is that a simulated population is displayed on the \textit{Size} graph. This is conveyed by a black line. This simulated line is made using our model and with the help of the \textit{rpois()} function in R. So this creates a possible outcome for a single population to show what it could look like over a certain given time. This is not the same thing as the theoretical graph, as the theoretical graph shows the "average" situation, whereas the simulated shows a possible situation for one group made by our probability model. 
 
