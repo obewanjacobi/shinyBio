@@ -12,6 +12,9 @@
 
 <<echo=FALSE, results='hide', message=FALSE>>=
 require(ggplot2)
+require(xtable)
+options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
 @
 
 \begin{abstract}
@@ -448,6 +451,50 @@ Each class was given a pre and post test, the pre test being given before the cl
 
 \section{Results}
 
+<<echo=FALSE>>=
+kstudents <- c(1:14)
+gstudents <- c(1:12)
+
+gprescore <- c(6/11, 4/11, 6/11, 7/11, 7/11, 4/11, 6/11, 4/11, 6/11, 3/11, 5/11, 5/11)*100
+kprescore <- c(6/11, 4/11, 6/11, 7/11, 3/11, 6/11, 3/11, 8/11, 5/11, 4/11, 6/11, 6/11, 6/11, 6/11)*100
+
+gpostscore <- c(8/11, 5/11, 5/11, 5/11, 9/11, 8/11, 8/11, 3/11, 8/11, 6/11, 8/11, 7/11)*100
+kpostscore <- c(5/11, NA, 6/11, 6/11, 4/11, 7/11, 1/11, 9/11, 4/11, 5/11, 9/11, 8/11, 10/11, 5/11)*100
+
+tgriff <- data.frame(gstudents, gprescore, gpostscore)
+
+kopp <- data.frame(kstudents, kprescore, kpostscore)
+@
+
+As discussed in the previous section, we gave two classes pre and post tests so that we can compare the two in order to see which class improved the most. The percentage grades are displayed in the tables below.
+
+<<echo = FALSE, results='asis'>>=
+xtable(tgriff, caption = 'Class That Used the App')
+xtable(kopp, caption = 'Class Without App')
+#these tables could be better, as Dr. White for tips
+@
+
+Simply by looking st these tables, it is difficult to even begin to attempt to say which class improved most. Luckily, using R again, we can do very complex statistical analysis with the writing of one to two lines of code. To find our answer, we will be using a paired t-test. A paired sample t-test is a statistical technique that is used to compare two population means in the case of two samples that are correlated. Paired sample t-tests are often used in 'before-after' studies, such as this one. What we will do is have R do the t-test for us, then look to see which class had the greater difference in mean grades. Then we can use the number known as the P value to see how likely it is that this correlation is true, which helps to enforce what we find.
+
+<<>>=
+t.test(gpostscore,gprescore, paired = TRUE, data = tgriff, mu = 0)
+@
+
+\textbf{NOTE: This test is observing the class that used the app.}
+
+<<>>=
+t.test(kpostscore,kprescore, paired = TRUE, data = kopp, mu = 0)
+@
+
+\textbf{NOTE: This test is observing the class that used the app.}
+
+In the test for the class that used the app, we can see that the mean of the differences is approximately \(12.88\), and we get a P value of about \(.02\). This is a good sign for the correlation, as the P value is showing us that it is extremely unlikely for any of the differences to be \(0\). 
+
+For the other test, we get a mean of the differences to be about \(4.895\) with a P value of \(.292\). This P value is higher than what we would prefer, as it doesn't make it entirely definite that everyone in the class improved all that well. 
+
+What we can see from these tests is that the class who used the app definitely improved more than the class that didn't use it. We can also tell because of the abnormally high P value for the class that didn't use the app wasn't very consistent in their improvement. Just by looking at the table with their pre and post scores we can see that their class wasn't all that consistent, some students improved vastly whereas other students actually managed to do worse than their first attempt. 
+
+
 
 
 
@@ -462,7 +509,9 @@ Each class was given a pre and post test, the pre test being given before the cl
 
 \section{Conclusion}
 
+We can definitely tell that the class that used the app improved more than the class that did not. This can be found simply by looking at the differences in the mean values for improvement in the grades, and the P values associated with them in the t-tests. But what does this tell us?
 
+This tells us that apps can help improve the learning of students in the classroom. Now the reader may be asking one more question, so what's the point? The point is the fact that these Shiny Apps aren't too difficult to make. In this thesis we go over every step that our group took in making the app, and hopefully, dear reader, you can see that it may take a fair amount of time but it is very doable to make an app such as the one we have made here. 
 
 
 \end{document}
