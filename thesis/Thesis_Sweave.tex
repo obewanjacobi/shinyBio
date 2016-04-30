@@ -336,7 +336,7 @@ E(B_t) = s_t\times n(l_t)
 
 \noindent Which completes our proof. 
 
- The \(s_t\) and the \(l_t\) are what we simulate using the \textit{rpois()} function in R, which as previously stated, we will address more later. Our group needed an expected average litter size, so we simply googled the average rabbit litter sizes for this value. The number born to each litter isn't entirely important to our model because the model still accounts for carrying capacity and theoretical growth rather than the litters affecting the outcome. We found that the average litter sizes for rabbits was \(8\), so we let the 
+ The \(s_t\) and the \(l_t\) are what we simulate using the \texttt{rpois()} function in R, which as previously stated, we will address more later. Our group needed an expected average litter size, so we simply googled the average rabbit litter sizes for this value. The number born to each litter isn't entirely important to our model because the model still accounts for carrying capacity and theoretical growth rather than the litters affecting the outcome. We found that the average litter sizes for rabbits was \(8\), so we let the 
 
 \begin{equation}
 s_t = \frac{8\sqrt{b_t}}{\sqrt{b}}
@@ -371,7 +371,7 @@ In this section, in order to check the model, we must show that the deterministi
 Now that we have these defined, let's define one last variable: \(b^* = b + \frac{d-b}{2} \left( \frac{n}{m}\right)\). We will be looking at the case of \(b > d\). Let 
 
 \begin{equation}
-b_t = max(0, b^*)$$ and $$d_t = d + \frac{b-d}{2} \left(\frac{n}{m}\right) + max(0, -b^*)
+b_t = \mathrm{max}(0, b^*)$$ and $$d_t = d + \frac{b-d}{2} \left(\frac{n}{m}\right) + \mathrm{max}(0, -b^*)
 \end{equation}
 
 \noindent This way in our calculations, as \(b_t\) will go down as the population gets close to the carrying capacity, which makes sense physically because when the population is close or at it's carrying capacity, food and other resources are much more limited making it less likely for babies to be born. Similarly, with this model, the \(d_t\) will go up as the population approaches carrying capacity. This makes sense physically because with a lack of resources the population is more likely to have more deaths than when it was thriving.
@@ -440,7 +440,7 @@ This section is the main portion of the application. This is the only tab availa
 
 There are multiple graphical options for the user to see before the \textbf{Simulate} button is pressed. These are given under the \textit{Size, Growth Rate}, and \textit{Per-Capita Growth Rate} buttons. Here we will outline these graphs. If the \textit{Size} button is chosen, then the population size graph will be shown. This graph shows the growth of a population over an arbitrary amount of time as it approaches its carrying capacity. Here the population is conveyed by the red line and the carrying capacity is shown in blue. The next option under this tab plots the growth rate, hence the name \textit{Growth Rate}. Here the growth rate is plotted against either time or the population itself. This switching between what is plotted on the \(x\) axis can help to teach students how the growth rate changes, and makes it more easily understood through a look at it from both perspectives. Similar to this structure, the next option under this tab is to plot the per capita growth rate, cleverly labeled by the \textit{Per-Capita Growth Rate} button. Again, the user can choose what to put on the \(x\) axis, either time or population to give the user an easier way of understanding depending on their perspective.
 
-The only change that is made under this tab by hitting the \textbf{Simulate} button is that a simulated population is displayed on the \textit{Size} graph. This is conveyed by a black line. This simulated line is made using our probability model and with the help of the \textit{rpois()} function in R. So this creates a possible outcome for a single population to show what it could look like over a certain given time. This is not the same thing as the theoretical graph, as the theoretical graph shows the "average" situation, whereas the simulated shows a possible situation for one group made by our probability model. 
+The only change that is made under this tab by hitting the \textbf{Simulate} button is that a simulated population is displayed on the \textit{Size} graph. This is conveyed by a black line. This simulated line is made using our probability model and with the help of the \texttt{rpois()} function in R. So this creates a possible outcome for a single population to show what it could look like over a certain given time. This is not the same thing as the theoretical graph, as the theoretical graph shows the "average" situation, whereas the simulated shows a possible situation for one group made by our probability model. 
 
 \subsubsection{Field}
 
@@ -457,7 +457,7 @@ Below both graphs, a table will be displayed if any rabbits were born and added 
 
 This portion of the application is similar to the field in that it is a model used to present hypothetical information. It uses the simulated population to show the deaths at each time. It is uses a similar format to the field in that it uses an animation slider to show the graveyard over time. 
 
-This tab also gives the rabbits a cause of death, again, to give the user a feeling of the whole situation being more real. The deaths are divided into three categories, death by lawnmower, death by foxes, and death by malnutrition. These causes of death and the number of deaths themselves were modeled in the same way as the births were in the field, using the Poisson distribution and the \textit{rpois()} function in R. The death by lawnmowers is more likely to happen when the population is small compared to carrying capacity, and the likelihood of death by foxes and malnutrition go up as the population grows and gets closer to the carrying capacity. The app also has an info link to tell the user this explanation. There is also a table to show the population and the carrying capacity at the bottom, just to remind the user to give more of a reference on the amount of deaths at that certain time. 
+This tab also gives the rabbits a cause of death, again, to give the user a feeling of the whole situation being more real. The deaths are divided into three categories, death by lawnmower, death by foxes, and death by malnutrition. These causes of death and the number of deaths themselves were modeled in the same way as the births were in the field, using the Poisson distribution and the \texttt{rpois()} function in R. The death by lawnmowers is more likely to happen when the population is small compared to carrying capacity, and the likelihood of death by foxes and malnutrition go up as the population grows and gets closer to the carrying capacity. The app also has an info link to tell the user this explanation. There is also a table to show the population and the carrying capacity at the bottom, just to remind the user to give more of a reference on the amount of deaths at that certain time. 
 
 Similarly to how we made the \textit{Field} section of the graph more interactive, we did the same with this section for the same purposes. We want these sections to make the user learn how to read graphs better, and to do so, we have tried to make a fun environment for the student to learn.
 
@@ -478,11 +478,11 @@ The code is set up such that different things happen depending on whether or not
 
 Programmers always need data structures to control the flow of information and to store the information. The values for all of the data are computed in our code and saved into a dataframe, then the values of the dataframe are then plotted onto the graph that the user sees. A dataframe is basically a large table that the computer uses to store the data plotted on the graph. Each time the computer displays a bit of data, or manipulates it in some way, it consults this dataframe at each time unit and takes the appropriate data from there. All of the data in our large dataframe that the computer consults comes directly from our deterministic and probability models.
 
-When the user hits the simulate button, a simulation is run using the \textit{rpois()} function. This generates a random number to fit a Poisson distribution (which is how we've modeled the situation) based on the expected value (which we calculated how to find in previous sections). Using this function we generate data for each unit of time to simulate how the population could grow if it were based purely off of chance. If the user chooses to set the seed before simulating, they will get the same outcome each time they simulate, otherwise the data will change to another simulation each time the user hits the \textbf{Simulate} button. 
+When the user hits the simulate button, a simulation is run using the \texttt{rpois()} function. This generates a random number to fit a Poisson distribution (which is how we've modeled the situation) based on the expected value (which we calculated how to find in previous sections). Using this function we generate data for each unit of time to simulate how the population could grow if it were based purely off of chance. If the user chooses to set the seed before simulating, they will get the same outcome each time they simulate, otherwise the data will change to another simulation each time the user hits the \textbf{Simulate} button. 
 
 The layout of the app itself changes when the user hits the \textbf{Simulate} or the \textbf{Start Over} buttons. Before the \textbf{Simulate} button is pressed, the app is in what we call theory mode, where it only displays the theoretical calculations. After the button is pressed, we go into what we dubbed simulate mode. Other than just the simulated graph appearing, we coded it such that more options are presented for the user to see, the \textit{Field} and \textit{Graveyard} tabs. These tabs are explained in the previous sections. 
 
-The coding behind the \textit{Field} tab involves looking at the simulated data for number of litters and litter sizes. Using the \textit{rpois()} function we are able to create these values, and then appropriately graph the litters and their respective number of rabbits in the Warren of the Field. We also made it so that the depending on how closely the population is to the carrying capacity, the color of the displayed field changes, from green to brown, indicating how much food/resources the population has left. 
+The coding behind the \textit{Field} tab involves looking at the simulated data for number of litters and litter sizes. Using the \texttt{rpois()} function we are able to create these values, and then appropriately graph the litters and their respective number of rabbits in the Warren of the Field. We also made it so that the depending on how closely the population is to the carrying capacity, the color of the displayed field changes, from green to brown, indicating how much food/resources the population has left. 
 
 The \textit{Graveyard} also uses randomly generated numbers based on chance. First the app looks at how many rabbits died in a each time interval, and then it randomly assigns them a death circumstance based on how close the population is to the carrying capacity. The closer the population gets to the carrying capacity, the more likely the rabbits die from malnutrition or biotic factors. However, if the population is relatively low compared to the carrying capacity, the deaths are more likely to be abiotic, like being hit by a lawnmower. 
 
@@ -500,9 +500,9 @@ The final thing we coded in was the \textit{About} section of the app. It is abo
 
 \subsection{Gathering Data}
 
-Although our primary purpose for making the app was for our own education and want to learn how an app such as this is made, we also genuinely wanted this app to be used by a class. So we were curious as to if this app genuinely made a better way for students to learn rather than just being lectured about the subject. In order to see if the app could make a difference for student learning, we wanted to test our app out in a class. Luckily for us, our school had two Evolution and Ecology classes going at the same time, so after some discussion with the professors, we let one class use the app, and the other was deprived. 
+Although our primary purpose for making the app was for our own education and desire to learn how an app such as this is made, we also genuinely wanted this app to be used by a class. So we were curious as to if this app genuinely made a better way for students to learn rather than just being lectured about the subject. In order to see if the app could make a difference for student learning, we wanted to test our app out in a class. Luckily for us, our school had two Evolution and Ecology classes going at the same time, so after some discussion with the professors, we let one class use the app, and the other was without it. 
 
-Each class was given a pre and post test, the pre test being given before the classes began the subject of logistic growth of a population with a carrying capacity, and the post test being after they finished the subject. The test contained a mixture of biological based questions and mathematical based questions. After the quizzes were collected and graded, all of the grades were put into a dataframe, each class having their own dataframe. The quiz grades were then compared class to class. To do this comparison, we used what is called a t test to find which class improved more. This should show if our app was helpful to the class.
+Each class was given a pre and post test, the pre test being given before the classes began the subject of logistic growth of a population with a carrying capacity, and the post test being after they finished the subject. The test contained a mixture of biological based questions and mathematical based questions. After the quizzes were collected and graded, all of the grades were put into a dataframe. The quiz grades were then compared class to class. To do this comparison, we used what is called a t test to find which class improved more. This should show if our app was helpful to the class.
 
 
 
@@ -516,105 +516,75 @@ Each class was given a pre and post test, the pre test being given before the cl
 
 
 
-As discussed in the previous section, we gave two classes pre and post tests so that we can compare the two in order to see which class improved the most. The percentage grades are displayed in the tables below.
+As discussed in the previous section, we gave two classes pre and post tests so that we can compare the two in order to see which class improved the most. The grades out of \(11\) points are displayed in the table below.
+
+\bigskip
+\bigskip
 
 % latex table generated in R 3.2.4 by xtable 1.8-2 package
 % 
-\begin{tabular}{rrrr}
+\begin{tabular}{rlrrr}
   \hline
- & gstudents & gprescore & gpostscore \\ 
+ & instructor & pre & post & diff \\ 
   \hline
-1 &   1 & 54.55 & 72.73 \\ 
-  2 &   2 & 36.36 & 45.45 \\ 
-  3 &   3 & 54.55 & 45.45 \\ 
-  4 &   4 & 63.64 & 45.45 \\ 
-  5 &   5 & 63.64 & 81.82 \\ 
-  6 &   6 & 36.36 & 72.73 \\ 
-  7 &   7 & 54.55 & 72.73 \\ 
-  8 &   8 & 36.36 & 27.27 \\ 
-  9 &   9 & 54.55 & 72.73 \\ 
-  10 &  10 & 27.27 & 54.55 \\ 
-  11 &  11 & 45.45 & 72.73 \\ 
-  12 &  12 & 45.45 & 63.64 \\ 
-   \hline
-\end{tabular}
-% latex table generated in R 3.2.4 by xtable 1.8-2 package
-% 
-\begin{tabular}{rrrr}
-  \hline
- & kstudents & kprescore & kpostscore \\ 
-  \hline
-1 &   1 & 54.55 & 45.45 \\ 
-  2 &   2 & 36.36 &  \\ 
-  3 &   3 & 54.55 & 54.55 \\ 
-  4 &   4 & 63.64 & 54.55 \\ 
-  5 &   5 & 27.27 & 36.36 \\ 
-  6 &   6 & 54.55 & 63.64 \\ 
-  7 &   7 & 27.27 & 9.09 \\ 
-  8 &   8 & 72.73 & 81.82 \\ 
-  9 &   9 & 45.45 & 36.36 \\ 
-  10 &  10 & 36.36 & 45.45 \\ 
-  11 &  11 & 54.55 & 81.82 \\ 
-  12 &  12 & 54.55 & 72.73 \\ 
-  13 &  13 & 54.55 & 90.91 \\ 
-  14 &  14 & 54.55 & 45.45 \\ 
+1 & griffith & 6.00 & 8.00 & 2.00 \\ 
+  2 & griffith & 4.00 & 5.00 & 1.00 \\ 
+  3 & griffith & 6.00 & 5.00 & -1.00 \\ 
+  4 & griffith & 7.00 & 5.00 & -2.00 \\ 
+  5 & griffith & 7.00 & 9.00 & 2.00 \\ 
+  6 & griffith & 4.00 & 8.00 & 4.00 \\ 
+  7 & griffith & 6.00 & 8.00 & 2.00 \\ 
+  8 & griffith & 4.00 & 3.00 & -1.00 \\ 
+  9 & griffith & 6.00 & 8.00 & 2.00 \\ 
+  10 & griffith & 3.00 & 6.00 & 3.00 \\ 
+  11 & griffith & 5.00 & 8.00 & 3.00 \\ 
+  12 & griffith & 5.00 & 7.00 & 2.00 \\ 
+  13 & kopp & 6.00 & 5.00 & -1.00 \\ 
+  14 & kopp & 4.00 &  &  \\ 
+  15 & kopp & 6.00 & 6.00 & 0.00 \\ 
+  16 & kopp & 7.00 & 6.00 & -1.00 \\ 
+  17 & kopp & 3.00 & 4.00 & 1.00 \\ 
+  18 & kopp & 6.00 & 7.00 & 1.00 \\ 
+  19 & kopp & 3.00 & 1.00 & -2.00 \\ 
+  20 & kopp & 8.00 & 9.00 & 1.00 \\ 
+  21 & kopp & 5.00 & 4.00 & -1.00 \\ 
+  22 & kopp & 4.00 & 5.00 & 1.00 \\ 
+  23 & kopp & 6.00 & 9.00 & 3.00 \\ 
+  24 & kopp & 6.00 & 8.00 & 2.00 \\ 
+  25 & kopp & 6.00 & 10.00 & 4.00 \\ 
+  26 & kopp & 6.00 & 5.00 & -1.00 \\ 
    \hline
 \end{tabular}
 
 
-Simply by looking st these tables, it is difficult to even begin to attempt to say which class improved most. Luckily, using R again, we can do very complex statistical analysis with the writing of one to two lines of code. To find our answer, we will be using a paired t-test. A paired sample t-test is a statistical technique that is used to compare two population means in the case of two samples that are correlated. Paired sample t-tests are often used in 'before-after' studies, such as this one. What we will do is have R do the t-test for us, then look to see which class had the greater difference in mean grades. Then we can use the number known as the P value to see how likely it is that this correlation is true, which helps to enforce what we find.
+\bigskip
+
+Simply by looking st this table, it is difficult to even begin to attempt to say which class improved most. Luckily, using R again, we can do very complex statistical analysis with the writing of one to two lines of code. To find our answer, we will be using a paired t-test. A paired sample t-test is a statistical technique that is used to compare two population means in the case of two samples that are correlated. Paired sample t-tests are often used in 'before-after' studies, such as this one. What we will do is have R do the t-test for us, then look to see which class had the greater difference in mean grades. Then we can use the number known as the P value to see how likely it is that this correlation is true, which helps to enforce what we find.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{t.test}\hlstd{(gpostscore,gprescore,} \hlkwc{paired} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{data} \hlstd{= tgriff,} \hlkwc{mu} \hlstd{=} \hlnum{0}\hlstd{)}
+\hlkwd{t.test}\hlstd{(diff} \hlopt{~} \hlstd{instructor,} \hlkwc{data} \hlstd{= prepost)}
 \end{alltt}
 \begin{verbatim}
 ## 
-## 	Paired t-test
+## 	Welch Two Sample t-test
 ## 
-## data:  gpostscore and gprescore
-## t = 2.6788, df = 11, p-value = 0.02145
+## data:  diff by instructor
+## t = 1.2198, df = 22.659, p-value = 0.2351
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##   2.297252 23.460324
+##  -0.6123706  2.3687808
 ## sample estimates:
-## mean of the differences 
-##                12.87879
+## mean in group griffith     mean in group kopp 
+##              1.4166667              0.5384615
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
-\textbf{NOTE: This test is observing the class that used the app.}
+In the test for the class that used the app, we can see that the mean of the differences is approximately \(1.4167\), and for the other class, we get a mean of the differences to be about \(0.538\) with a P value of \(.235\). This P value is higher than what we would prefer, as it doesn't make it entirely definite that the classes improved as well as they let on. 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{t.test}\hlstd{(kpostscore,kprescore,} \hlkwc{paired} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{data} \hlstd{= kopp,} \hlkwc{mu} \hlstd{=} \hlnum{0}\hlstd{)}
-\end{alltt}
-\begin{verbatim}
-## 
-## 	Paired t-test
-## 
-## data:  kpostscore and kprescore
-## t = 1.1022, df = 12, p-value = 0.292
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -4.781343 14.571552
-## sample estimates:
-## mean of the differences 
-##                4.895105
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-\textbf{NOTE: This test is observing the class that used the app.}
-
-In the test for the class that used the app, we can see that the mean of the differences is approximately \(12.88\), and we get a P value of about \(.02\). This is a good sign for the correlation, as the P value is showing us that it is extremely unlikely for any of the differences to be \(0\). 
-
-For the other test, we get a mean of the differences to be about \(4.895\) with a P value of \(.292\). This P value is higher than what we would prefer, as it doesn't make it entirely definite that everyone in the class improved all that well. 
-
-What we can see from these tests is that the class who used the app definitely improved more than the class that didn't use it. We can also tell because of the abnormally high P value for the class that didn't use the app wasn't very consistent in their improvement. Just by looking at the table with their pre and post scores we can see that their class wasn't all that consistent, some students improved vastly whereas other students actually managed to do worse than their first attempt. 
+What we can see from this test is that the class who used the app seemingly improved more than the class that didn't use it. We can also tell because of the abnormally high P value for the t-test doesn't prove all that much for us. To add to this, just by looking at the table with their pre and post scores we can't see much of a trend in the classes. 
 
 
 
@@ -631,15 +601,25 @@ What we can see from these tests is that the class who used the app definitely i
 
 \section{Conclusion}
 
-We can definitely tell that the class that used the app improved more than the class that did not. This can be found simply by looking at the differences in the mean values for improvement in the grades, and the P values associated with them in the t-tests. The mean difference in the group that used the app is much greater than that of the group that didn't. On top of that, the P value of the group that used the app implies that there is indeed a correlation of great improvement when the app is used. On the other hand, the class that was without the app was very inconsistent. Their P value was higher than most statisticians would be comfortable saying anything about, and it stems from the fact that the students were very inconsistent in how well they improved going into the post test.
+We can begin to tell that the class that used the app improved more than the class that did not. This can be found by looking at the differences in the mean values for improvement in the grades in the t-tests. The mean difference in the group that used the app is quite a bit larger than that of the group that didn't. However, the P value that we get in the t-test comparing the differences is much higher than statisticians would be comfortable accepting.
 
 It should be noted, although this experiment of ours was tested to the best of our abilities, there were things that could have been improved. Unfortunately, the two Evolution and Ecology courses that were being taught on campus were being taught by different professors. So the test could have been improved if both classes were taught by the same professor. 
 
 There are also some things that we would have liked to improve on the app. If we had more time, we would have liked to have improved the graveyard model. The probability model made for the types of deaths for each death could have been more accurate. Our model was fairly simple and not all that accurate to what actually would have happened. As well as this, there were more features we felt we could have added to the app. Again, time constraints forced us to cut some things from our final project. 
 
-Even given all of these things, we still came out with good results in our test. But what does this tell us?
+On top of these things, a t-test isn't actually the best way to test the results for these classes. T-tests are meant for large population groups, whereas we only have two classrooms. Along with that, we need a population to be normally distributed in order for the t-test to be accurate. If we look at the plots of the two classes, we can definitely see that neither classes are normally distributed. 
 
-This tells us that our app did in fact help improve the learning of students in this biology classroom. Now the reader may be asking one more question, so what's the point? The point is the fact that these Shiny Apps aren't too difficult to make. In this thesis we go over every step that our group took in making the app, and hopefully, dear reader, you can see that it may take a fair amount of time but it is very doable to make an app such as the one we have made here.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
+
+\end{knitrout}
+
+\noindent Thus we can see that the t-test probably wasn't the best way to find which class improved. Due to time constraints though, this was all we could do. This could be improved for future work.
+
+Even given all of these things, we still came out with fairly good results in our test. But what does this tell us?
+
+This tells us that our app did in fact help improve the learning of students in this biology classroom to some extent. Now the reader may be asking one more question, so what's the point? The point is the fact that these Shiny Apps aren't too difficult to make. In this thesis we go over every step that our group took in making the app, and hopefully, dear reader, you can see that it may take a fair amount of time but it is very doable to make an app such as the one we have made here.
 
 Thus my call to action to you dear reader, if you are a teacher or a professor, I strongly encourage you to try out the making of a Shiny App for your classroom. If you are a computer scientist purely interested in the coding of an app such as ours, feel free to visit our GitHub repository at \url{https://github.com/obewanjacobi/shinyBio/tree/master} and try to make an app for yourself. And finally one last time, if you haven't tried, feel free to try our app at \url{https://obewanjacobi.shinyapps.io/logistic}. 
 
