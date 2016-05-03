@@ -1,6 +1,17 @@
-\documentclass{article}
+\documentclass[titlepage]{article}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\usepackage{tikz}
+
+\newcommand{\namesigdatehrule}[1]{\par\tikz \draw [blue, densely dotted, ultra thick] (0,0) -- (#1,0);\par}
+\newcommand{\namesigdate}[2][5cm]{%
+\begin{minipage}{#1}%
+    #2 \vspace{1.0cm}\namesigdatehrule{#1}\smallskip
+    \small \noindent\textit{Signature}
+    \vspace{1.0cm}\namesigdatehrule{#1}\smallskip
+    \small \textit{Date}
+\end{minipage}
+}
 
 
 \begin{document}
@@ -16,7 +27,10 @@ require(xtable)
 options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 library(lattice)
+library(tigerstats)
 @
+
+\noindent \namesigdate{Dr. Homer White} \hfill \namesigdate{Dr. Tim Griffith} 
 
 \begin{abstract}
 
@@ -488,8 +502,8 @@ xtable(prepost, caption = 'Data')
 
 Simply by looking st this table, it is difficult to even begin to attempt to say which class improved most. Luckily, using R again, we can do very complex statistical analysis with the writing of one to two lines of code. To find our answer, we will be using a paired t-test. A paired sample t-test is a statistical technique that is used to compare two population means in the case of two samples that are correlated. Paired sample t-tests are often used in 'before-after' studies, such as this one. What we will do is have R do the t-test for us, then look to see which class had the greater difference in mean grades. Then we can use the number known as the P value to see how likely it is that this correlation is true, which helps to enforce what we find.
 
-<<>>=
-t.test(diff ~ instructor, data = prepost)
+<<echo = FALSE>>=
+t <- ttestGC(diff ~ instructor, data = prepost, mu = 0, graph = TRUE)
 @
 
 In the test for the class that used the app, we can see that the mean of the differences is approximately \(1.4167\), and for the other class, we get a mean of the differences to be about \(0.538\) with a P value of \(.235\). To explain, the P value is telling us the likelyhood that the null hypothesis is true. In our case, the null hypothesis is that the mean of the differences is \(0\). This P value is higher than what we would prefer, as it doesn't prove that the null hypothesis isn't true, thus it doesn't make it entirely definite that the classes improved as well as they let on. 
@@ -520,7 +534,7 @@ There are also some things that we would have liked to improve on the app. If we
 On top of these things, a t-test isn't actually the best way to test the results for these classes. T-tests are meant for large population groups, whereas we only have two classrooms. If the population is not large enough, we at least need a population to be normally distributed in order for the t-test to be accurate. If we look at the plots \textbf{(Figure 5)} of the two classes, we can definitely see that neither classes are normally distributed. 
 
 \begin{figure}
-<<echo=FALSE>>=
+<<echo=FALSE, fig.width=3, fig.height=3, fig.align='center'>>=
 lattice::histogram( ~ diff | instructor,
                     data = prepost,
                     layout = c(1,2), 
@@ -539,8 +553,8 @@ Unfortunately we can't say for sure that our app helped the class improve more t
 
 Thus my call to action to you dear reader, if you are a teacher or a professor, I strongly encourage you to try out the making of a Shiny App for your classroom. If you are a computer scientist purely interested in the coding of an app such as ours, feel free to visit our GitHub repository at \url{https://github.com/obewanjacobi/shinyBio/tree/master} and try to make an app for yourself. And finally one last time, if you haven't tried, feel free to try our app at \url{https://obewanjacobi.shinyapps.io/logistic}. 
 
-
-
+\pagebreak
+\noindent \namesigdate{Jacob Townson}
 
 
 \end{document}

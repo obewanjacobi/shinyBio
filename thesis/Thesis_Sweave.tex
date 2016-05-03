@@ -1,4 +1,4 @@
-\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[titlepage]{article}\usepackage[]{graphicx}\usepackage[]{color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -50,6 +50,17 @@
 \usepackage{alltt}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\usepackage{tikz}
+
+\newcommand{\namesigdatehrule}[1]{\par\tikz \draw [blue, densely dotted, ultra thick] (0,0) -- (#1,0);\par}
+\newcommand{\namesigdate}[2][5cm]{%
+\begin{minipage}{#1}%
+    #2 \vspace{1.0cm}\namesigdatehrule{#1}\smallskip
+    \small \noindent\textit{Signature}
+    \vspace{1.0cm}\namesigdatehrule{#1}\smallskip
+    \small \textit{Date}
+\end{minipage}
+}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -58,7 +69,14 @@
 \date{April 5, 2016}
 \maketitle
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'nlme' was built under R version 3.2.5}}\end{kframe}
+\end{knitrout}
+
+\noindent \namesigdate{Dr. Homer White} \hfill \namesigdate{Dr. Tim Griffith} 
 
 \begin{abstract}
 
@@ -561,26 +579,7 @@ As discussed in the previous section, we gave two classes pre and post tests so 
 
 Simply by looking st this table, it is difficult to even begin to attempt to say which class improved most. Luckily, using R again, we can do very complex statistical analysis with the writing of one to two lines of code. To find our answer, we will be using a paired t-test. A paired sample t-test is a statistical technique that is used to compare two population means in the case of two samples that are correlated. Paired sample t-tests are often used in 'before-after' studies, such as this one. What we will do is have R do the t-test for us, then look to see which class had the greater difference in mean grades. Then we can use the number known as the P value to see how likely it is that this correlation is true, which helps to enforce what we find.
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{t.test}\hlstd{(diff} \hlopt{~} \hlstd{instructor,} \hlkwc{data} \hlstd{= prepost)}
-\end{alltt}
-\begin{verbatim}
-## 
-## 	Welch Two Sample t-test
-## 
-## data:  diff by instructor
-## t = 1.2198, df = 22.659, p-value = 0.2351
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -0.6123706  2.3687808
-## sample estimates:
-## mean in group griffith     mean in group kopp 
-##              1.4166667              0.5384615
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
 
 In the test for the class that used the app, we can see that the mean of the differences is approximately \(1.4167\), and for the other class, we get a mean of the differences to be about \(0.538\) with a P value of \(.235\). To explain, the P value is telling us the likelyhood that the null hypothesis is true. In our case, the null hypothesis is that the mean of the differences is \(0\). This P value is higher than what we would prefer, as it doesn't prove that the null hypothesis isn't true, thus it doesn't make it entirely definite that the classes improved as well as they let on. 
 
@@ -612,7 +611,12 @@ On top of these things, a t-test isn't actually the best way to test the results
 \begin{figure}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
+
+}
+
+
 
 \end{knitrout}
 \caption{These are the plots of the mean differences of the classes. Notice they are not normally distributed.}
@@ -626,8 +630,8 @@ Unfortunately we can't say for sure that our app helped the class improve more t
 
 Thus my call to action to you dear reader, if you are a teacher or a professor, I strongly encourage you to try out the making of a Shiny App for your classroom. If you are a computer scientist purely interested in the coding of an app such as ours, feel free to visit our GitHub repository at \url{https://github.com/obewanjacobi/shinyBio/tree/master} and try to make an app for yourself. And finally one last time, if you haven't tried, feel free to try our app at \url{https://obewanjacobi.shinyapps.io/logistic}. 
 
-
-
+\pagebreak
+\noindent \namesigdate{Jacob Townson}
 
 
 \end{document}
