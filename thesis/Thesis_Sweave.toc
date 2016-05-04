@@ -16,4 +16,6 @@
 \contentsline {subsection}{\numberline {2.4}App Design - Server Coding}{16}{subsection.2.4}
 \contentsline {subsection}{\numberline {2.5}Gathering Data}{17}{subsection.2.5}
 \contentsline {section}{\numberline {3}Results}{18}{section.3}
-\contentsline {section}{\numberline {4}Conclusion}{19}{section.4}
+\contentsline {section}{\numberline {4}Conclusion}{20}{section.4}
+\contentsline {section}{\numberline {5}Acknowledgements}{24}{section.5}
+\contentsline {section}{\numberline {6}References}{25}{section.6}

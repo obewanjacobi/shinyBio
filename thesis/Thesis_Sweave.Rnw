@@ -18,10 +18,10 @@
 
 \title{The Design and Implementation of an Interactive Web Application to Model Logistic Population Growth}
 \author{Jacob S. Townson}
-\date{April 5, 2016}
+\date{May 5, 2016}
 \maketitle
 
-<<echo=FALSE, results='hide', message=FALSE>>=
+<<echo=FALSE, results='hide', message=FALSE, warning=FALSE>>=
 require(ggplot2)
 require(xtable)
 options(xtable.floating = FALSE)
@@ -34,7 +34,7 @@ library(tigerstats)
 
 \begin{abstract}
 
-The classroom is becoming more of a technological advanced place with each passing year. It is becoming increasingly more common to use apps and other electronic forms of learning to be present in a class. In order to try to see this in action, our group has made an app for an Evolution and Ecology course at our college. This app was made using different probability models and theoretical differential equations in a Shiny App made in R Studio. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach the biology class this lesson of a population with a carrying capacity through the use of dynamic graphs and an interesting yet easy to use interface. The app has been successful in the implementation behind it, as it is fully functional and ready for the classroom. To test it's use in a class, we have given a survey to two separate classes to test their knowledge of the subject. One class used the app and the other did not. Based off of the grades of the tests, and using a paired t-test to find which class improved more, we found that the class that used the app did in fact improve more than the class that did not. Thus our app was a success.
+The classroom is becoming more of a technological advanced place with each passing year. It is becoming increasingly more common to use apps and other electronic forms of learning to be present in a class. In order to try to see this in action, our group has made an app for an Evolution and Ecology course at our college. This app was made using different probability models and theoretical differential equations in a Shiny App made in R Studio. The app is used to show/simulate a population's growth when there is a specific carrying capacity, birth rate, and death rate. The app's purpose is to help teach the biology class this lesson of a population with a carrying capacity through the use of dynamic graphs and an interesting yet easy to use interface. The app has been successful in the implementation behind it, as it is fully functional and ready for the classroom. To test it's use in a class, we have given a survey to two separate classes to test their knowledge of the subject. One class used the app and the other did not. Based off of the grades of the tests, and using a two sample t-test to find which class improved more, we could not find definitive results. In fact, our results did not find anything to be true. More testing is required, and with better and more test results, an answer could be found.
 
 \end{abstract}
 
@@ -500,15 +500,28 @@ xtable(prepost, caption = 'Data')
 
 \bigskip
 
-Simply by looking st this table, it is difficult to even begin to attempt to say which class improved most. Luckily, using R again, we can do very complex statistical analysis with the writing of one to two lines of code. To find our answer, we will be using a paired t-test. A paired sample t-test is a statistical technique that is used to compare two population means in the case of two samples that are correlated. Paired sample t-tests are often used in 'before-after' studies, such as this one. What we will do is have R do the t-test for us, then look to see which class had the greater difference in mean grades. Then we can use the number known as the P value to see how likely it is that this correlation is true, which helps to enforce what we find.
+Simply by looking at this table, it is difficult to even begin to attempt to say which class improved most. Luckily, using R again, we can do very complex statistical analysis with the writing of one to two lines of code. To find our answer, we will be using a two sample t-test. A two sample t-test is used to determine if two population means are equal. A common application is to test if a new process or treatment is superior to a current process or treatment, in this case, the treatment is the app itself. What we will do is have R do the t-test for us, then look to see which class had the greater difference in mean grades. Then we can use the number known as the P value to see how likely it is that this correlation is true, which helps to enforce what we find.
 
-<<echo = FALSE>>=
-t <- ttestGC(diff ~ instructor, data = prepost, mu = 0, graph = TRUE)
+<<>>=
+t <- ttestGC(diff ~ instructor, data = prepost, mu = 0)
+t
 @
 
-In the test for the class that used the app, we can see that the mean of the differences is approximately \(1.4167\), and for the other class, we get a mean of the differences to be about \(0.538\) with a P value of \(.235\). To explain, the P value is telling us the likelyhood that the null hypothesis is true. In our case, the null hypothesis is that the mean of the differences is \(0\). This P value is higher than what we would prefer, as it doesn't prove that the null hypothesis isn't true, thus it doesn't make it entirely definite that the classes improved as well as they let on. 
+Using the code chunk above, we have the outcome of the t-test in a variable \(t\). Using this, we will look at the outcome step by step. Below is the table of the descriptive results of the test.
 
-What we can see from this test is that the class who used the app seemingly improved more than the class that didn't use it. We can also tell because of the abnormally high P value for the t-test doesn't prove all that much for us. To add to this, just by looking at the table with their pre and post scores we can't see much of a trend in the classes. 
+\bigskip
+<<echo=FALSE, results='asis'>>=
+xtable(t$SummTab)
+@
+\bigskip
+
+Notice it seems as though Dr. Griffith's class (the class that used the app) did improve more than Dr. Kopp's (the class that did not use the app). This can be seen in the differences in means. In the t-test we get that the estimate of the difference between the two means is \Sexpr{t$estimate}. Again, this would normally lead us to believe that we have found that Dr. Griffith's class improved more. 
+
+However, if we look at the next bit of information given in the t-test, we can see that the standard error of the estimate of the mean is \Sexpr{t$se}. This immediately presents us with a problem, because one can notice that \Sexpr{t$se} is extremely close to \Sexpr{t$estimate}. This implies that almost the entire estimate of the differences in the means could just be there because of the standard error.
+
+On top of this, if we look at our confidence interval, we see that we got values of \Sexpr{t$interval}. What is concerning about this confidence interval is that \(0\) is a value within it. This means feasibly that the difference between the means could be \(0\). 
+
+Additionally, the test gave us a P value of \Sexpr{t$p.value}. A P value is used to show the probability that the null hypothesis is true. In our case, the null hypothesis is that the difference between the estimated means of the two classes is \(0\). This P value is a bit too high for comfort, as it makes it seem as though the null hypothesis could be possible. 
 
 
 
@@ -525,7 +538,7 @@ What we can see from this test is that the class who used the app seemingly impr
 
 \section{Conclusion}
 
-We can begin to tell that the class that used the app improved more than the class that did not. This can be found by looking at the differences in the mean values for improvement in the grades in the t-tests. The mean difference in the group that used the app is quite a bit larger than that of the group that didn't. However, the P value that we get in the t-test comparing the differences is much higher than statisticians would be comfortable accepting. Thus we can not conclude that the class that used the app did in fact improve over the class that did not. 
+We cannot begin to tell that the class that used the app improved more than the class that did not. This can be found by simply looking at all of our results. The mean difference in the group that used the app is quite a bit larger than that of the group that didn't. However, the P value that we get in the t-test comparing the differences is much higher than statisticians would be comfortable accepting. Along with this, in our t-test we found multiple problems that did not enforce our hypothesis, and in fact, would make us question whether or not our hypothesis is correct. Thus we can not conclude that the class that used the app did in fact improve over the class that did not. 
 
 It should be noted, although this experiment of ours was tested to the best of our abilities, there were things that could have been improved. Unfortunately, the two Evolution and Ecology courses that were being taught on campus were being taught by different professors. So the test could have been improved if both classes were taught by the same professor. 
 
@@ -547,14 +560,26 @@ lattice::histogram( ~ diff | instructor,
 
 \noindent Thus we can see that the t-test probably wasn't the best way to find which class improved. Due to time constraints though, this was all we could do. This could be improved for future work.
 
-Even given all of these things, and the fact that we don't have truly conslusive results, we still learned a lot about the making of these types of apps. Additionaly, we know that our app seemingly didn't hurt the class. But what does this tell us?
+Even given all of these things, and the fact that we don't have truly conclusive results, we still learned a lot about the making of these types of apps. But what does this tell us?
 
 Unfortunately we can't say for sure that our app helped the class improve more than the other one. Now the reader may be asking one more question, so what's the point? The point is the fact that these Shiny Apps aren't too difficult to make, and this project could be replicated for a different class. If this was done, we could possibly gather evidence that is actually conclusive to give us an answer to the question of whether or not apps such as this genuinely do help in a classroom setting. In this thesis we go over every step that our group took in making the app, and hopefully, dear reader, you can see that it may take a fair amount of time but it is very doable to make an app such as the one we have made here.
 
-Thus my call to action to you dear reader, if you are a teacher or a professor, I strongly encourage you to try out the making of a Shiny App for your classroom. If you are a computer scientist purely interested in the coding of an app such as ours, feel free to visit our GitHub repository at \url{https://github.com/obewanjacobi/shinyBio/tree/master} and try to make an app for yourself. And finally one last time, if you haven't tried, feel free to try our app at \url{https://obewanjacobi.shinyapps.io/logistic}. 
+Thus my call to action to you dear reader, if you are a teacher or a professor, I strongly encourage you to try out the making of a Shiny App for your classroom. Then you could try this test for yourself, and hopefully you can redo it so that conclusive results are found. 
+
+If you are a computer scientist purely interested in the coding of an app such as ours, feel free to visit our GitHub repository at \url{https://github.com/obewanjacobi/shinyBio/tree/master} and try to make an app for yourself. And finally one last time, if you haven't tried, feel free to try our app at \url{https://obewanjacobi.shinyapps.io/logistic}. 
 
 \pagebreak
 \noindent \namesigdate{Jacob Townson}
+\pagebreak
+
+\section{Acknowledgements}
+
+
+
+\pagebreak
+
+\section{References}
+
 
 
 \end{document}

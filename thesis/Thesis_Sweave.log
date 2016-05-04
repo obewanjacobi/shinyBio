@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.24)  3 MAY 2016 16:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.24)  3 MAY 2016 20:51
 entering extended mode
 **Thesis_Sweave.tex
 (Thesis_Sweave.tex
@@ -576,29 +576,22 @@ LaTeX Info: Redefining \nameref on input line 65.
 [1
 
 {C:/Users/obewa_000/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-
-Package xcolor Warning: Incompatible color definition on input line 73.
-
-
-Package xcolor Warning: Incompatible color definition on input line 76.
-
-
-Overfull \hbox (1.6pt too wide) in paragraph at lines 79--79
+Overfull \hbox (1.6pt too wide) in paragraph at lines 74--74
 [][] 
  []
 
 
-Overfull \hbox (1.6pt too wide) in paragraph at lines 79--79
+Overfull \hbox (1.6pt too wide) in paragraph at lines 74--74
 [][] 
  []
 
 
-Overfull \hbox (1.6pt too wide) in paragraph at lines 79--79
+Overfull \hbox (1.6pt too wide) in paragraph at lines 74--74
 [][] 
  []
 
 
-Overfull \hbox (1.6pt too wide) in paragraph at lines 79--79
+Overfull \hbox (1.6pt too wide) in paragraph at lines 74--74
 [][] 
  []
 
@@ -606,108 +599,122 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.81 \begin{abstract}
+l.76 \begin{abstract}
                       [1]pdfTeX warning (ext4): destination with the same ident
 ifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.85 \end{abstract}
+l.80 \end{abstract}
                     [1] (Thesis_Sweave.toc)
 \tf@toc=\write5
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.92 
+l.87 
       [1] [2] [3]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 138.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 133.
 
  ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 138.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 133.
 
 [4] [5]
 
-Package xcolor Warning: Incompatible color definition on input line 211.
+Package xcolor Warning: Incompatible color definition on input line 206.
 
-<figure/unnamed-chunk-2-1.pdf, id=158, 216.81pt x 216.81pt>
+<figure/unnamed-chunk-2-1.pdf, id=168, 216.81pt x 216.81pt>
 File: figure/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-2-1.pdf used on input line 213.
+Package pdftex.def Info: figure/unnamed-chunk-2-1.pdf used on input line 208.
 (pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
 
 
-Package xcolor Warning: Incompatible color definition on input line 225.
+Package xcolor Warning: Incompatible color definition on input line 220.
 
-<figure/unnamed-chunk-3-1.pdf, id=159, 216.81pt x 216.81pt>
+<figure/unnamed-chunk-3-1.pdf, id=169, 216.81pt x 216.81pt>
 File: figure/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf used on input line 227.
+Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf used on input line 222.
 (pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
 
 
-Package xcolor Warning: Incompatible color definition on input line 247.
+Package xcolor Warning: Incompatible color definition on input line 242.
 
-<figure/unnamed-chunk-4-1.pdf, id=160, 216.81pt x 216.81pt>
+<figure/unnamed-chunk-4-1.pdf, id=170, 216.81pt x 216.81pt>
 File: figure/unnamed-chunk-4-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-4-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf used on input line 249.
+Package pdftex.def Info: figure/unnamed-chunk-4-1.pdf used on input line 244.
 (pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
  [6 <./figure/unnamed-chunk-2-1.pdf>]
 [7 <./figure/unnamed-chunk-3-1.pdf>] [8 <./figure/unnamed-chunk-4-1.pdf>]
 
-Package xcolor Warning: Incompatible color definition on input line 304.
+Package xcolor Warning: Incompatible color definition on input line 299.
 
-<figure/unnamed-chunk-5-1.pdf, id=196, 216.81pt x 216.81pt>
+<figure/unnamed-chunk-5-1.pdf, id=206, 216.81pt x 216.81pt>
 File: figure/unnamed-chunk-5-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-5-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-5-1.pdf used on input line 306.
+Package pdftex.def Info: figure/unnamed-chunk-5-1.pdf used on input line 301.
 (pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
  [9 <./figure/unnamed-chunk-5-1.pdf>]
-[10] [11] [12] [13] [14] [15] [16] [17] [18]
+[10] [11] [12] [13] [14] [15] [16] [17]
 
-Package xcolor Warning: Incompatible color definition on input line 613.
+Package xcolor Warning: Incompatible color definition on input line 578.
 
-<figure/unnamed-chunk-9-1.pdf, id=259, 216.81pt x 216.81pt>
-File: figure/unnamed-chunk-9-1.pdf Graphic file (type pdf)
+[18]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 580.
 
-<use figure/unnamed-chunk-9-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-9-1.pdf used on input line 615.
+Overfull \hbox (1.49698pt too wide) in paragraph at lines 616--616
+[]\OT1/cmtt/m/n/10 ## Inferential Procedures for the Difference of Two Means mu
+1-mu2:[] 
+ []
+
+[19] [20]
+
+Package xcolor Warning: Incompatible color definition on input line 669.
+
+<figure/unnamed-chunk-10-1.pdf, id=277, 216.81pt x 216.81pt>
+File: figure/unnamed-chunk-10-1.pdf Graphic file (type pdf)
+
+<use figure/unnamed-chunk-10-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-10-1.pdf used on input line 671.
 (pdftex.def)             Requested size: 216.80946pt x 216.81938pt.
- [19] [20 <./figure/unnamed-chunk-9-1.pdf>]
-Overfull \hbox (1.6pt too wide) in paragraph at lines 634--634
+ [21 <./figure/unnamed-chunk-10-1.pdf>]
+[22]
+Overfull \hbox (1.6pt too wide) in paragraph at lines 692--692
 [][] 
  []
 
 
-Overfull \hbox (1.6pt too wide) in paragraph at lines 634--634
+Overfull \hbox (1.6pt too wide) in paragraph at lines 692--692
 [][] 
  []
 
-[21]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 637.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 637.
+[23] [24] [25]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 705.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 705.
  (Thesis_Sweave.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 637.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 637.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 705.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 705.
 Package rerunfilecheck Info: File `Thesis_Sweave.out' has not changed.
-(rerunfilecheck)             Checksum: 6017B4DC0CF12C005AFD67264C7DEDD2;1249.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 637.
+(rerunfilecheck)             Checksum: 74E465BD503B64D96BE4EC24D52C5565;1349.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 705.
  ) 
 Here is how much of TeX's memory you used:
- 15604 strings out of 493673
- 293712 string characters out of 3143948
- 359350 words of memory out of 3000000
- 18621 multiletter control sequences out of 15000+200000
+ 15613 strings out of 493673
+ 293801 string characters out of 3143948
+ 358350 words of memory out of 3000000
+ 18624 multiletter control sequences out of 15000+200000
  10181 words of font info for 37 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 55i,17n,54p,1282b,525s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 55i,17n,54p,1346b,525s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKT
@@ -723,9 +730,9 @@ s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX
 s/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
 public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
 sfonts/cm/cmtt10.pfb>
-Output written on Thesis_Sweave.pdf (24 pages, 303383 bytes).
+Output written on Thesis_Sweave.pdf (28 pages, 314760 bytes).
 PDF statistics:
- 348 PDF objects out of 1000 (max. 8388607)
- 69 named destinations out of 1000 (max. 500000)
- 190 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 378 PDF objects out of 1000 (max. 8388607)
+ 75 named destinations out of 1000 (max. 500000)
+ 206 words of extra memory for PDF output out of 10000 (max. 10000000)
 
