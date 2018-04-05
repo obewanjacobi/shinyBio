@@ -673,7 +673,7 @@ output$discuss <- renderText({
   # if relevant, create a table in graveyard tab to show where we stand with respect 
   # to carrying capacity
   output$gyPopCapRep <- renderTable({
-    time <- input$momG
+    time <- input$momG - 1
     num <- as.integer(rv$daframe$population[time + 1])
     cap <- as.integer(input$m)
     if (input$b > input$d) {
